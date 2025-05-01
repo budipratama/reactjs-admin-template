@@ -14,7 +14,7 @@ describe('App Component', () => {
     localStorage.clear();
   });
 
-  it('redirects to login page if not logged in', () => {
+  it('redirects to login page if not logged in ', () => {
     renderWithRouter(<App />);
 
     // Check if the Login component is rendered
