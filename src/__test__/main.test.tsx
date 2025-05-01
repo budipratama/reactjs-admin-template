@@ -1,10 +1,14 @@
 import { createRoot } from 'react-dom/client';
 
-jest.mock('react-dom/client', () => ({
-  createRoot: jest.fn(() => ({
-    render: jest.fn(),
-  })),
-}));
+jest.mock('react-dom/client', () => {
+  const mockRender = jest.fn();
+  return {
+    createRoot: jest.fn(() => ({
+      render: mockRender,
+    })),
+    __mockRender: mockRender, // Tambahkan ini untuk memeriksa panggilan render
+  };
+});
 
 describe('main.tsx', () => {
   beforeEach(() => {
@@ -26,8 +30,8 @@ describe('main.tsx', () => {
     expect(createRoot).toHaveBeenCalledWith(rootElement);
 
     // Pastikan render dipanggil
-    const mockRender = createRoot(rootElement).render;
-    expect(mockRender).toHaveBeenCalled();
+    const { __mockRender } = jest.requireMock('react-dom/client');
+    expect(__mockRender).toHaveBeenCalled();
   });
 
   it('logs an error when root element is not found', () => {
