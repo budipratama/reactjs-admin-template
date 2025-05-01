@@ -8,7 +8,7 @@ on:
 jobs:
   sonarqube:
     name: SonarQube
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'
 
       # Install dependencies
       - name: Install dependencies
