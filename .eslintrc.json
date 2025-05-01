@@ -1,0 +1,20 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended", // Opsional: jika menggunakan React
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn", // Contoh custom rule
+    "react/react-in-jsx-scope": "off" // Untuk React 17+ (tidak perlu impor React)
+  },
+  "settings": {
+    "react": {
+      "version": "detect" // Deteksi versi React otomatis
+    }
+  }
+}
