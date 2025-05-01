@@ -14,4 +14,5 @@ export default {
     "!src/index.tsx", // Kecualikan file entry point utama jika tidak relevan
   ],
   coverageDirectory: "coverage", // Direktori output laporan coverage
+  coverageReporters: ["lcov", "text"],
 };
