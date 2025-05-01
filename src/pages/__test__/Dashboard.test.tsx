@@ -4,6 +4,13 @@ import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 import { JSX } from 'react';
 
+// Mock useNavigate
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}));
+
 describe('Dashboard Component', () => {
   const mockSetIsLoggedIn = jest.fn();
 
@@ -26,12 +33,6 @@ describe('Dashboard Component', () => {
   });
 
   it('calls setIsLoggedIn and navigates to login on logout', () => {
-    const mockNavigate = jest.fn();
-    jest.mock('react-router-dom', () => ({
-      ...jest.requireActual('react-router-dom'),
-      useNavigate: () => mockNavigate,
-    }));
-
     renderWithRouter(<Dashboard setIsLoggedIn={mockSetIsLoggedIn} />);
 
     // Simulate clicking the logout button

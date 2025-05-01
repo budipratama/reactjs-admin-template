@@ -1,49 +1,39 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { BrowserRouter } from 'react-router-dom';
 import App from '../App';
-import { JSX } from 'react';
 
 describe('App Component', () => {
-  const renderWithRouter = (ui: JSX.Element) => {
-    return render(<BrowserRouter>{ui}</BrowserRouter>);
-  };
+  it('redirects to login page if not logged in', () => {
+    // Render App langsung tanpa membungkus dengan <BrowserRouter>
+    render(<App />);
 
-  beforeEach(() => {
-    // Clear localStorage before each test
-    localStorage.clear();
-  });
-
-  it('redirects to login page if not logged in ', () => {
-    renderWithRouter(<App />);
-
-    // Check if the Login component is rendered
+    // Periksa apakah halaman login dirender
     expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
   });
 
   it('redirects to dashboard if logged in', () => {
-    // Simulate a logged-in user
+    // Simulasikan pengguna yang sudah login
     localStorage.setItem('isLoggedIn', 'true');
 
-    renderWithRouter(<App />);
+    render(<App />);
 
-    // Check if the Dashboard component is rendered
+    // Periksa apakah halaman dashboard dirender
     expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
   });
 
   it('navigates to login page after logout', () => {
-    // Simulate a logged-in user
+    // Simulasikan pengguna yang sudah login
     localStorage.setItem('isLoggedIn', 'true');
 
-    renderWithRouter(<App />);
+    render(<App />);
 
-    // Simulate logout by clearing localStorage
+    // Simulasikan logout
     localStorage.removeItem('isLoggedIn');
 
-    // Re-render the component
-    renderWithRouter(<App />);
+    // Render ulang App
+    render(<App />);
 
-    // Check if the Login component is rendered
+    // Periksa apakah halaman login dirender
     expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
   });
 });

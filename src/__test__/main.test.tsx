@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client';
-import '../main'; // Import file yang akan diuji
 
 jest.mock('react-dom/client', () => ({
   createRoot: jest.fn(() => ({
@@ -18,13 +17,17 @@ describe('main.tsx', () => {
     rootElement.id = 'root';
     document.body.appendChild(rootElement);
 
-    require('../main'); // Jalankan ulang file main.tsx
+    // Jalankan ulang file main.tsx
+    jest.isolateModules(() => {
+      require('../main');
+    });
 
     // Pastikan createRoot dipanggil dengan elemen root
     expect(createRoot).toHaveBeenCalledWith(rootElement);
 
     // Pastikan render dipanggil
-    expect(createRoot(rootElement).render).toHaveBeenCalled();
+    const mockRender = createRoot(rootElement).render;
+    expect(mockRender).toHaveBeenCalled();
   });
 
   it('logs an error when root element is not found', () => {
@@ -34,9 +37,13 @@ describe('main.tsx', () => {
       rootElement.remove();
     }
 
+    // Mock console.error
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-    require('../main'); // Jalankan ulang file main.tsx
+    // Jalankan ulang file main.tsx
+    jest.isolateModules(() => {
+      require('../main');
+    });
 
     // Pastikan console.error dipanggil
     expect(consoleErrorSpy).toHaveBeenCalledWith('Root element not found');
