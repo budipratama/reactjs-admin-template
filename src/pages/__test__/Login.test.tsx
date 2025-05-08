@@ -78,4 +78,25 @@ describe("Login Component", () => {
     expect(modal).not.toHaveClass("is-open");
     expect(document.body.style.overflow).toBe("auto");
   });
+
+  it("opens the modal when scrolling down", () => {
+    renderWithRouter(<Login setIsLoggedIn={mockSetIsLoggedIn} />);
+
+    // Simulasikan posisi scroll
+    Object.defineProperty(window, "scrollY", {
+      value: window.innerHeight / 2,
+      writable: true,
+    });
+
+    // Trigger event scroll
+    fireEvent.scroll(window);
+
+    // Periksa apakah modal terbuka
+    const modal = screen.getByText(/welcome!/i).closest(".modal");
+    expect(modal).toHaveClass("is-open");
+
+    // Periksa apakah elemen scroll-down disembunyikan
+    const scrollDown = screen.getByText(/scroll down/i);
+    expect(scrollDown).not.toBeVisible();
+  });
 });
