@@ -1,0 +1,28 @@
+@use "../abstract/variables";
+.header {
+  min-height: 64px;
+  display: flex;
+  background-color: variables.$color-primary;
+  padding: 0 24px 0 24px;
+  gap: 8px;
+  &__logo {
+    display: flex;
+    align-items: center;
+    width: 256px;
+    overflow: hidden;
+  }
+  &__bars,
+  &__search {
+    border: none;
+    background: none;
+    color: inherit;
+  }
+  &__menu--left {
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    & button {
+      padding: 8px;
+    }
+  }
+}
