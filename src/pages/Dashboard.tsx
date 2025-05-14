@@ -172,7 +172,9 @@ const Dashboard = ({ setIsLoggedIn }: DashboardProps): JSX.Element => {
       </header>
       <aside className='sidebar'>
         <ul>
-          <li>General</li>
+          <li className='sidebar__selected'>
+            <i className='fa-solid fa-user'></i>General
+          </li>
           <li>Basic</li>
           <li>Analytic</li>
           <li>Campaign</li>
@@ -180,6 +182,7 @@ const Dashboard = ({ setIsLoggedIn }: DashboardProps): JSX.Element => {
           <li>eCommerce</li>
         </ul>
       </aside>
+      <h1>Welcome</h1>
     </>
 
     // <div style={{ textAlign: "center", marginTop: "50px" }}>

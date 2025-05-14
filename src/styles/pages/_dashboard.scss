@@ -1,5 +1,5 @@
 @use "../abstract/variables";
-@import "../base/animations";
+@use "../base/animations";
 .header {
   min-height: variables.$header-height;
   display: flex;
@@ -74,12 +74,24 @@
 .sidebar {
   display: flex;
   width: 256px;
-  background-color: variables.$color-primary;
   max-height: 100%;
   height: calc(100vh - variables.$header-height);
   font-size: 1.4rem;
   font-weight: 400;
   & ul li {
     line-height: 3rem;
+    padding: 8px 10px 8px 12px;
+    color: rgb(58, 71, 82);
+    cursor: pointer;
+    &:hover {
+      background-color: rgb(242, 252, 252);
+      color: rgb(67, 206, 215);
+      border-radius: 30px;
+    }
+  }
+  &__selected {
+    color: white !important;
+    background-color: rgb(67, 206, 215);
+    border-radius: 30px;
   }
 }

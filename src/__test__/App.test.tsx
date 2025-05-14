@@ -21,7 +21,7 @@ describe("App Component", () => {
 
     // Periksa apakah halaman dashboard dirender
     expect(
-      screen.getByRole("heading", { name: /dashboard/i })
+      screen.getByRole("heading", { name: /welcome/i })
     ).toBeInTheDocument();
   });
 
