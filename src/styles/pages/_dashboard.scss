@@ -1,7 +1,7 @@
 @use "../abstract/variables";
 @import "../base/animations";
 .header {
-  min-height: 64px;
+  min-height: variables.$header-height;
   display: flex;
   background-color: variables.$color-primary;
   padding: 0 24px 0 24px;
@@ -36,7 +36,7 @@
     &--img {
       width: 32px;
       height: 32px;
-      border-radius: 50%;
+      border-radius: variables.$border-radius-default;
     }
   }
   &__messages {
@@ -49,7 +49,7 @@
         height: 20px;
         width: 20px;
         z-index: 10;
-        border-radius: 50% !important;
+        border-radius: variables.$border-radius-default;
         border: 2px solid rgb(248, 40, 90);
         animation: 1s ease-out infinite heartbit;
       }
@@ -68,5 +68,18 @@
         border-radius: 4px;
       }
     }
+  }
+}
+
+.sidebar {
+  display: flex;
+  width: 256px;
+  background-color: variables.$color-primary;
+  max-height: 100%;
+  height: calc(100vh - variables.$header-height);
+  font-size: 1.4rem;
+  font-weight: 400;
+  & ul li {
+    line-height: 3rem;
   }
 }

@@ -1,7 +1,7 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "unused-imports"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -10,7 +10,8 @@
   ],
   "rules": {
     "@typescript-eslint/no-unused-vars": "warn", // Contoh custom rule
-    "react/react-in-jsx-scope": "off" // Untuk React 17+ (tidak perlu impor React)
+    "react/react-in-jsx-scope": "off", // Untuk React 17+ (tidak perlu impor React)
+    "unused-imports/no-unused-imports": "warn"
   },
   "settings": {
     "react": {
