@@ -6,7 +6,7 @@
   background-color: variables.$color-primary;
   padding: 0 24px 0 24px;
   gap: 8px;
-  color: white;
+  color: variables.$color-font-primary;
 
   &__logo {
     display: flex;
@@ -56,7 +56,7 @@
       &--alert--blink {
         transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1);
         background-color: rgb(248, 40, 90);
-        color: rgb(255, 255, 255);
+        color: variables.$color-font-primary;
         transform: scale(1) translate(50%, -50%);
         transform-origin: 100% 0% 0px;
         height: 8px;
@@ -78,20 +78,26 @@
   height: calc(100vh - variables.$header-height);
   font-size: 1.4rem;
   font-weight: 400;
-  & ul li {
-    line-height: 3rem;
-    padding: 8px 10px 8px 12px;
-    color: rgb(58, 71, 82);
-    cursor: pointer;
-    &:hover {
-      background-color: rgb(242, 252, 252);
-      color: rgb(67, 206, 215);
-      border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.08) 1px 0px 20px;
+  & ul {
+    width: 100%;
+    list-style: none;
+    padding: 0 16px 0 16px;
+    & li {
+      line-height: 3rem;
+      padding: 8px 10px 8px 12px;
+      color: rgb(58, 71, 82);
+      cursor: pointer;
+      &:hover:not(.sidebar__active) {
+        background-color: variables.$color-cyan-light;
+        color: variables.$color-cyan;
+        border-radius: 30px;
+      }
     }
   }
-  &__selected {
-    color: white !important;
-    background-color: rgb(67, 206, 215);
+  &__active {
+    color: variables.$color-font-primary !important;
+    background-color: variables.$color-cyan;
     border-radius: 30px;
   }
 }

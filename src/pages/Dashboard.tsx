@@ -172,7 +172,7 @@ const Dashboard = ({ setIsLoggedIn }: DashboardProps): JSX.Element => {
       </header>
       <aside className='sidebar'>
         <ul>
-          <li className='sidebar__selected'>
+          <li className='sidebar__active'>
             <i className='fa-solid fa-user'></i>General
           </li>
           <li>Basic</li>
