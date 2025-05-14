@@ -1,14 +1,19 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect, JSX } from 'react';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { useState, useEffect, JSX } from "react";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 
 const App = (): JSX.Element => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   // Periksa status login dari localStorage saat aplikasi dimuat
   useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
 
@@ -16,19 +21,23 @@ const App = (): JSX.Element => {
     <Router>
       <Routes>
         <Route
-          path="/"
+          path='/'
           element={
             isLoggedIn ? (
-              <Navigate to="/dashboard" />
+              <Navigate to='/dashboard' />
             ) : (
               <Login setIsLoggedIn={setIsLoggedIn} />
             )
           }
         />
         <Route
-          path="/dashboard"
+          path='/dashboard'
           element={
-            isLoggedIn ? <Dashboard setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />
+            isLoggedIn ? (
+              <Dashboard setIsLoggedIn={setIsLoggedIn} />
+            ) : (
+              <Navigate to='/' />
+            )
           }
         />
       </Routes>
