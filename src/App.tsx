@@ -7,6 +7,7 @@ import {
 import { useState, useEffect, JSX } from "react";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import MainLayout from "./layouts/MainLayout";
 
 const App = (): JSX.Element => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -34,7 +35,9 @@ const App = (): JSX.Element => {
           path='/dashboard'
           element={
             isLoggedIn ? (
-              <Dashboard setIsLoggedIn={setIsLoggedIn} />
+              <MainLayout>
+                <Dashboard setIsLoggedIn={setIsLoggedIn} />
+              </MainLayout>
             ) : (
               <Navigate to='/' />
             )
