@@ -35,23 +35,22 @@ const Login = ({ setIsLoggedIn }: LoginProps): JSX.Element => {
   };
 
   const closeModal = () => {
-    setIsOpened(false); // Set state modal tertutup
+    setIsOpened(false);
     if (modalRef.current) {
-      modalRef.current.classList.remove("is-open"); // Hapus class "is-open" dari modal
+      modalRef.current.classList.remove("is-open");
     }
-    document.body.style.overflow = "auto"; // Aktifkan kembali scroll pada body
+    document.body.style.overflow = "auto";
   };
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > window.innerHeight / 3 && !isOpened) {
-        console.log("Scroll down detected!"); // Log jika scroll ke bawah terdeteksi
-        setIsOpened(true); // Set modal terbuka
+        setIsOpened(true);
         const scrollDown = document.querySelector(
           ".scroll-down__login"
         ) as HTMLElement;
         if (scrollDown) {
-          scrollDown.style.display = "none"; // Sembunyikan elemen scroll-down
+          scrollDown.style.display = "none";
         }
         openModal();
       }

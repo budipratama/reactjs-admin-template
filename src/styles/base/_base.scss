@@ -29,3 +29,11 @@ main {
   max-height: 100%;
   height: calc(100% - variables.$header-height);
 }
+
+.contain {
+  display: flex;
+  flex-direction: column;
+  color: red;
+  flex: 1;
+  background-color: rgb(238, 245, 249);
+}

@@ -1,8 +1,6 @@
 import { JSX } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/pages/_dashboard.scss";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
 interface DashboardProps {
   setIsLoggedIn: (value: boolean) => void;
 }

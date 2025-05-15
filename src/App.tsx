@@ -11,8 +11,6 @@ import MainLayout from "./layouts/MainLayout";
 
 const App = (): JSX.Element => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-  // Periksa status login dari localStorage saat aplikasi dimuat
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
