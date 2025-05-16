@@ -1,6 +1,6 @@
 import { JSX } from "react";
 import logoProfile from "../assets/images/user-1.jpg";
-
+import "../styles/components/_header.scss";
 const Header = (): JSX.Element => {
   return (
     <header className='header'>

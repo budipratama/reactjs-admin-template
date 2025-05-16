@@ -1,9 +1,9 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import '../src/styles/main.scss';
-import App from './App';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "../src/styles/main.scss";
+import App from "./App";
 
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById("root");
 
 if (rootElement) {
   createRoot(rootElement).render(
@@ -12,5 +12,5 @@ if (rootElement) {
     </StrictMode>
   );
 } else {
-  console.error('Root element not found');
+  console.error("Root element not found");
 }

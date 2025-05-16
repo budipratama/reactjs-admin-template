@@ -31,7 +31,9 @@
       }
     }
   }
-
+  & li li {
+    color: pink;
+  }
   & ul {
     line-height: 26px;
     overflow-y: auto;
@@ -44,6 +46,9 @@
       padding: 8px 10px 8px 12px;
       color: rgb(58, 71, 82);
       cursor: pointer;
+      & i {
+        margin-right: 14px;
+      }
       &:hover:not(.sidebar__active) {
         background-color: variables.$color-cyan-light;
         color: variables.$color-cyan;
