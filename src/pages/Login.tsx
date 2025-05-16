@@ -10,8 +10,8 @@ interface LoginProps {
 const Login = ({ setIsLoggedIn }: LoginProps): JSX.Element => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [isOpened, setIsOpened] = useState<boolean>(false); // State untuk modal
-  const modalRef = useRef<HTMLDivElement | null>(null); // Referensi ke elemen modal
+  const [isOpened, setIsOpened] = useState<boolean>(false);
+  const modalRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
@@ -27,11 +27,11 @@ const Login = ({ setIsLoggedIn }: LoginProps): JSX.Element => {
   };
 
   const openModal = () => {
-    setIsOpened(true); // Set state modal terbuka
+    setIsOpened(true);
     if (modalRef.current) {
-      modalRef.current.classList.add("is-open"); // Tambahkan class "is-open" ke modal
+      modalRef.current.classList.add("is-open");
     }
-    document.body.style.overflow = "hidden"; // Nonaktifkan scroll pada body
+    document.body.style.overflow = "hidden";
   };
 
   const closeModal = () => {

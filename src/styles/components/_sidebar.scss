@@ -58,8 +58,12 @@
   }
   &__has--child {
     overflow-x: scroll;
-    & i:last-child {
+    position: relative;
+    & i:nth-of-type(2) {
       background-color: red;
+      position: absolute;
+      right: 10px;
+      top: 15px;
     }
     & ul {
       width: max-content;
