@@ -9,6 +9,7 @@
   box-shadow: rgba(0, 0, 0, 0.08) 1px 0px 20px;
   & > ul {
     margin-top: 24px;
+    padding: 8px 10px 8px 12px;
   }
   &__user {
     background-image: url("/assets/images/sidebar-profile-bg-CsZllJ9M.jpg");
@@ -40,14 +41,14 @@
     height: inherit;
     width: 100%;
     list-style: none;
-    padding: 0 16px 0 16px;
     & li {
       line-height: 3rem;
-      padding: 8px 10px 8px 12px;
+      padding: 8px 0 8px 12px;
       color: rgb(58, 71, 82);
       cursor: pointer;
+      margin-bottom: 2px;
       & i {
-        margin-right: 14px;
+        margin-right: 8px;
       }
       &:hover:not(.sidebar__active) {
         background-color: variables.$color-cyan-light;
@@ -69,9 +70,6 @@
       position: absolute;
       right: 10px;
       top: 15px;
-    }
-    & ul {
-      width: max-content;
     }
   }
 }

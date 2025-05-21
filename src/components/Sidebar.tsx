@@ -1,7 +1,57 @@
-import { JSX, useState } from "react";
+import { JSX, useState, memo } from "react";
 import "../styles/components/_sidebar.scss";
 import logoProfile from "../assets/images/user-1.jpg";
 import { useLocation, Link } from "react-router-dom";
+
+// Komponen MenuItem dengan memo
+const MenuItem = memo(function MenuItem({
+  item,
+  index,
+  parentIndexes,
+  location,
+  openMenus,
+  handleToggle,
+  getMenuKey,
+  SIDEBAR_ACTIVE,
+  SIDEBAR_HAS_CHILD,
+  isMenuActive,
+  renderMenu,
+}: any) {
+  const active = isMenuActive(item, location.pathname);
+  let className = "";
+  if (active) {
+    className = item.children
+      ? `${SIDEBAR_ACTIVE} ${SIDEBAR_HAS_CHILD}`
+      : `${SIDEBAR_ACTIVE}`;
+  } else if (item.children) {
+    className = `${SIDEBAR_HAS_CHILD}`;
+  }
+  const key = getMenuKey([...parentIndexes, index]);
+  const isOpen = openMenus.includes(key);
+  console.log("MenuItem", key, isOpen);
+  return (
+    <li key={index} className={className}>
+      <i className={item.icon}></i>
+      {item.path ? <Link to={item.path}>{item.title}</Link> : item.title}
+      {item.children ? (
+        <span
+          style={{
+            cursor: "pointer",
+            marginLeft: 8,
+            position: "absolute",
+            right: 12,
+            top: "10px",
+          }}
+          onClick={() => handleToggle(key)}>
+          <i className={`fa-solid fa-angle-${isOpen ? "down" : "left"}`}></i>
+        </span>
+      ) : null}
+      {item.children &&
+        isOpen &&
+        renderMenu(item.children, [...parentIndexes, index])}
+    </li>
+  );
+});
 
 const Sidebar = (): JSX.Element => {
   const SIDEBAR_ACTIVE = "sidebar__active";
@@ -127,50 +177,22 @@ const Sidebar = (): JSX.Element => {
     }
     const result = (
       <ul>
-        {items.map((item, index) => {
-          const active = isMenuActive(item, location.pathname);
-          let className = "";
-          if (active) {
-            className = item.children
-              ? `${SIDEBAR_ACTIVE} ${SIDEBAR_HAS_CHILD}`
-              : `${SIDEBAR_ACTIVE}`;
-          } else if (item.children) {
-            className = `${SIDEBAR_HAS_CHILD}`;
-          }
-
-          const key = getMenuKey([...parentIndexes, index]);
-          console.log("renderMenu openMenus", openMenus);
-          const isOpen = openMenus.includes(key);
-
-          console.log("renderMenu index", index, key, isOpen);
-          return (
-            <li key={index} className={className}>
-              <i className={item.icon}></i>
-              {item.path ? (
-                <Link to={item.path}>{item.title}</Link>
-              ) : (
-                item.title
-              )}
-              {item.children ? (
-                <span
-                  style={{
-                    cursor: "pointer",
-                    marginLeft: 8,
-                    position: "absolute",
-                    right: 0,
-                    top: "10px",
-                  }}
-                  onClick={() => handleToggle(key)}>
-                  <i
-                    className={`fa-solid fa-angle-${isOpen ? "down" : "left"}`}></i>
-                </span>
-              ) : null}
-              {item.children &&
-                isOpen &&
-                renderMenu(item.children, [...parentIndexes, index])}
-            </li>
-          );
-        })}
+        {items.map((item, index) => (
+          <MenuItem
+            key={index}
+            item={item}
+            index={index}
+            parentIndexes={parentIndexes}
+            location={location}
+            openMenus={openMenus}
+            handleToggle={handleToggle}
+            getMenuKey={getMenuKey}
+            SIDEBAR_ACTIVE={SIDEBAR_ACTIVE}
+            SIDEBAR_HAS_CHILD={SIDEBAR_HAS_CHILD}
+            isMenuActive={isMenuActive}
+            renderMenu={renderMenu}
+          />
+        ))}
       </ul>
     );
     if (isRoot) {
