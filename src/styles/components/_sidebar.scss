@@ -7,10 +7,10 @@
   font-size: 1.4rem;
   font-weight: 400;
   box-shadow: rgba(0, 0, 0, 0.08) 1px 0px 20px;
-  transition: all 1s ease;
+  transition: all 0.5s ease;
 
   &.collapsed {
-    transition: all 1s ease;
+    transition: all 0.5s ease;
     width: 75px;
     & a {
       display: none;
