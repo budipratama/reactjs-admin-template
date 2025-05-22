@@ -1,7 +1,12 @@
 import { JSX } from "react";
 import logoProfile from "../assets/images/user-1.jpg";
 import "../styles/components/_header.scss";
-const Header = (): JSX.Element => {
+
+interface HeaderProps {
+  onToggleSidebar?: () => void;
+}
+
+const Header = ({ onToggleSidebar }: HeaderProps): JSX.Element => {
   return (
     <header className='header'>
       <div className='header__logo'>
@@ -24,7 +29,7 @@ const Header = (): JSX.Element => {
           </defs>
         </svg>
       </div>
-      <button className='header__bars'>
+      <button className='header__bars' onClick={onToggleSidebar}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'

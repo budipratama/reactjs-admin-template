@@ -7,6 +7,33 @@
   font-size: 1.4rem;
   font-weight: 400;
   box-shadow: rgba(0, 0, 0, 0.08) 1px 0px 20px;
+  transition: all 1s ease;
+
+  &.collapsed {
+    transition: all 1s ease;
+    width: 75px;
+    & a {
+      display: none;
+    }
+    & .sidebar__has--child span {
+      display: none;
+    }
+    & ul li i {
+      margin-left: 8px;
+    }
+    & .sidebar__user__container {
+      text-align: center;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 109px;
+    }
+
+    & .sidebar__user--name {
+      display: none;
+    }
+  }
   & > ul {
     margin-top: 24px;
     padding: 8px 10px 8px 12px;

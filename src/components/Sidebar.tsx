@@ -32,7 +32,11 @@ const MenuItem = memo(function MenuItem({
   return (
     <li key={index} className={className}>
       <i className={item.icon}></i>
-      {item.path ? <Link to={item.path}>{item.title}</Link> : item.title}
+      {item.path ? (
+        <Link to={item.path}>{item.title}</Link>
+      ) : (
+        <span>{item.title}</span>
+      )}
       {item.children ? (
         <span
           style={{
@@ -53,10 +57,14 @@ const MenuItem = memo(function MenuItem({
   );
 });
 
-const Sidebar = (): JSX.Element => {
+interface SidebarProps {
+  isCollapsed?: boolean;
+}
+
+const Sidebar = ({ isCollapsed }: SidebarProps): JSX.Element => {
   const SIDEBAR_ACTIVE = "sidebar__active";
   const SIDEBAR_HAS_CHILD = "sidebar__has--child";
-  console.log("Sidebar", Math.floor(Math.random() * (100 - 1 + 1)) + 1);
+  console.log("Sidebar", Math.floor(performance.now() * (100 - 1 + 1)) + 1);
   const location = useLocation();
   const [openMenus, setOpenMenus] = useState<string[]>([]);
   const menu = [
@@ -202,7 +210,7 @@ const Sidebar = (): JSX.Element => {
   };
 
   return (
-    <aside className='sidebar'>
+    <aside className={`sidebar${isCollapsed ? " collapsed" : ""}`}>
       <div className='sidebar__user'>
         <div className='sidebar__user__container'>
           <div className='sidebar__user--img'>
