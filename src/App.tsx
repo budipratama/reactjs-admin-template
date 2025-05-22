@@ -8,6 +8,7 @@ import { useState, useEffect, JSX } from "react";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layouts/MainLayout";
+import NotFound from "./pages/NotFound";
 
 const App = (): JSX.Element => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -16,7 +17,7 @@ const App = (): JSX.Element => {
     console.log(
       "isLoggedIn",
       loggedIn,
-      Math.floor(Math.random() * (100 - 1 + 1)) + 1
+      Math.floor(performance.now() * (100 - 1 + 1)) + 1
     );
     setIsLoggedIn(loggedIn);
   }, []);
@@ -46,6 +47,7 @@ const App = (): JSX.Element => {
             )
           }
         />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>
   );

@@ -1,5 +1,6 @@
 import { JSX } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSeo } from "../utils/seo";
 import "../styles/pages/_dashboard.scss";
 interface DashboardProps {
   setIsLoggedIn: (value: boolean) => void;
@@ -13,15 +14,14 @@ const Dashboard = ({ setIsLoggedIn }: DashboardProps): JSX.Element => {
     setIsLoggedIn(false);
     navigate("/");
   };
-  return (
-    <h1>Welcome</h1>
 
-    // <div style={{ textAlign: "center", marginTop: "50px" }}>
-    //   <h1>Dashboard</h1>
-    //   <p>Selamat datang di halaman dashboard!</p>
-    //   <button onClick={handleLogout}>Logout</button>
-    // </div>
-  );
+  useSeo({
+    title: "Dashboard - Admin",
+    description: "Halaman dashboard admin",
+    keywords: "dashboard, admin, react",
+  });
+
+  return <h1>Welcome</h1>;
 };
 
 export default Dashboard;
