@@ -38,15 +38,7 @@ const MenuItem = memo(function MenuItem({
         <span>{item.title}</span>
       )}
       {item.children ? (
-        <span
-          style={{
-            cursor: "pointer",
-            marginLeft: 8,
-            position: "absolute",
-            right: 12,
-            top: "10px",
-          }}
-          onClick={() => handleToggle(key)}>
+        <span className='sidebar__toggle' onClick={() => handleToggle(key)}>
           <i className={`fa-solid fa-angle-${isOpen ? "down" : "left"}`}></i>
         </span>
       ) : null}
