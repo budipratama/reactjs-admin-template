@@ -11,7 +11,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   const handleToggleSidebar = () => setSidebarCollapsed((prev) => !prev);
   return (
     <>
-      <Header onToggleSidebar={handleToggleSidebar} />
+      <Header
+        onToggleSidebar={handleToggleSidebar}
+        sidebarCollapsed={sidebarCollapsed}
+      />
       <main>
         <Sidebar isCollapsed={sidebarCollapsed} />
         <div className='contain'>{children}</div>
