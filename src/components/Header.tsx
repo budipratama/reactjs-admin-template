@@ -1,4 +1,4 @@
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import logoProfile from "../assets/images/user-1.jpg";
 import "../styles/components/_header.scss";
 import { useModal } from "../context/ModalContext";
@@ -14,10 +14,57 @@ const Header = ({
 }: HeaderProps): JSX.Element => {
   const { openModal } = useModal();
 
+  // Dummy data halaman
+  const pageLinks = [
+    { label: "Dashboard", path: "/dashboard" },
+    { label: "Profile", path: "/profile" },
+    { label: "Settings", path: "/settings" },
+    { label: "Users", path: "/users" },
+    { label: "Reports", path: "/reports" },
+  ];
+
   const handleClick = (e: React.MouseEvent) => {
     const rect = (e.target as HTMLElement).getBoundingClientRect();
-    openModal(<>Konten modal di sini</>, {
-      title: "Judul Modal Dinamis",
+    const ModalContent = () => {
+      const [search, setSearch] = useState("");
+      const filtered = pageLinks.filter((link) =>
+        link.label.toLowerCase().includes(search.toLowerCase())
+      );
+      return (
+        <div style={{ minWidth: 220 }}>
+          <input
+            autoFocus
+            type='text'
+            placeholder='Filter page...'
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{
+              width: "100%",
+              marginBottom: 8,
+              padding: 6,
+              borderRadius: 4,
+              border: "1px solid #eee",
+            }}
+          />
+          <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+            {filtered.length === 0 && (
+              <li style={{ color: "#aaa", padding: 8 }}>No results</li>
+            )}
+            {filtered.map((link) => (
+              <li key={link.path} style={{ padding: "6px 0" }}>
+                <a
+                  href={link.path}
+                  style={{ color: "#007bff", textDecoration: "none" }}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    };
+    openModal(<ModalContent />, {
+      title: "Quick Page Links",
       position: {
         top: rect.bottom + window.scrollY,
         left: rect.left + window.scrollX,
