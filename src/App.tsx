@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layouts/MainLayout";
 import NotFound from "./pages/NotFound";
+import Maintenance from "./pages/Maintenance";
+import MaintenanceWatcherWrapper from "./hooks/MaintenanceWatcherWrapper";
 
 const App = (): JSX.Element => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -19,6 +21,7 @@ const App = (): JSX.Element => {
 
   return (
     <Router>
+      <MaintenanceWatcherWrapper />
       <Routes>
         <Route
           path='/'
@@ -42,6 +45,7 @@ const App = (): JSX.Element => {
             )
           }
         />
+        <Route path='/maintenance' element={<Maintenance />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>
