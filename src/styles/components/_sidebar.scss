@@ -13,7 +13,9 @@
     margin-left: 8px;
     position: absolute;
     right: 12px;
-    top: 10px;
+    top: 15px;
+    background: transparent;
+    border: none;
   }
   &.collapsed {
     transition: all variables.$transition-time ease;

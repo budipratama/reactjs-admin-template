@@ -38,9 +38,9 @@ const MenuItem = memo(function MenuItem({
         <span>{item.title}</span>
       )}
       {item.children ? (
-        <span className='sidebar__toggle' onClick={() => handleToggle(key)}>
+        <button className='sidebar__toggle' onClick={() => handleToggle(key)}>
           <i className={`fa-solid fa-angle-${isOpen ? "down" : "left"}`}></i>
-        </span>
+        </button>
       ) : null}
       {item.children &&
         isOpen &&
