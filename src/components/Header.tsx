@@ -1,6 +1,7 @@
 import { JSX } from "react";
 import logoProfile from "../assets/images/user-1.jpg";
 import "../styles/components/_header.scss";
+import { useModal } from "../context/ModalContext";
 
 interface HeaderProps {
   onToggleSidebar?: () => void;
@@ -11,10 +12,21 @@ const Header = ({
   onToggleSidebar,
   sidebarCollapsed,
 }: HeaderProps): JSX.Element => {
-  console.log("Header", sidebarCollapsed);
+  const { openModal } = useModal();
+
+  const handleClick = (e: React.MouseEvent) => {
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    openModal(<>Konten modal di sini</>, {
+      title: "Judul Modal Dinamis",
+      position: {
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+      },
+    });
+  };
+
   return (
     <header className='header'>
-      {/* <div className={`header__logo collapsed`}> */}
       <div className={`header__logo ${sidebarCollapsed ? "collapsed" : ""}`}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -50,7 +62,7 @@ const Header = ({
             clipRule='evenodd'></path>
         </svg>
       </button>
-      <button className='header__search'>
+      <button className='header__search' onClick={handleClick}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'
