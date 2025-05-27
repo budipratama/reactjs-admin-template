@@ -37,6 +37,7 @@ const Modal = ({ show, onClose, title, children, position }: ModalProps) => {
     <div
       className='modal__backdrop'
       style={backdropStyle}
+      aria-label='Close modal'
       onClick={handleBackdropClick}>
       <div
         className='modal__dialog'
