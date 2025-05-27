@@ -1,11 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import App from "../App";
+import { ModalProvider } from "../context/ModalContext";
 
 describe("App Component", () => {
+  const renderWithProviders = (ui: React.ReactElement) =>
+    render(<ModalProvider>{ui}</ModalProvider>);
+
   it("redirects to login page if not logged in", () => {
-    // Render App langsung tanpa membungkus dengan <BrowserRouter>
-    render(<App />);
+    renderWithProviders(<App />);
 
     // Periksa apakah halaman login dirender
     expect(
@@ -17,7 +20,7 @@ describe("App Component", () => {
     // Simulasikan pengguna yang sudah login
     localStorage.setItem("isLoggedIn", "true");
 
-    render(<App />);
+    renderWithProviders(<App />);
 
     // Periksa apakah halaman dashboard dirender
     expect(
@@ -29,13 +32,13 @@ describe("App Component", () => {
     // Simulasikan pengguna yang sudah login
     localStorage.setItem("isLoggedIn", "true");
 
-    render(<App />);
+    renderWithProviders(<App />);
 
     // Simulasikan logout
     localStorage.removeItem("isLoggedIn");
 
     // Render ulang App
-    render(<App />);
+    renderWithProviders(<App />);
 
     // Periksa apakah halaman login dirender
     expect(
