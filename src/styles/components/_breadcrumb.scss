@@ -1,0 +1,32 @@
+.breadcrumb {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  &__item {
+    display: flex;
+    align-items: center;
+    color: #888;
+    &:not(:last-child)::after {
+      content: "/";
+      margin: 0 0.5em;
+      color: #bbb;
+    }
+  }
+  &__current {
+    color: #222;
+    font-weight: 600;
+  }
+  a {
+    color: #007bff;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -7,6 +7,7 @@ import {
 import { useState, useEffect, JSX } from "react";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import MainLayout from "./layouts/MainLayout";
 import NotFound from "./pages/NotFound";
 import Maintenance from "./pages/Maintenance";
@@ -18,7 +19,7 @@ const App = (): JSX.Element => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
-
+  console.log("isLoggedIn:", isLoggedIn);
   return (
     <Router>
       <MaintenanceWatcherWrapper />
@@ -42,6 +43,18 @@ const App = (): JSX.Element => {
               </MainLayout>
             ) : (
               <Navigate to='/' />
+            )
+          }
+        />
+        <Route
+          path='/profile'
+          element={
+            isLoggedIn ? (
+              <MainLayout>
+                <Profile setIsLoggedIn={setIsLoggedIn} />
+              </MainLayout>
+            ) : (
+              <Navigate to='/profile' />
             )
           }
         />

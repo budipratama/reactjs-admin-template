@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import Breadcrumb from "../components/Breadcrumb";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -17,7 +18,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       />
       <main>
         <Sidebar isCollapsed={sidebarCollapsed} />
-        <div className='contain'>{children}</div>
+        <div className='contain'>
+          <Breadcrumb />
+          {children}
+        </div>
       </main>
     </>
   );

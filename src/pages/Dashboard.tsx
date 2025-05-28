@@ -12,7 +12,7 @@ const Dashboard = ({ setIsLoggedIn }: DashboardProps): JSX.Element => {
   const navigate = useNavigate();
   const { openModal } = useModal();
   // Konfigurasi waktu maintenance
-  const maintenanceTime = new Date("2025-05-28T09:00:00+07:00").getTime(); // ganti sesuai kebutuhan
+  const maintenanceTime = new Date("2025-06-10T09:00:00+07:00").getTime(); // ganti sesuai kebutuhan
   const warningMinutes = 10; // menit sebelum maintenance muncul notifikasi
   const warnedRef = useRef(false);
 
@@ -38,9 +38,9 @@ const Dashboard = ({ setIsLoggedIn }: DashboardProps): JSX.Element => {
         warnedRef.current = true;
       }
     };
-    checkMaintenance();
-    const interval = setInterval(checkMaintenance, 10000); // cek tiap 10 detik
-    return () => clearInterval(interval);
+    // checkMaintenance();
+    // const interval = setInterval(checkMaintenance, 10000); // cek tiap 10 detik
+    // return () => clearInterval(interval);
   }, [navigate, openModal]);
 
   const handleLogout = () => {
