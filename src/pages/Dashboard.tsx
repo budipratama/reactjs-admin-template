@@ -38,9 +38,9 @@ const Dashboard = ({ setIsLoggedIn }: DashboardProps): JSX.Element => {
         warnedRef.current = true;
       }
     };
-    // checkMaintenance();
-    // const interval = setInterval(checkMaintenance, 10000); // cek tiap 10 detik
-    // return () => clearInterval(interval);
+    checkMaintenance();
+    const interval = setInterval(checkMaintenance, 10000); // cek tiap 10 detik
+    return () => clearInterval(interval);
   }, [navigate, openModal]);
 
   const handleLogout = () => {

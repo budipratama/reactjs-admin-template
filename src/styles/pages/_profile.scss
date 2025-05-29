@@ -1,0 +1,86 @@
+@use "../abstract/variables";
+
+.profile {
+  margin: -2rem;
+  position: relative;
+  &__content {
+    padding: variables.$padding-default;
+    position: absolute;
+    top: 10px;
+    display: flex;
+    gap: 2.5rem;
+  }
+  &__info {
+    &--name {
+      font-size: variables.$default-font-size-xlarge;
+    }
+    &--role {
+      font-size: variables.$default-font-size-large;
+    }
+    &--additional {
+      font-size: variables.$default-font-size-small;
+      display: flex;
+    }
+  }
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+    margin-bottom: 20px;
+    &--img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+  &__background {
+    height: variables.$profile-background-height;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, #000428, #00315c, #3a5a93);
+      opacity: 0.7;
+    }
+    &--img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__subsection {
+    top: -160px;
+    position: relative;
+    padding: variables.$padding-default;
+    & ul {
+      display: inline-flex;
+      flex-wrap: wrap;
+      list-style-type: none;
+      font-size: 1.4rem;
+      font-weight: unset;
+      & li {
+        padding: variables.$padding-small;
+        margin-right: 1rem;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+.tab-content {
+  padding: variables.$padding-default;
+  margin-top: variables.$margin-default;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: calc(100% + 20px);
+}

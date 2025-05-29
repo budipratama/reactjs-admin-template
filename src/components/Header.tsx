@@ -1,5 +1,6 @@
 import { JSX, useState } from "react";
 import logoProfile from "../assets/images/user-1.jpg";
+import "../styles/components/_button.scss";
 import "../styles/components/_header.scss";
 import { useModal } from "../context/ModalContext";
 
@@ -31,20 +32,14 @@ const Header = ({
         link.label.toLowerCase().includes(search.toLowerCase())
       );
       return (
-        <div style={{ minWidth: 220 }}>
+        <div className='quick-link'>
           <input
             autoFocus
             type='text'
             placeholder='Filter page...'
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{
-              width: "100%",
-              marginBottom: 8,
-              padding: 6,
-              borderRadius: 4,
-              border: "1px solid #eee",
-            }}
+            className='quick-link__search'
           />
           <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
             {filtered.length === 0 && (

@@ -5,9 +5,10 @@ import Breadcrumb from "../components/Breadcrumb";
 
 interface MainLayoutProps {
   children: ReactNode;
+  showBreadcrumb?: boolean;
 }
 
-const MainLayout = ({ children }: MainLayoutProps) => {
+const MainLayout = ({ children, showBreadcrumb = true }: MainLayoutProps) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const handleToggleSidebar = () => setSidebarCollapsed((prev) => !prev);
   return (
@@ -19,7 +20,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       <main>
         <Sidebar isCollapsed={sidebarCollapsed} />
         <div className='contain'>
-          <Breadcrumb />
+          {showBreadcrumb && <Breadcrumb />}
           {children}
         </div>
       </main>

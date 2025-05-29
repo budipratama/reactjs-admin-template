@@ -50,7 +50,7 @@ const App = (): JSX.Element => {
           path='/profile'
           element={
             isLoggedIn ? (
-              <MainLayout>
+              <MainLayout showBreadcrumb={false}>
                 <Profile setIsLoggedIn={setIsLoggedIn} />
               </MainLayout>
             ) : (

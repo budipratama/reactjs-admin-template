@@ -1,4 +1,4 @@
-$color-primary: rgb(27, 132, 255);
+$color-primary: rgb(27, 114, 216);
 
 $color-cyan: rgb(67, 206, 215);
 $color-cyan-light: rgb(242, 252, 252);
@@ -11,3 +11,28 @@ $border-radius-default: 50%;
 // transition time
 $transition-time: 0.3s;
 $transition-time-fast: 0.1s;
+
+// FONT
+$default-font-size: 1.6rem;
+$default-font-size-small: 1.4rem;
+$default-font-size-large: 1.8rem;
+$default-font-size-xlarge: 2.2rem;
+$default-font-size-xxlarge: 2.6rem;
+$default-font-size-xxxlarge: 3.2rem;
+
+// height bg profile
+$profile-background-height: 320px;
+
+// padding
+$padding-default: 2rem;
+$padding-small: 1rem;
+$padding-large: 3rem;
+$padding-xlarge: 4rem;
+// margin
+$margin-default: 2rem;
+$margin-small: 1rem;
+$margin-large: 3rem;
+$margin-xlarge: 4rem;
+
+// variables for profile
+$profile-content-top: 10px;

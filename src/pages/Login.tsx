@@ -20,7 +20,7 @@ const Login = ({ setIsLoggedIn }: LoginProps): JSX.Element => {
     if (username === "admin" && password === "password") {
       localStorage.setItem("isLoggedIn", "true");
       setIsLoggedIn(true);
-      navigate("/dashboard");
+      navigate("/profile");
     } else {
       alert("Username atau password salah!");
     }
