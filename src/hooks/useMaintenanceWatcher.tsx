@@ -4,7 +4,7 @@ import { useModal } from "../context/ModalContext";
 
 // Konfigurasi waktu maintenance dan notifikasi
 export function useMaintenanceWatcher() {
-  const maintenanceTime = new Date("2025-05-30T09:00:00+07:00").getTime(); // ganti sesuai kebutuhan
+  const maintenanceTime = new Date("2025-08-29T09:00:00+07:00").getTime(); // ganti sesuai kebutuhan
   const warningMinutes = 10; // menit sebelum maintenance muncul notifikasi
   const warnedRef = useRef(false);
   const navigate = useNavigate();
