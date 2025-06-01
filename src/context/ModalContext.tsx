@@ -1,6 +1,5 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useMemo } from "react";
 import Modal from "../components/Modal";
-import { useMemo } from "react";
 
 interface ModalContextType {
   show: boolean;
