@@ -69,7 +69,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         show={show}
         onClose={closeModal}
         position={position}
-        title={title || ""}
+        title={title ?? ""}
         closable={closable}>
         {content}
       </Modal>
