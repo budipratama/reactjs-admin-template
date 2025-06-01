@@ -3,6 +3,7 @@ import {
   useContext,
   useState,
   useEffect,
+  useMemo,
   ReactNode,
 } from "react";
 
@@ -25,9 +26,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
-  return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({ isLoggedIn, setIsLoggedIn }),
+    [isLoggedIn, setIsLoggedIn]
   );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
