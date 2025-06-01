@@ -93,17 +93,13 @@
   color: red;
 }
 
-// .menu-profile {
-//   display: grid;
-//   grid-template-columns: auto 1fr; /* Kolom 1: gambar, Kolom 2: nama & email */
-//   grid-template-rows: auto auto; /* Dua baris untuk nama dan email */
-//   gap: 8px; /* Jarak antar elemen */
-//   align-items: center; /* Pusatkan vertikal */
-// }
-
 .menu-profile {
   display: flex;
   gap: 10px;
+  &__list {
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+  }
   &--img {
     grid-row: span 2; /* Ambil 2 baris */
     height: 40px; /* Contoh tinggi gambar */

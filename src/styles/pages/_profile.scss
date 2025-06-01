@@ -21,6 +21,9 @@
       font-size: variables.$default-font-size-small;
       display: flex;
       gap: 10px;
+      & p i {
+        margin-right: 5px;
+      }
     }
   }
   &__avatar {

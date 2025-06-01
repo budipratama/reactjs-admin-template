@@ -58,7 +58,7 @@ const Header = ({
   sidebarCollapsed,
   sidebarHovered,
 }: HeaderProps & { sidebarHovered?: boolean }): JSX.Element => {
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
   const navigate = useNavigate();
   const { setIsLoggedIn } = useAuth();
 
@@ -81,6 +81,7 @@ const Header = ({
     });
   };
   const handleLogout = () => {
+    closeModal && closeModal();
     localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
     navigate("/");
@@ -88,7 +89,7 @@ const Header = ({
   const handleClickProfile = (e: React.MouseEvent) => {
     const rect = (e.target as HTMLElement).getBoundingClientRect();
     openModal(
-      <ul>
+      <ul className='menu-profile__list'>
         <li>
           <a
             href='/profile'
@@ -96,7 +97,7 @@ const Header = ({
               e.preventDefault();
               navigate("/profile");
             }}>
-            My Profile
+            <i className='fa-solid fa-address-card'></i> My Profile
           </a>
         </li>
         <li>
@@ -106,7 +107,7 @@ const Header = ({
               e.preventDefault();
               navigate("/settings");
             }}>
-            Settings
+            <i className='fa-solid fa-user-gear'></i> Settings
           </a>
         </li>
         <li>
@@ -114,14 +115,16 @@ const Header = ({
             href='/lock-screen'
             onClick={(e) => {
               e.preventDefault();
+              closeModal && closeModal();
+
               navigate("/lock-screen");
             }}>
-            Lock screen
+            <i className='fa-solid fa-user-lock'></i> Lock screen
           </a>
         </li>
         <li>
           <a href='#' onClick={handleLogout}>
-            Sign out
+            <i className='fa-solid fa-right-from-bracket'></i> Sign out
           </a>
         </li>
       </ul>,
