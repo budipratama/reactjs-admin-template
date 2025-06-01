@@ -67,7 +67,6 @@
     & ul {
       display: inline-flex;
       flex-wrap: wrap;
-      list-style-type: none;
       font-size: 1.4rem;
       font-weight: unset;
       & li {
@@ -212,7 +211,6 @@
 }
 
 .timeline {
-  list-style: none;
   &__header {
     position: relative;
     top: -8px;

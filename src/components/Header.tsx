@@ -90,13 +90,34 @@ const Header = ({
     openModal(
       <ul>
         <li>
-          <a href='/profile'>My Profile</a>
+          <a
+            href='/profile'
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/profile");
+            }}>
+            My Profile
+          </a>
         </li>
         <li>
-          <a href='/settings'>Settings</a>
+          <a
+            href='/settings'
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/settings");
+            }}>
+            Settings
+          </a>
         </li>
         <li>
-          <a href='/lock-screen'>Lock screen</a>
+          <a
+            href='/lock-screen'
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/lock-screen");
+            }}>
+            Lock screen
+          </a>
         </li>
         <li>
           <a href='#' onClick={handleLogout}>
@@ -172,7 +193,7 @@ const Header = ({
           </g>
         </svg>
       </button>
-      <button className='header__shortcuts'>
+      <button className='header__shortcuts hide'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'
@@ -189,13 +210,13 @@ const Header = ({
         </svg>
       </button>
       <div className='header__fill--space'></div>
-      <button className='header__language'>
+      <button className='header__language hide'>
         <img
           alt='en'
           className='MuiAvatar-img css-45do71'
           src="data:image/svg+xml,%3csvg%20height='20'%20viewBox='0%200%2028%2020'%20width='28'%20xmlns='http://www.w3.org/2000/svg'%20xmlnsXlink='http://www.w3.org/1999/xlink'%3e%3cdefs%3e%3crect%20id='a'%20height='20'%20rx='3'%20width='28'/%3e%3cmask%20id='b'%20fill='%23fff'%3e%3cuse%20fill='%23fff'%20fill-rule='evenodd'%20xlink:href='%23a'/%3e%3c/mask%3e%3c/defs%3e%3cg%20fill='none'%20fill-rule='evenodd'%3e%3cuse%20fill='%230a17a7'%20xlink:href='%23a'/%3e%3cpath%20d='m29.2824692-1.91644623%201.4911811%202.21076686-9.4483006%206.37223314%206.6746503.0001129v6.66666663l-6.6746503-.0007795%209.4483006%206.3731256-1.4911811%202.2107668-11.9501195-8.0608924.0009836%207.4777795h-6.6666666l-.000317-7.4777795-11.9488189%208.0608924-1.49118107-2.2107668%209.448-6.3731256-6.67434973.0007795v-6.66666663l6.67434973-.0001129-9.448-6.37223314%201.49118107-2.21076686%2011.9488189%208.06.000317-7.4768871h6.6666666l-.0009836%207.4768871z'%20fill='%23fff'%20mask='url(%23b)'/%3e%3cg%20stroke='%23db1f35'%20strokeLinecap='round'%20strokeWidth='.667'%3e%3cpath%20d='m18.668%206.332%2012.665-8.332'%20mask='url(%23b)'/%3e%3cpath%20d='m20.013%2021.35%2011.354-7.652'%20mask='url(%23b)'%20transform='matrix(1%200%200%20-1%200%2035.048)'/%3e%3cpath%20d='m8.006%206.31-11.843-7.981'%20mask='url(%23b)'/%3e%3cpath%20d='m9.29%2022.31-13.127-8.705'%20mask='url(%23b)'%20transform='matrix(1%200%200%20-1%200%2035.915)'/%3e%3c/g%3e%3cpath%20d='m0%2012h12v8h4v-8h12v-4h-12v-8h-4v8h-12z'%20fill='%23e6273e'%20mask='url(%23b)'/%3e%3c/g%3e%3c/svg%3e"></img>
       </button>
-      <button className='header__darkmode'>
+      <button className='header__darkmode hide'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'
@@ -208,7 +229,7 @@ const Header = ({
             d='m21.067 11.857l-.642-.388zm-8.924-8.924l-.388-.642zM21.25 12A9.25 9.25 0 0 1 12 21.25v1.5c5.937 0 10.75-4.813 10.75-10.75zM12 21.25A9.25 9.25 0 0 1 2.75 12h-1.5c0 5.937 4.813 10.75 10.75 10.75zM2.75 12A9.25 9.25 0 0 1 12 2.75v-1.5C6.063 1.25 1.25 6.063 1.25 12zm12.75 2.25A5.75 5.75 0 0 1 9.75 8.5h-1.5a7.25 7.25 0 0 0 7.25 7.25zm4.925-2.781A5.75 5.75 0 0 1 15.5 14.25v1.5a7.25 7.25 0 0 0 6.21-3.505zM9.75 8.5a5.75 5.75 0 0 1 2.781-4.925l-.776-1.284A7.25 7.25 0 0 0 8.25 8.5zM12 2.75a.38.38 0 0 1-.268-.118a.3.3 0 0 1-.082-.155c-.004-.031-.002-.121.105-.186l.776 1.284c.503-.304.665-.861.606-1.299c-.062-.455-.42-1.026-1.137-1.026zm9.71 9.495c-.066.107-.156.109-.187.105a.3.3 0 0 1-.155-.082a.38.38 0 0 1-.118-.268h1.5c0-.717-.571-1.075-1.026-1.137c-.438-.059-.995.103-1.299.606z'></path>
         </svg>
       </button>
-      <button className='header__cart'>
+      <button className='header__cart hide'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'
@@ -230,7 +251,7 @@ const Header = ({
           </g>
         </svg>
       </button>
-      <button className='header__notifications'>
+      <button className='header__notifications hide'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'
@@ -247,7 +268,7 @@ const Header = ({
           </g>
         </svg>
       </button>
-      <button className='header__messages'>
+      <button className='header__messages hide'>
         <div className='header__messages__container'>
           <span className='header__messages__container--heartbit'></span>
           <svg
