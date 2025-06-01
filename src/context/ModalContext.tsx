@@ -5,12 +5,13 @@ import { useMemo } from "react";
 interface ModalContextType {
   show: boolean;
   content: ReactNode;
-  title?: string;
+  title?: ReactNode; // ubah dari string ke ReactNode
   position?: { top: number; left?: number; right?: number };
+  closable?: boolean;
   openModal: (
     content: ReactNode,
     options?: {
-      title?: string;
+      title?: ReactNode; // ubah dari string ke ReactNode
       position?: { top: number; left?: number; right?: number };
       closable?: boolean;
     }
@@ -29,7 +30,7 @@ export const useModal = () => {
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [show, setShow] = useState(false);
   const [content, setContent] = useState<ReactNode>(null);
-  const [title, setTitle] = useState<string | undefined>(undefined);
+  const [title, setTitle] = useState<ReactNode | undefined>(undefined); // ubah dari string ke ReactNode
   const [position, setPosition] = useState<
     { top: number; left?: number; right?: number } | undefined
   >();
@@ -38,7 +39,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const openModal = (
     modalContent: ReactNode,
     options?: {
-      title?: string;
+      title?: ReactNode; // ubah dari string ke ReactNode
       position?: { top: number; left?: number; right?: number };
       closable?: boolean;
     }
@@ -69,7 +70,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         show={show}
         onClose={closeModal}
         position={position}
-        title={title ?? ""}
+        title={title}
         closable={closable}>
         {content}
       </Modal>

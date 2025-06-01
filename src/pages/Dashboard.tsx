@@ -4,11 +4,7 @@ import { useSeo } from "../utils/seo";
 import "../styles/pages/_dashboard.scss";
 import { useModal } from "../context/ModalContext";
 
-interface DashboardProps {
-  setIsLoggedIn: (value: boolean) => void;
-}
-
-const Dashboard = ({ setIsLoggedIn }: DashboardProps): JSX.Element => {
+const Dashboard = (): JSX.Element => {
   const navigate = useNavigate();
   const { openModal } = useModal();
   // Konfigurasi waktu maintenance
@@ -42,12 +38,6 @@ const Dashboard = ({ setIsLoggedIn }: DashboardProps): JSX.Element => {
     const interval = setInterval(checkMaintenance, 10000); // cek tiap 10 detik
     return () => clearInterval(interval);
   }, [navigate, openModal]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    setIsLoggedIn(false);
-    navigate("/");
-  };
 
   useSeo({
     title: "Dashboard - Admin",

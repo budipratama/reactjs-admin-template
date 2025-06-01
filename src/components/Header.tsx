@@ -3,10 +3,12 @@ import logoProfile from "../assets/images/user-1.jpg";
 import "../styles/components/_button.scss";
 import "../styles/components/_header.scss";
 import { useModal } from "../context/ModalContext";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   onToggleSidebar?: () => void;
   sidebarCollapsed?: boolean;
+  setIsLoggedIn: (value: boolean) => void;
 }
 
 interface ModalContentProps {
@@ -50,10 +52,11 @@ const Header = ({
   onToggleSidebar,
   sidebarCollapsed,
   sidebarHovered,
+  setIsLoggedIn,
 }: HeaderProps & { sidebarHovered?: boolean }): JSX.Element => {
   const { openModal } = useModal();
+  const navigate = useNavigate();
 
-  // Dummy data halaman
   const pageLinks = [
     { label: "Dashboard", path: "/dashboard" },
     { label: "Profile", path: "/profile" },
@@ -72,17 +75,43 @@ const Header = ({
       },
     });
   };
-
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+    navigate("/");
+  };
   const handleClickProfile = (e: React.MouseEvent) => {
     const rect = (e.target as HTMLElement).getBoundingClientRect();
-    openModal(<ModalContent pageLinks={pageLinks} />, {
-      title: "Profile <br> kamu",
-      closable: false,
-      position: {
-        top: rect.bottom + window.scrollY,
-        left: rect.right + window.scrollX,
-      },
-    });
+    openModal(
+      <ul>
+        <li>
+          <a href='/profile'>My Profile</a>
+        </li>
+        <li>
+          <a href='/settings'>Settings</a>
+        </li>
+        <li>
+          <a href='/lock-screen'>Lock screen</a>
+        </li>
+        <li>
+          <a href='#' onClick={handleLogout}>
+            Sign out
+          </a>
+        </li>
+      </ul>,
+      {
+        title: (
+          <span>
+            Profile <br /> kamu
+          </span>
+        ),
+        closable: false,
+        position: {
+          top: rect.bottom + window.scrollY,
+          left: rect.right + window.scrollX,
+        },
+      }
+    );
   };
 
   return (

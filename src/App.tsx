@@ -19,7 +19,6 @@ const App = (): JSX.Element => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
-  console.log("isLoggedIn:", isLoggedIn);
   return (
     <Router>
       <MaintenanceWatcherWrapper />
@@ -38,8 +37,8 @@ const App = (): JSX.Element => {
           path='/dashboard'
           element={
             isLoggedIn ? (
-              <MainLayout>
-                <Dashboard setIsLoggedIn={setIsLoggedIn} />
+              <MainLayout setIsLoggedIn={setIsLoggedIn}>
+                <Dashboard />
               </MainLayout>
             ) : (
               <Navigate to='/' />
@@ -50,8 +49,8 @@ const App = (): JSX.Element => {
           path='/profile'
           element={
             isLoggedIn ? (
-              <MainLayout showBreadcrumb={false}>
-                <Profile setIsLoggedIn={setIsLoggedIn} />
+              <MainLayout showBreadcrumb={false} setIsLoggedIn={setIsLoggedIn}>
+                <Profile />
               </MainLayout>
             ) : (
               <Navigate to='/profile' />

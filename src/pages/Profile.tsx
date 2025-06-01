@@ -3,10 +3,7 @@ import { useSeo } from "../utils/seo";
 import "../styles/pages/_profile.scss";
 import logoProfile from "../assets/images/user-1.jpg";
 
-interface ProfileProps {
-  setIsLoggedIn: (value: boolean) => void;
-}
-const Profile = ({ setIsLoggedIn }: ProfileProps): JSX.Element => {
+const Profile = (): JSX.Element => {
   useSeo({
     title: "Profile",
     description: "Halaman profile pengguna",

@@ -10,7 +10,7 @@ import "../styles/components/_modal.scss";
 interface ModalProps {
   show: boolean;
   onClose: () => void;
-  title?: string;
+  title?: ReactNode; // ubah dari string ke ReactNode
   children: ReactNode;
   position?: { top: number; left?: number; right?: number };
   closable?: boolean; // baru
@@ -96,6 +96,7 @@ const Modal = ({
     <div
       className='modal__backdrop'
       style={backdropStyle}
+      role='button'
       onClick={handleBackdropClick}>
       <div
         className='modal__dialog'

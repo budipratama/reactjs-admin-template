@@ -6,9 +6,14 @@ import Breadcrumb from "../components/Breadcrumb";
 interface MainLayoutProps {
   children: ReactNode;
   showBreadcrumb?: boolean;
+  setIsLoggedIn: (value: boolean) => void;
 }
 
-const MainLayout = ({ children, showBreadcrumb = true }: MainLayoutProps) => {
+const MainLayout = ({
+  children,
+  showBreadcrumb = true,
+  setIsLoggedIn,
+}: MainLayoutProps) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarHovered, setSidebarHovered] = useState(false);
   const handleToggleSidebar = () => setSidebarCollapsed((prev) => !prev);
@@ -18,6 +23,7 @@ const MainLayout = ({ children, showBreadcrumb = true }: MainLayoutProps) => {
         onToggleSidebar={handleToggleSidebar}
         sidebarCollapsed={sidebarCollapsed}
         sidebarHovered={sidebarHovered}
+        setIsLoggedIn={setIsLoggedIn}
       />
       <main>
         <Sidebar
