@@ -2,7 +2,6 @@ import { JSX, useRef, useState } from "react";
 import { useSeo } from "../utils/seo";
 import "../styles/pages/_profile.scss";
 import logoProfile from "../assets/images/user-1.jpg";
-import bgProfile from "../assets/images/bg-profile.jpg";
 
 interface ProfileProps {
   setIsLoggedIn: (value: boolean) => void;
