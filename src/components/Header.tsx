@@ -9,6 +9,43 @@ interface HeaderProps {
   sidebarCollapsed?: boolean;
 }
 
+interface ModalContentProps {
+  pageLinks: { label: string; path: string }[];
+}
+
+const ModalContent = ({ pageLinks }: ModalContentProps) => {
+  const [search, setSearch] = useState("");
+  const filtered = pageLinks.filter((link) =>
+    link.label.toLowerCase().includes(search.toLowerCase())
+  );
+  return (
+    <div className='quick-link'>
+      <input
+        autoFocus
+        type='text'
+        placeholder='Filter page...'
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className='quick-link__search'
+      />
+      <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+        {filtered.length === 0 && (
+          <li style={{ color: "#aaa", padding: 8 }}>No results</li>
+        )}
+        {filtered.map((link) => (
+          <li key={link.path} style={{ padding: "6px 0" }}>
+            <a
+              href={link.path}
+              style={{ color: "#007bff", textDecoration: "none" }}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 const Header = ({
   onToggleSidebar,
   sidebarCollapsed,
@@ -27,39 +64,7 @@ const Header = ({
 
   const handleClick = (e: React.MouseEvent) => {
     const rect = (e.target as HTMLElement).getBoundingClientRect();
-    const ModalContent = () => {
-      const [search, setSearch] = useState("");
-      const filtered = pageLinks.filter((link) =>
-        link.label.toLowerCase().includes(search.toLowerCase())
-      );
-      return (
-        <div className='quick-link'>
-          <input
-            autoFocus
-            type='text'
-            placeholder='Filter page...'
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className='quick-link__search'
-          />
-          <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-            {filtered.length === 0 && (
-              <li style={{ color: "#aaa", padding: 8 }}>No results</li>
-            )}
-            {filtered.map((link) => (
-              <li key={link.path} style={{ padding: "6px 0" }}>
-                <a
-                  href={link.path}
-                  style={{ color: "#007bff", textDecoration: "none" }}>
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
-    };
-    openModal(<ModalContent />, {
+    openModal(<ModalContent pageLinks={pageLinks} />, {
       title: "Quick Page Links",
       position: {
         top: rect.bottom + window.scrollY,
