@@ -62,13 +62,25 @@ const Header = ({
     { label: "Reports", path: "/reports" },
   ];
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClickSearch = (e: React.MouseEvent) => {
     const rect = (e.target as HTMLElement).getBoundingClientRect();
     openModal(<ModalContent pageLinks={pageLinks} />, {
       title: "Quick Page Links",
       position: {
         top: rect.bottom + window.scrollY,
         left: rect.left + window.scrollX,
+      },
+    });
+  };
+
+  const handleClickProfile = (e: React.MouseEvent) => {
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    openModal(<ModalContent pageLinks={pageLinks} />, {
+      title: "Profile <br> kamu",
+      closable: false,
+      position: {
+        top: rect.bottom + window.scrollY,
+        left: rect.right + window.scrollX,
       },
     });
   };
@@ -112,7 +124,7 @@ const Header = ({
             clipRule='evenodd'></path>
         </svg>
       </button>
-      <button className='header__search' onClick={handleClick}>
+      <button className='header__search' onClick={handleClickSearch}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'
@@ -222,7 +234,7 @@ const Header = ({
           <span className='header__messages__container--alert--blink'></span>
         </div>
       </button>
-      <button className='header__profile'>
+      <button className='header__profile' onClick={handleClickProfile}>
         <img
           alt='ProfileImg'
           className='header__profile--img'

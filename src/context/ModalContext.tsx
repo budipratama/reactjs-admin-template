@@ -1,14 +1,19 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import Modal from "../components/Modal";
+import { useMemo } from "react";
 
 interface ModalContextType {
   show: boolean;
   content: ReactNode;
   title?: string;
-  position?: { top: number; left: number };
+  position?: { top: number; left?: number; right?: number };
   openModal: (
     content: ReactNode,
-    options?: { title?: string; position?: { top: number; left: number } }
+    options?: {
+      title?: string;
+      position?: { top: number; left?: number; right?: number };
+      closable?: boolean;
+    }
   ) => void;
   closeModal: () => void;
 }
@@ -26,16 +31,22 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [content, setContent] = useState<ReactNode>(null);
   const [title, setTitle] = useState<string | undefined>(undefined);
   const [position, setPosition] = useState<
-    { top: number; left: number } | undefined
+    { top: number; left?: number; right?: number } | undefined
   >();
+  const [closable, setClosable] = useState<boolean | undefined>(true);
 
   const openModal = (
     modalContent: ReactNode,
-    options?: { title?: string; position?: { top: number; left: number } }
+    options?: {
+      title?: string;
+      position?: { top: number; left?: number; right?: number };
+      closable?: boolean;
+    }
   ) => {
     setContent(modalContent);
     setTitle(options?.title);
     setPosition(options?.position);
+    setClosable(options?.closable);
     setShow(true);
   };
   const closeModal = () => {
@@ -43,17 +54,23 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     setContent(null);
     setTitle(undefined);
     setPosition(undefined);
+    setClosable(true);
   };
 
+  const contextValue = useMemo(
+    () => ({ show, content, title, position, closable, openModal, closeModal }),
+    [show, content, title, position, closable]
+  );
+
   return (
-    <ModalContext.Provider
-      value={{ show, content, title, position, openModal, closeModal }}>
+    <ModalContext.Provider value={contextValue}>
       {children}
       <Modal
         show={show}
         onClose={closeModal}
         position={position}
-        title={title || ""}>
+        title={title || ""}
+        closable={closable}>
         {content}
       </Modal>
     </ModalContext.Provider>
