@@ -4,11 +4,11 @@ import "../styles/components/_button.scss";
 import "../styles/components/_header.scss";
 import { useModal } from "../context/ModalContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 interface HeaderProps {
   onToggleSidebar?: () => void;
   sidebarCollapsed?: boolean;
-  setIsLoggedIn: (value: boolean) => void;
 }
 
 interface ModalContentProps {
@@ -52,10 +52,10 @@ const Header = ({
   onToggleSidebar,
   sidebarCollapsed,
   sidebarHovered,
-  setIsLoggedIn,
 }: HeaderProps & { sidebarHovered?: boolean }): JSX.Element => {
   const { openModal } = useModal();
   const navigate = useNavigate();
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   const pageLinks = [
     { label: "Dashboard", path: "/dashboard" },

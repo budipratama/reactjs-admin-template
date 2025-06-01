@@ -1,18 +1,16 @@
 import { JSX, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import loginPhoto from "../assets/images/login-photo.jpg";
 import "../styles/pages/_login.scss";
 
-interface LoginProps {
-  setIsLoggedIn: (value: boolean) => void;
-}
-
-const Login = ({ setIsLoggedIn }: LoginProps): JSX.Element => {
+const Login = (): JSX.Element => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useAuth();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
