@@ -12,7 +12,8 @@ interface HeaderProps {
 const Header = ({
   onToggleSidebar,
   sidebarCollapsed,
-}: HeaderProps): JSX.Element => {
+  sidebarHovered,
+}: HeaderProps & { sidebarHovered?: boolean }): JSX.Element => {
   const { openModal } = useModal();
 
   // Dummy data halaman
@@ -68,8 +69,10 @@ const Header = ({
   };
 
   return (
-    <header className='header'>
-      <div className={`header__logo ${sidebarCollapsed ? "collapsed" : ""}`}>
+    <header
+      className={`header${sidebarCollapsed && !sidebarHovered ? " collapsed" : ""}`}>
+      <div
+        className={`header__logo ${sidebarCollapsed && !sidebarHovered ? "collapsed" : ""}`}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'

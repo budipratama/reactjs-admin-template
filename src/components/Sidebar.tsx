@@ -51,9 +51,13 @@ const MenuItem = memo(function MenuItem({
 
 interface SidebarProps {
   isCollapsed?: boolean;
+  onSidebarHover?: (hovered: boolean) => void;
 }
 
-const Sidebar = ({ isCollapsed }: SidebarProps): JSX.Element => {
+const Sidebar = ({
+  isCollapsed,
+  onSidebarHover,
+}: SidebarProps): JSX.Element => {
   const SIDEBAR_ACTIVE = "sidebar__active";
   const SIDEBAR_HAS_CHILD = "sidebar__has--child";
   console.log("Sidebar", Math.floor(performance.now() * (100 - 1 + 1)) + 1);
@@ -202,11 +206,20 @@ const Sidebar = ({ isCollapsed }: SidebarProps): JSX.Element => {
     return result;
   };
 
+  const handleMouseEnter = () => {
+    setHovered(true);
+    onSidebarHover && onSidebarHover(true);
+  };
+  const handleMouseLeave = () => {
+    setHovered(false);
+    onSidebarHover && onSidebarHover(false);
+  };
+
   return (
     <aside
       className={`sidebar${isCollapsed && !hovered ? " collapsed" : ""}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}>
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}>
       <div className='sidebar__user'>
         <div className='sidebar__user__container'>
           <div className='sidebar__user--img'>

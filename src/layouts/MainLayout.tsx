@@ -10,15 +10,20 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children, showBreadcrumb = true }: MainLayoutProps) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarHovered, setSidebarHovered] = useState(false);
   const handleToggleSidebar = () => setSidebarCollapsed((prev) => !prev);
   return (
     <>
       <Header
         onToggleSidebar={handleToggleSidebar}
         sidebarCollapsed={sidebarCollapsed}
+        sidebarHovered={sidebarHovered}
       />
       <main>
-        <Sidebar isCollapsed={sidebarCollapsed} />
+        <Sidebar
+          isCollapsed={sidebarCollapsed}
+          onSidebarHover={setSidebarHovered}
+        />
         <div className='contain'>
           {showBreadcrumb && <Breadcrumb />}
           {children}
