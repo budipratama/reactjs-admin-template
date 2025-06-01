@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { JSX } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ModalProvider } from "./context/ModalContext";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
@@ -15,18 +16,12 @@ import Maintenance from "./pages/Maintenance";
 import MaintenanceWatcherWrapper from "./hooks/MaintenanceWatcherWrapper";
 
 const AppRoutes = (): JSX.Element => {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
   return (
     <Routes>
       <Route
         path='/'
-        element={
-          isLoggedIn ? (
-            <Navigate to='/dashboard' />
-          ) : (
-            <Login setIsLoggedIn={setIsLoggedIn} />
-          )
-        }
+        element={isLoggedIn ? <Navigate to='/dashboard' /> : <Login />}
       />
       <Route
         path='/dashboard'
@@ -62,8 +57,10 @@ const App = (): JSX.Element => {
   return (
     <AuthProvider>
       <Router>
-        <MaintenanceWatcherWrapper />
-        <AppRoutes />
+        <ModalProvider>
+          <MaintenanceWatcherWrapper />
+          <AppRoutes />
+        </ModalProvider>
       </Router>
     </AuthProvider>
   );

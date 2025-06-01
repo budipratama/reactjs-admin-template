@@ -17,6 +17,7 @@ interface ModalContentProps {
 
 const ModalContent = ({ pageLinks }: ModalContentProps) => {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   const filtered = pageLinks.filter((link) =>
     link.label.toLowerCase().includes(search.toLowerCase())
   );
@@ -35,10 +36,14 @@ const ModalContent = ({ pageLinks }: ModalContentProps) => {
           <li style={{ color: "#aaa", padding: 8 }}>No results</li>
         )}
         {filtered.map((link) => (
-          <li key={link.path} style={{ padding: "6px 0" }}>
+          <li key={link.label} style={{ padding: "6px 0" }}>
             <a
               href={link.path}
-              style={{ color: "#007bff", textDecoration: "none" }}>
+              style={{ color: "#007bff", textDecoration: "none" }}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(link.path);
+              }}>
               {link.label}
             </a>
           </li>
@@ -55,7 +60,7 @@ const Header = ({
 }: HeaderProps & { sidebarHovered?: boolean }): JSX.Element => {
   const { openModal } = useModal();
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn } = useAuth();
 
   const pageLinks = [
     { label: "Dashboard", path: "/dashboard" },
