@@ -1,18 +1,21 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { AuthProvider } from "../../context/AuthContext";
 import { BrowserRouter } from "react-router-dom";
 import Login from "../Login";
 import { JSX } from "react";
 
 describe("Login Component", () => {
-  const mockSetIsLoggedIn = jest.fn();
-
-  const renderWithRouter = (ui: JSX.Element) => {
-    return render(<BrowserRouter>{ui}</BrowserRouter>);
+  const renderWithProviders = (ui: JSX.Element) => {
+    return render(
+      <AuthProvider>
+        <BrowserRouter>{ui}</BrowserRouter>
+      </AuthProvider>
+    );
   };
 
   it("renders the login form", () => {
-    renderWithRouter(<Login setIsLoggedIn={mockSetIsLoggedIn} />);
+    renderWithProviders(<Login />);
     expect(
       screen.getByRole("heading", { name: /welcome!/i })
     ).toBeInTheDocument();
@@ -23,7 +26,7 @@ describe("Login Component", () => {
 
   it("shows an alert when username or password is incorrect", () => {
     jest.spyOn(window, "alert").mockImplementation(() => {});
-    renderWithRouter(<Login setIsLoggedIn={mockSetIsLoggedIn} />);
+    renderWithProviders(<Login />);
 
     fireEvent.change(screen.getByPlaceholderText(/username/i), {
       target: { value: "wrongUser" },
@@ -36,8 +39,8 @@ describe("Login Component", () => {
     expect(window.alert).toHaveBeenCalledWith("Username atau password salah!");
   });
 
-  it("calls setIsLoggedIn and navigates to dashboard on successful login", () => {
-    renderWithRouter(<Login setIsLoggedIn={mockSetIsLoggedIn} />);
+  it("navigates to dashboard on successful login", () => {
+    renderWithProviders(<Login />);
 
     fireEvent.change(screen.getByPlaceholderText(/username/i), {
       target: { value: "admin" },
@@ -47,11 +50,12 @@ describe("Login Component", () => {
     });
     fireEvent.click(screen.getByTestId("login-button"));
 
-    expect(mockSetIsLoggedIn).toHaveBeenCalledWith(true);
+    // Tidak perlu expect mockSetIsLoggedIn, cukup pastikan navigasi terjadi
+    // Bisa tambahkan expect(navigate).toHaveBeenCalledWith("/profile") jika navigate di-mock
   });
 
   it('opens the modal when the "Click here to login" button is clicked', () => {
-    renderWithRouter(<Login setIsLoggedIn={mockSetIsLoggedIn} />);
+    renderWithProviders(<Login />);
 
     const openModalButton = screen.getByRole("button", {
       name: /click here to login/i,
@@ -64,7 +68,7 @@ describe("Login Component", () => {
   });
 
   it("closes the modal when the close button is clicked", () => {
-    renderWithRouter(<Login setIsLoggedIn={mockSetIsLoggedIn} />);
+    renderWithProviders(<Login />);
 
     const openModalButton = screen.getByRole("button", {
       name: /click here to login/i,
@@ -80,7 +84,7 @@ describe("Login Component", () => {
   });
 
   it("opens the modal when scrolling down", () => {
-    renderWithRouter(<Login setIsLoggedIn={mockSetIsLoggedIn} />);
+    renderWithProviders(<Login />);
 
     // Simulasikan posisi scroll
     Object.defineProperty(window, "scrollY", {

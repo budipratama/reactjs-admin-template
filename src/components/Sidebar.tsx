@@ -28,7 +28,6 @@ const MenuItem = memo(function MenuItem({
   }
   const key = getMenuKey([...parentIndexes, index]);
   const isOpen = openMenus.includes(key);
-  console.log("MenuItem", key, isOpen);
   return (
     <li key={index} className={className}>
       <i className={item.icon}></i>
@@ -60,7 +59,6 @@ const Sidebar = ({
 }: SidebarProps): JSX.Element => {
   const SIDEBAR_ACTIVE = "sidebar__active";
   const SIDEBAR_HAS_CHILD = "sidebar__has--child";
-  console.log("Sidebar", Math.floor(performance.now() * (100 - 1 + 1)) + 1);
   const location = useLocation();
   const [openMenus, setOpenMenus] = useState<string[]>([]);
   const [hovered, setHovered] = useState(false);
@@ -135,38 +133,23 @@ const Sidebar = ({
   ];
 
   const isMenuActive = (item: any, pathname: string): boolean => {
-    if (item.__rootTimerStart === undefined) {
-      item.__rootTimerStart = true;
-      console.time("isMenuActive");
-    }
     if (item.path && item.path === pathname) {
-      if (item.__rootTimerStart) {
-        console.timeEnd("isMenuActive");
-        delete item.__rootTimerStart;
-      }
       return true;
     }
     if (item.children) {
       const result = item.children.some((child: any) =>
         isMenuActive(child, pathname)
       );
-      if (item.__rootTimerStart) {
-        console.timeEnd("isMenuActive");
-        delete item.__rootTimerStart;
-      }
+
       return result;
     }
-    if (item.__rootTimerStart) {
-      console.timeEnd("isMenuActive");
-      delete item.__rootTimerStart;
-    }
+
     return false;
   };
 
   const getMenuKey = (parentIndexes: number[]) => parentIndexes.join("-");
 
   const handleToggle = (key: string) => {
-    console.log("handleToggle", key, openMenus);
     setOpenMenus((prev) =>
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
@@ -177,9 +160,6 @@ const Sidebar = ({
     parentIndexes: number[] = [],
     isRoot = false
   ) => {
-    if (isRoot) {
-      console.time("renderMenu");
-    }
     const result = (
       <ul>
         {items.map((item, index) => (
@@ -200,9 +180,7 @@ const Sidebar = ({
         ))}
       </ul>
     );
-    if (isRoot) {
-      console.timeEnd("renderMenu");
-    }
+
     return result;
   };
 
