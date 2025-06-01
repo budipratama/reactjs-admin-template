@@ -127,9 +127,15 @@ const Header = ({
       </ul>,
       {
         title: (
-          <span>
-            Profile <br /> kamu
-          </span>
+          <div className='menu-profile'>
+            <div className='menu-profile--img'>
+              <img alt='ProfileImg' src={logoProfile}></img>
+            </div>
+            <div className='menu-profile--info'>
+              <div className='menu-profile--name'>Budi Pratama</div>
+              <div className='menu-profile--role'>Admin</div>
+            </div>
+          </div>
         ),
         closable: false,
         position: {

@@ -92,3 +92,45 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   color: red;
 }
+
+// .menu-profile {
+//   display: grid;
+//   grid-template-columns: auto 1fr; /* Kolom 1: gambar, Kolom 2: nama & email */
+//   grid-template-rows: auto auto; /* Dua baris untuk nama dan email */
+//   gap: 8px; /* Jarak antar elemen */
+//   align-items: center; /* Pusatkan vertikal */
+// }
+
+.menu-profile {
+  display: flex;
+  gap: 10px;
+  &--img {
+    grid-row: span 2; /* Ambil 2 baris */
+    height: 40px; /* Contoh tinggi gambar */
+    width: 40px; /* Contoh lebar gambar */
+    background: #ccc; /* Warna placeholder */
+    border-radius: 50%; /* Bulat (jika gambar profil) */
+    & img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover; /* Pastikan gambar tetap proporsional */
+    }
+  }
+  &--info {
+    display: grid;
+  }
+  &--name,
+  &--role {
+    grid-column: 2;
+    white-space: nowrap;
+  }
+  &--name {
+    font-size: 1.4rem;
+  }
+  &--role {
+    font-size: 1.2rem;
+    font-weight: lighter;
+    color: rgb(118, 139, 158);
+  }
+}
