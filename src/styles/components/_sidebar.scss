@@ -3,7 +3,7 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  width: 256px;
+  width: variables.$sidebar-width-normal;
   font-size: 1.4rem;
   font-weight: 400;
   box-shadow: rgba(0, 0, 0, 0.08) 1px 0px 20px;
@@ -19,15 +19,27 @@
   }
   &.collapsed {
     transition: all variables.$transition-time ease;
-    width: 75px;
+    width: variables.$sidebar-width-small;
+    &:hover {
+      width: variables.$sidebar-width-normal;
+    }
     & a {
       display: none;
     }
     & .sidebar__has--child span {
       display: none;
     }
-    & ul li i {
-      margin-left: 8px;
+    & ul {
+      & li {
+        padding: 8px 0 8px 0px;
+        text-align: center;
+        & i {
+          margin-left: 8px;
+        }
+        & button i {
+          display: none;
+        }
+      }
     }
     & .sidebar__user__container {
       text-align: center;
@@ -66,9 +78,7 @@
       }
     }
   }
-  & li li {
-    color: pink;
-  }
+
   & ul {
     line-height: 26px;
     overflow-y: auto;

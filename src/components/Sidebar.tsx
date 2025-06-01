@@ -59,6 +59,7 @@ const Sidebar = ({ isCollapsed }: SidebarProps): JSX.Element => {
   console.log("Sidebar", Math.floor(performance.now() * (100 - 1 + 1)) + 1);
   const location = useLocation();
   const [openMenus, setOpenMenus] = useState<string[]>([]);
+  const [hovered, setHovered] = useState(false);
   const menu = [
     {
       icon: "fa-solid fa-user",
@@ -202,7 +203,10 @@ const Sidebar = ({ isCollapsed }: SidebarProps): JSX.Element => {
   };
 
   return (
-    <aside className={`sidebar${isCollapsed ? " collapsed" : ""}`}>
+    <aside
+      className={`sidebar${isCollapsed && !hovered ? " collapsed" : ""}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}>
       <div className='sidebar__user'>
         <div className='sidebar__user__container'>
           <div className='sidebar__user--img'>

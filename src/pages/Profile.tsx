@@ -52,13 +52,6 @@ const Profile = ({ setIsLoggedIn }: ProfileProps): JSX.Element => {
                   </p>
                 </span>
               </div>
-              <div className='profile__actions'>
-                <button
-                  className='profile__actions--btn'
-                  onClick={() => setIsLoggedIn(false)}>
-                  Logout
-                </button>
-              </div>
             </div>
             <div className='profile__subsection'>
               <ul>
