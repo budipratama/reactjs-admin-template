@@ -60,7 +60,7 @@ const Header = ({
 }: HeaderProps & { sidebarHovered?: boolean }): JSX.Element => {
   const { openModal, closeModal } = useModal();
   const navigate = useNavigate();
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, setUsername, setIsLockScreen } = useAuth();
 
   const pageLinks = [
     { label: "Dashboard", path: "/dashboard" },
@@ -82,8 +82,8 @@ const Header = ({
   };
   const handleLogout = () => {
     closeModal && closeModal();
-    localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
+    setUsername("");
     navigate("/");
   };
   const handleClickProfile = (e: React.MouseEvent) => {
@@ -116,7 +116,7 @@ const Header = ({
             onClick={(e) => {
               e.preventDefault();
               closeModal && closeModal();
-
+              setIsLockScreen(true);
               navigate("/lock-screen");
             }}>
             <i className='fa-solid fa-user-lock'></i> Lock screen

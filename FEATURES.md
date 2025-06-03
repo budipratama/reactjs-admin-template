@@ -3,7 +3,7 @@
 ## 🚧 Features in Progress
 - Breadcrumb navigation component
 - Maintenance global notification & redirect system
-- Profile page route & layout
+- Screen lock feature
 
 ## ✅ Features Completed
 - Sidebar: recursive, active state, expand/collapse, memoized
@@ -14,13 +14,13 @@
 - Modal: global, dynamic, context-based, close on backdrop
 - Maintenance page: auto-redirect & notification (global)
 - SCSS: BEM structure, modular partials
+- Profile page route & layout
 
 ## 🆕 New Features (Planned/Requested)
 - Breadcrumb component (auto from route)
 - Feature status tracking in markdown
 - More page routes (settings, users, reports)
 - Global notification system (beyond modal)
-- Screen lock feature
 
 ---
 

@@ -14,22 +14,42 @@ import MainLayout from "./layouts/MainLayout";
 import NotFound from "./pages/NotFound";
 import Maintenance from "./pages/Maintenance";
 import MaintenanceWatcherWrapper from "./hooks/MaintenanceWatcherWrapper";
+import LockScreen from "./pages/LockScreen";
+function getProtectedElement(
+  isLockScreen: boolean,
+  isLoggedIn: boolean,
+  element: JSX.Element
+) {
+  if (isLockScreen) return <Navigate to='/lock-screen' />;
+  if (isLoggedIn) return element;
+  return <Navigate to='/' />;
+}
 
 const AppRoutes = (): JSX.Element => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isLockScreen } = useAuth();
   return (
     <Routes>
       <Route
         path='/'
-        element={isLoggedIn ? <Navigate to='/dashboard' /> : <Login />}
+        element={isLoggedIn ? <Navigate to='/profile' /> : <Login />}
       />
       <Route
         path='/dashboard'
+        element={getProtectedElement(
+          isLockScreen,
+          isLoggedIn,
+          <MainLayout>
+            <Dashboard />
+          </MainLayout>
+        )}
+      />
+      <Route
+        path='/lock-screen'
         element={
-          isLoggedIn ? (
-            <MainLayout>
-              <Dashboard />
-            </MainLayout>
+          isLockScreen ? (
+            <LockScreen />
+          ) : isLoggedIn ? (
+            <Navigate to='/profile' />
           ) : (
             <Navigate to='/' />
           )
@@ -37,15 +57,13 @@ const AppRoutes = (): JSX.Element => {
       />
       <Route
         path='/profile'
-        element={
-          isLoggedIn ? (
-            <MainLayout showBreadcrumb={false}>
-              <Profile />
-            </MainLayout>
-          ) : (
-            <Navigate to='/profile' />
-          )
-        }
+        element={getProtectedElement(
+          isLockScreen,
+          isLoggedIn,
+          <MainLayout showBreadcrumb={false}>
+            <Profile />
+          </MainLayout>
+        )}
       />
       <Route path='/maintenance' element={<Maintenance />} />
       <Route path='*' element={<NotFound />} />

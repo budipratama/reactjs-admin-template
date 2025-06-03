@@ -5,19 +5,21 @@ import loginPhoto from "../assets/images/login-photo.jpg";
 import "../styles/pages/_login.scss";
 
 const Login = (): JSX.Element => {
-  const [username, setUsername] = useState<string>("");
+  const [usernameInput, setUsernameInput] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, setUsername } = useAuth();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (username === "admin" && password === "password") {
+    console.log("Login button clicked", usernameInput);
+    if (usernameInput === "admin" && password === "password") {
       localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("username", usernameInput);
       setIsLoggedIn(true);
+      setUsername(usernameInput);
       navigate("/profile");
     } else {
       alert("Username atau password salah!");
@@ -88,8 +90,8 @@ const Login = (): JSX.Element => {
                 <input
                   type='text'
                   placeholder='Username'
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={usernameInput}
+                  onChange={(e) => setUsernameInput(e.target.value)}
                 />
               </div>
               <div className='input-block'>
@@ -112,7 +114,7 @@ const Login = (): JSX.Element => {
                 </button>
               </div>
             </form>
-            <p className='sign-up'>
+            <p className='sign-up hide'>
               Don't have an account? <a href='#'>Sign up now</a>
             </p>
           </div>

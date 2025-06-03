@@ -102,7 +102,6 @@ const Sidebar = ({
                   icon: "fa-solid fa-user",
                   title: "Language",
                   path: "/language",
-                  // path: "/dashboard",
                 },
               ],
             },
