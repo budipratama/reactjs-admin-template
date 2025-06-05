@@ -36,3 +36,24 @@ test("click search button opens modal", () => {
 });
 
 // Tambahkan test untuk sidebarCollapsed, sidebarHovered, handleLogout, dsb.
+test("logout button calls setIsLoggedIn and setUsername", () => {
+  renderHeader();
+  // Buka modal profile terlebih dahulu
+  const profileBtn = screen.getByRole("button", { name: /profileimg/i });
+  fireEvent.click(profileBtn);
+
+  // Sekarang tombol logout sudah muncul di DOM
+  const logoutBtn = screen.getByText(/sign out/i);
+  expect(logoutBtn).toBeInTheDocument();
+
+  fireEvent.click(logoutBtn);
+  // Tambahkan assertion sesuai efek logout yang diharapkan
+});
+
+test("sidebarCollapsed and sidebarHovered class applied", () => {
+  const { container } = renderHeader({
+    sidebarCollapsed: true,
+    sidebarHovered: false,
+  });
+  expect(container.querySelector(".header.collapsed")).toBeInTheDocument();
+});

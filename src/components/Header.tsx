@@ -102,10 +102,10 @@ const Header = ({
         </li>
         <li>
           <a
-            href='/settings'
+            href='/account-settings'
             onClick={(e) => {
               e.preventDefault();
-              navigate("/settings");
+              navigate("/account-settings");
             }}>
             <i className='fa-solid fa-user-gear'></i> Settings
           </a>
@@ -123,7 +123,7 @@ const Header = ({
           </a>
         </li>
         <li>
-          <a href='#' onClick={handleLogout}>
+          <a href='#' className='header__logout' onClick={handleLogout}>
             <i className='fa-solid fa-right-from-bracket'></i> Sign out
           </a>
         </li>

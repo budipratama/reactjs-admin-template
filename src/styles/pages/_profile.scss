@@ -129,6 +129,9 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       background: white;
       padding: variables.$padding-default;
+      & .alert {
+        margin: 1rem 0;
+      }
     }
   }
 }

@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import Maintenance from "./pages/Maintenance";
 import MaintenanceWatcherWrapper from "./hooks/MaintenanceWatcherWrapper";
 import LockScreen from "./pages/LockScreen";
+import AccountSettings from "./pages/AccountSettings";
 function getProtectedElement(
   isLockScreen: boolean,
   isLoggedIn: boolean,
@@ -62,6 +63,16 @@ const AppRoutes = (): JSX.Element => {
           isLoggedIn,
           <MainLayout showBreadcrumb={false}>
             <Profile />
+          </MainLayout>
+        )}
+      />
+      <Route
+        path='/account-settings'
+        element={getProtectedElement(
+          isLockScreen,
+          isLoggedIn,
+          <MainLayout showBreadcrumb={false}>
+            <AccountSettings />
           </MainLayout>
         )}
       />

@@ -1,0 +1,29 @@
+@use "../abstract/variables";
+
+@mixin clearfix {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin absCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+@mixin grid-column($col) {
+  width: (100% / variables.$columns) * $col;
+  padding-right: 15px;
+  padding-left: 15px;
+}

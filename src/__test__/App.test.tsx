@@ -16,7 +16,7 @@ describe("App Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("redirects to dashboard if logged in", () => {
+  it("redirects to profile if logged in", () => {
     // Simulasikan pengguna yang sudah login
     localStorage.setItem("isLoggedIn", "true");
 
@@ -24,7 +24,7 @@ describe("App Component", () => {
 
     // Periksa apakah halaman dashboard dirender
     expect(
-      screen.getByRole("heading", { name: /welcome/i })
+      screen.getByRole("heading", { name: /budi pratama/i })
     ).toBeInTheDocument();
   });
 

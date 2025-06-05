@@ -14,7 +14,6 @@ const Login = (): JSX.Element => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login button clicked", usernameInput);
     if (usernameInput === "admin" && password === "password") {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("username", usernameInput);

@@ -7,13 +7,14 @@ $color-font-primary: rgb(255, 255, 255);
 $header-height: 64px;
 
 $border-radius-default: 50%;
-
+$border-radius-small: 8px;
 // transition time
 $transition-time: 0.3s;
 $transition-time-fast: 0.1s;
 
 // FONT
 $default-font-size: 1.6rem;
+$default-font-size-xsmall: 1.2rem;
 $default-font-size-small: 1.4rem;
 $default-font-size-large: 1.8rem;
 $default-font-size-xlarge: 2.2rem;
@@ -40,3 +41,11 @@ $profile-content-top: 10px;
 // width sidebar
 $sidebar-width-normal: 256px;
 $sidebar-width-small: 75px;
+
+// GRID
+$grid-width: 114rem;
+$gutter-vertical: 8rem;
+$gutter-horizontal: 6rem;
+
+// columns
+$columns: 12;

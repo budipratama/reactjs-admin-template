@@ -97,6 +97,7 @@ const Modal = ({
       className='modal__backdrop'
       style={backdropStyle}
       role='button'
+      tabIndex={-1}
       onClick={handleBackdropClick}>
       <div
         className='modal__dialog'
