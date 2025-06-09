@@ -4,7 +4,6 @@ import "../styles/pages/_profile.scss";
 import "../styles/components/_grid.scss";
 import "../styles/components/_form.scss";
 import "../styles/components/_alert.scss";
-import "../styles/components/_password.scss";
 import logoProfile from "../assets/images/user-1.jpg";
 import FormField from "../components/FormField";
 
@@ -276,14 +275,6 @@ const AccountSettings = (): JSX.Element => {
                       )}
                     </button>
                   </div>
-                  {/* <FormField
-                    label='Current Password'
-                    id='password'
-                    type={showPassword ? "text" : "password"}
-                    className='form__input'
-                    placeholder='Enter your password'
-                    containerClassName=''
-                  /> */}
                 </div>
               </div>
               <div className='row'>

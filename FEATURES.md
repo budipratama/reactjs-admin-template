@@ -1,27 +1,34 @@
 # Project Feature List
 
-## 🚧 Features in Progress
+## 🚧 Features in Progress ⏳
 - Breadcrumb navigation component
 - Maintenance global notification & redirect system
 - Element form
-    - [✅] Input text
-    - [✅] Password
-    - [✅] Confirm Password
-    - [⏳] Email
-    - [❌] Number
+    - [⏳] Checkbox
     - [❌] Select
     - [❌] Select Filter
-    - [❌] Textarea
     - [❌] Radio button
-    - [❌] Checkbox
     - [❌] File upload
     - [❌] Range/Slider
     - [❌] Switch (opsional)
-    - [❌] Button (submit/reset)
-    - [✅] Label
     - [❌] Hint / Help text
+    - [❌] Button (submit/reset)
+    - [✅] Number
+    - [✅] Textarea
+    - [✅] Email
+    - [✅] Input text
+    - [✅] Password
+    - [✅] Confirm Password
+    - [✅] Label
     - [✅] Error message
-
+- Validation
+    - [✅] Required
+    - [✅] Max length
+    - [✅] Email
+    - [✅] Compare
+    - [✅] Number
+    - [✅] Min Number
+    - [✅] Max Number
 
 ## ✅ Features Completed
 - Sidebar: recursive, active state, expand/collapse, memoized

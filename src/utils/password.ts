@@ -15,5 +15,5 @@ export function checkPasswordStrength(pwd: string): string {
   if (!hasLower) return "Password must contain a lowercase letter (a-z)";
   if (!hasNumber) return "Password must contain a number (0-9)";
   if (!hasSymbol) return "Password must contain a symbol/wildcard (!@#$...)";
-  return "Strong password";
+  return "";
 }

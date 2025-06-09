@@ -1,32 +1,36 @@
 import { JSX } from "react";
-import Input from "./Input";
-interface InputLabelProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface TextAreaLabelProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
   containerClassName?: string;
   hasError?: string;
 }
 
-const InputLabel = ({
+const TextAreaLabel = ({
   id,
   name,
   label = "",
-  type = "text",
   containerClassName = "form__group",
   value = "",
   required = false,
   hasError = "",
   ...inputProps
-}: InputLabelProps): JSX.Element => {
+}: TextAreaLabelProps): JSX.Element => {
   return (
     <div className={containerClassName}>
       <label className='form__label' htmlFor={name}>
         {label}
         {required && <span className='form__required'> *</span>}
       </label>
-      <Input id={id} name={name} value={value} type={type} {...inputProps} />
+      <textarea
+        className='form__textarea'
+        id={id}
+        name={name}
+        value={value}
+        {...inputProps}></textarea>
       {hasError && <div className='form__error'>{hasError}</div>}
     </div>
   );
 };
 
-export default InputLabel;
+export default TextAreaLabel;
