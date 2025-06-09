@@ -1,9 +1,19 @@
 @use "../abstract/variables";
 .form {
+  color: black;
+  // &__title {
+  // }
+
+  // &__description {
+  // }
+  &__group:not(:last-child) {
+    margin-bottom: 1rem;
+  }
   &__label {
     display: inline-block;
     font-size: variables.$default-font-size-xsmall;
     font-weight: 600;
+    margin-bottom: 0.75rem;
   }
   &__input {
     width: 100%;
@@ -20,4 +30,64 @@
       box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
     }
   }
+  &__error {
+    color: red;
+    font-size: variables.$default-font-size-xsmall;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+  &__select {
+    width: 100%;
+    padding: 0.5rem;
+    height: 3rem;
+    border-radius: 4px;
+    background-color: white;
+    border: none;
+    &:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+  }
+  &__textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    box-sizing: border-box;
+    display: block;
+    height: 6rem;
+    resize: vertical;
+    &:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+  }
+
+  &__password {
+    &-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    &-strength {
+      color: green;
+      font-size: variables.$default-font-size-xsmall;
+    }
+    &-weak {
+      color: red;
+      font-size: variables.$default-font-size-xsmall;
+    }
+  }
+  &__toggle-password {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.col-6 {
+  position: relative;
 }

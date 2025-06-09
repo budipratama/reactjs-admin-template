@@ -4,7 +4,9 @@ import "../styles/pages/_profile.scss";
 import "../styles/components/_grid.scss";
 import "../styles/components/_form.scss";
 import "../styles/components/_alert.scss";
+import "../styles/components/_password.scss";
 import logoProfile from "../assets/images/user-1.jpg";
+import FormField from "../components/FormField";
 
 const AccountSettings = (): JSX.Element => {
   useSeo({
@@ -13,16 +15,21 @@ const AccountSettings = (): JSX.Element => {
     keywords: "account, settings, user",
   });
   const overviewRef = useRef<HTMLDivElement>(null);
-  const activitiesRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState<"personal-details" | "activities">(
-    "personal-details"
-  );
+  const changePasswordRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState<
+    "personal-details" | "change-password"
+  >("personal-details");
 
-  const handleTabClick = (tab: "personal-details" | "activities") => {
+  const handleTabClick = (tab: "personal-details" | "change-password") => {
     setActiveTab(tab);
-    const ref = tab === "personal-details" ? overviewRef : activitiesRef;
+    const ref = tab === "personal-details" ? overviewRef : changePasswordRef;
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  // State untuk visibility password
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
   return (
     <>
@@ -71,15 +78,15 @@ const AccountSettings = (): JSX.Element => {
                 </li>
                 <li
                   className={`profile__subsection--item${
-                    activeTab === "activities" ? " active" : ""
+                    activeTab === "change-password" ? " active" : ""
                   }`}>
                   <a
-                    href='#activities'
+                    href='#change-password'
                     role='tab'
-                    aria-selected={activeTab === "activities"}
+                    aria-selected={activeTab === "change-password"}
                     onClick={(e) => {
                       e.preventDefault();
-                      handleTabClick("activities");
+                      handleTabClick("change-password");
                     }}>
                     Change Password
                   </a>
@@ -91,7 +98,9 @@ const AccountSettings = (): JSX.Element => {
 
         <div className='tab__content'>
           <div
-            className={`tab__pane${activeTab === "personal-details" ? " active" : ""}`}
+            className={`tab__pane${
+              activeTab === "personal-details" ? " active" : ""
+            }`}
             id='personal-details'
             ref={overviewRef}>
             <div className='tab__paneinfo'>
@@ -197,7 +206,7 @@ const AccountSettings = (): JSX.Element => {
                       placeholder='Enter your state'
                     />
                   </div>
-                  <div className='col-6'>
+                  {/* <div className='col-6'>
                     <label htmlFor='post_code' className='form__label'>
                       Post Code
                     </label>
@@ -207,7 +216,14 @@ const AccountSettings = (): JSX.Element => {
                       className='form__input'
                       placeholder='Enter your post_code'
                     />
-                  </div>
+                  </div> */}
+                  <FormField
+                    label='Post Code'
+                    id='post_code'
+                    type='text'
+                    containerClassName='col-6'
+                    placeholder='Enter your post code'
+                  />
                 </div>
                 <div className='row'>
                   <div className='col-6'>
@@ -228,69 +244,100 @@ const AccountSettings = (): JSX.Element => {
 
           <div
             className={`tab__pane${
-              activeTab === "activities" ? " active" : ""
+              activeTab === "change-password" ? " active" : ""
             }`}
-            id='activities'
-            ref={activitiesRef}>
+            id='change-password'
+            ref={changePasswordRef}>
             <div className='tab__paneprogress'>
-              <h2>Activities Timeline</h2>
-              <ul className='timeline'>
-                <li className='timeline--item'>
-                  <span className='timeline--point'></span>
-                  <div className='timeline__header'>
-                    <h3>
-                      Profile Updated <small>19 min ago</small>
-                    </h3>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Quis ratione veritatis quaerat ipsum dignissimos saepe
-                      tempora asperiores provident quae exercitationem voluptas,
-                      fugit aspernatur fugiat. Temporibus assumenda quidem nulla
-                      provident enim?
-                    </p>
+              <div className='row'>
+                <div className='col-6'>
+                  <label htmlFor='current_password'>Current Password</label>
+                  <div>
+                    <input
+                      type='password'
+                      className='form__input'
+                      placeholder='Enter your current password'
+                      style={{ width: "100%" }}
+                      id='current_password'
+                    />
+                    <button
+                      type='button'
+                      className='form__toggle-password'
+                      // style={{ position: "absolute", right: 24, top: 38 }}
+                      onClick={() => setShowPassword((v) => !v)}
+                      tabIndex={-1}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }>
+                      {showPassword ? (
+                        <i className='fa-solid fa-eye'></i>
+                      ) : (
+                        <i className='fa-solid fa-eye-slash'></i>
+                      )}
+                    </button>
                   </div>
-                </li>
-                <li className='timeline--item'>
-                  <span className='timeline--point'></span>
-                  <div className='timeline__header'>
-                    <h3>
-                      User Created <small>21 min ago</small>
-                    </h3>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Veniam placeat facilis nemo! Tempora similique distinctio
-                      praesentium quibusdam aut debitis et maiores! Est ea porro
-                      cumque et nemo, aspernatur ipsum eveniet!
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Recusandae similique itaque modi, est tempore ut beatae
-                      sunt ipsum a delectus saepe fugit aliquam, atque, voluptas
-                      accusantium architecto voluptatum soluta ratione!
-                    </p>
-                  </div>
-                </li>
-                <li className='timeline--item'>
-                  <span className='timeline--point'></span>
-                  <div className='timeline__header'>
-                    <h3>
-                      Allowed IP Updated <small>30 min ago</small>
-                    </h3>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Recusandae similique itaque modi, est tempore ut beatae
-                      sunt ipsum a delectus saepe fugit aliquam, atque, voluptas
-                      accusantium architecto voluptatum soluta ratione!
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Recusandae similique itaque modi, est tempore ut beatae
-                      sunt ipsum a delectus saepe fugit aliquam, atque, voluptas
-                      accusantium architecto voluptatum soluta ratione!
-                    </p>
-                  </div>
-                </li>
-              </ul>
+                  {/* <FormField
+                    label='Current Password'
+                    id='password'
+                    type={showPassword ? "text" : "password"}
+                    className='form__input'
+                    placeholder='Enter your password'
+                    containerClassName=''
+                  /> */}
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col-6' style={{ position: "relative" }}>
+                  <FormField
+                    label='New Password'
+                    id='new_password'
+                    type={showNewPassword ? "text" : "password"}
+                    className='form__input'
+                    placeholder='Enter your new password'
+                    containerClassName=''
+                  />
+                  <button
+                    type='button'
+                    className='form__toggle-password'
+                    style={{ position: "absolute", right: 24, top: 15 }}
+                    onClick={() => setShowNewPassword((v) => !v)}
+                    tabIndex={-1}
+                    aria-label={
+                      showNewPassword ? "Hide password" : "Show password"
+                    }>
+                    {showNewPassword ? (
+                      <i className='fa-solid fa-eye'></i>
+                    ) : (
+                      <i className='fa-solid fa-eye-slash'></i>
+                    )}
+                  </button>
+                </div>
+                <div className='col-6' style={{ position: "relative" }}>
+                  <FormField
+                    label='Confirm New Password'
+                    id='confirm_new_password'
+                    type={showConfirmNewPassword ? "text" : "password"}
+                    className='form__input'
+                    placeholder='Enter your confirm new password'
+                    containerClassName=''
+                  />
+                  <button
+                    type='button'
+                    className='form__toggle-password'
+                    style={{ position: "absolute", right: 24, top: 38 }}
+                    onClick={() => setShowConfirmNewPassword((v) => !v)}
+                    tabIndex={-1}
+                    aria-label={
+                      showConfirmNewPassword ? "Hide password" : "Show password"
+                    }>
+                    {showConfirmNewPassword ? (
+                      <i className='fa-solid fa-eye'></i>
+                    ) : (
+                      <i className='fa-solid fa-eye-slash'></i>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
