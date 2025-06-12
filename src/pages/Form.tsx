@@ -1,5 +1,5 @@
 import InputPassword from "../components/InputPassword";
-import { JSX, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import InputLabel from "../components/InputLabel";
 import { checkPasswordStrength } from "../utils/password";
 import TextAreaLabel from "../components/TextAreaLabel";
@@ -12,8 +12,19 @@ import {
   isEmail,
   isSame,
 } from "../utils/validation";
+import CheckboxGroup from "../components/CheckboxGroup";
+import SearchableSelect from "../components/SearchableSelect";
+
+const countryOptions: { label: string; value: string }[] = [
+  { label: "Indonesia", value: "indonesia" },
+  { label: "USA", value: "usa" },
+  { label: "Singapore", value: "singapore" },
+  { label: "Malaysia", value: "malaysia" },
+];
 
 const Form = (): JSX.Element => {
+  console.time("Form Render Time");
+
   const fields = {
     username: "",
     country: "",
@@ -23,6 +34,8 @@ const Form = (): JSX.Element => {
     password: "",
     confirm_password: "",
   };
+  const [hobbies, setHobbies] = useState<string[]>([]);
+  const [hobbiesError, setHobbiesError] = useState("");
   const [formData, setFormData] = useState<{ [key: string]: string }>(fields);
   const { username, password, confirm_password, postal_code, address, email } =
     formData;
@@ -70,8 +83,18 @@ const Form = (): JSX.Element => {
     setErrors(newErrors);
     setTouched({ username: true, password: true, confirm_password: true });
 
+    // Validasi hobbies
+    console.log("Hobbies:", hobbies);
+    if (hobbies.length === 0) {
+      setHobbiesError("Pilih minimal satu hobi!");
+      return;
+    } else {
+      setHobbiesError("");
+    }
+
     if (!Object.values(newErrors).some(Boolean)) {
-      console.log("Form valid:", formData);
+      const payload = { ...formData, hobbies };
+      console.log("Form valid:", payload);
       // Kirim data ke API
     }
   };
@@ -99,6 +122,9 @@ const Form = (): JSX.Element => {
       [name]: validate[name] ? validate[name](formData[name]) : "",
     });
   };
+  useEffect(() => {
+    console.timeEnd("Render Time");
+  });
   return (
     <div className='form'>
       {/* <h1 className='form__title'>Form Page</h1> */}
@@ -167,17 +193,34 @@ const Form = (): JSX.Element => {
           hasError={errors.address}
           required={true}
         />
-        <div className='form__group'>
-          <label className='form__label' htmlFor='country'>
-            Country
-          </label>
-          <select className='form__select' id='country' name='country'>
-            <option>Choose Country</option>
-            <option value='indonesia'>Indonesia</option>
-            <option value='usa'>USA</option>
-          </select>
-        </div>
-
+        <CheckboxGroup
+          name='hobbies'
+          legend='Hobbies'
+          options={countryOptions}
+          values={hobbies}
+          onChange={setHobbies}
+          required={true}
+          hasError={hobbiesError}
+        />
+        {/* <SearchableSelect
+          label='Country'
+          name='country'
+          value={formData.country}
+          onChange={(val) => setFormData({ ...formData, country: val })}
+          options={[
+            { label: "Indonesia", value: "indonesia" },
+            { label: "USA", value: "usa" },
+            { label: "Singapore", value: "singapore" },
+            { label: "Malaysia", value: "malaysia" },
+          ]}
+        /> */}
+        <SearchableSelect
+          label='Country'
+          value={formData.country}
+          onChange={(val) => setFormData({ ...formData, country: val })}
+          searchMode='api'
+          apiSearchUrl='https://restcountries.com/v3.1/name/'
+        />
         <div className='form__group'>
           <label className='form__label' htmlFor='bio'>
             Bio

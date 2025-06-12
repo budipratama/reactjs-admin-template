@@ -1,18 +1,16 @@
 # Project Feature List
 
 ## 🚧 Features in Progress ⏳
-- Breadcrumb navigation component
 - Maintenance global notification & redirect system
 - Element form
-    - [⏳] Checkbox
-    - [❌] Select
-    - [❌] Select Filter
-    - [❌] Radio button
     - [❌] File upload
     - [❌] Range/Slider
-    - [❌] Switch (opsional)
     - [❌] Hint / Help text
-    - [❌] Button (submit/reset)
+    - [❌] Switch
+    - [⏳] Select data via Api
+    - [✅] Select Filter
+    - [✅] Radio button
+    - [✅] Checkbox
     - [✅] Number
     - [✅] Textarea
     - [✅] Email
@@ -21,14 +19,7 @@
     - [✅] Confirm Password
     - [✅] Label
     - [✅] Error message
-- Validation
-    - [✅] Required
-    - [✅] Max length
-    - [✅] Email
-    - [✅] Compare
-    - [✅] Number
-    - [✅] Min Number
-    - [✅] Max Number
+
 
 ## ✅ Features Completed
 - Sidebar: recursive, active state, expand/collapse, memoized
@@ -41,9 +32,16 @@
 - SCSS: BEM structure, modular partials
 - Profile page route & layout
 - Screen lock feature
-
+- Breadcrumb navigation component
+- Validation
+    - [✅] Required
+    - [✅] Max length
+    - [✅] Email
+    - [✅] Compare
+    - [✅] Number
+    - [✅] Min Number
+    - [✅] Max Number
 ## 🆕 New Features (Planned/Requested)
-- Breadcrumb component (auto from route)
 - Feature status tracking in markdown
 - More page routes (settings, users, reports)
 - Global notification system (beyond modal)
