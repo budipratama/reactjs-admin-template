@@ -8,13 +8,13 @@ type SearchableSelectProps = {
   onChange: (value: string) => void;
   placeholder?: string;
   label?: string;
-  name?: string;
   searchMode?: "local" | "api";
   rawOptions?: any[];
   optionMapper?: (item: any) => Option;
   onSearch?: (search: string) => void;
   minSearchLength?: number;
   errorMessage?: string;
+  required?: boolean;
   onBlur?: () => void; // trigger blur ke parent
 };
 
@@ -84,7 +84,6 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   onChange,
   placeholder = "Select...",
   label,
-  name,
   searchMode = "local",
   rawOptions,
   optionMapper,
@@ -92,6 +91,7 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   minSearchLength = 0,
   errorMessage,
   onBlur,
+  required = false,
 }) => {
   // Validasi props sesuai searchMode
   let validationError: string | null = null;
@@ -152,7 +152,6 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   const [highlighted, setHighlighted] = useState<number>(-1);
   const [isSearching, setIsSearching] = useState(false);
   const [apiOptions, setApiOptions] = useState<Option[]>([]);
-  const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState<Option | undefined>(
     undefined
   );
@@ -192,7 +191,6 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
         onSearch("");
       }
     }
-    // eslint-disable-next-line
   }, [search, searchMode, onSearch, minSearchLength]);
 
   const filtered =
@@ -256,18 +254,22 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
 
   return (
     <div
+      role='button'
       className='form__group'
       style={{ position: "relative" }}
-      tabIndex={-1}
+      tabIndex={0}
       onBlur={(e) => {
-        // Pastikan blur hanya saat benar-benar keluar dari komponen
         if (!e.currentTarget.contains(e.relatedTarget)) {
           if (typeof onBlur === "function") onBlur();
           setOpen(false);
           setIsSearching(false);
         }
       }}>
-      {label && <label className='form__label'>{label}</label>}
+      {label && (
+        <label className='form__label'>
+          {label} {required && <span className='form__required'> *</span>}
+        </label>
+      )}
       <div style={{ position: "relative" }}>
         <button
           type='button'
@@ -282,7 +284,7 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
             borderColor: errorMessage ? "#f99" : undefined,
             paddingRight: value ? 32 : undefined, // beri ruang untuk icon X
           }}
-          tabIndex={0}
+          tabIndex={-1}
           onClick={() => {
             setIsSearching(true);
             setOpen(true);
@@ -301,28 +303,18 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
         </button>
         {/* Icon X untuk clear value */}
         {value && (
-          <span
+          <button
+            className='form__input-clear'
             onClick={(e) => {
               e.stopPropagation();
               onChange("");
               setSelectedOption(undefined);
             }}
-            style={{
-              position: "absolute",
-              right: 12,
-              top: "50%",
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-              color: "#888",
-              fontSize: 18,
-              zIndex: 2,
-              userSelect: "none",
-            }}
             title='Clear selection'
             aria-label='Clear selection'
-            role='button'>
+            type='button'>
             ×
-          </span>
+          </button>
         )}
       </div>
       {/* Layout 2 & 3: Filter input dan List pilihan, tampil bersama di dropdown */}
@@ -330,20 +322,8 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
         <ul
           className='form__dropdown-list'
           style={{
-            position: "absolute",
-            zIndex: 10,
-            background: "#fff",
-            border: "1px solid #d1d5db",
-            width: "100%",
-            maxHeight: 220, // lebih tinggi agar muat input + list
-            overflowY: "auto",
-            margin: 0,
-            padding: 0,
-            listStyle: "none",
             top: dropdownAbove ? undefined : "100%",
             bottom: dropdownAbove ? "100%" : undefined,
-            display: "flex",
-            flexDirection: "column", // Selalu column, filter di atas hasil
           }}>
           <li
             style={{
@@ -369,26 +349,18 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
             />
           </li>
           {search.length < minSearchLength ? (
-            <li
-              className='form__dropdown-item'
-              style={{ padding: 8, color: "#888" }}>
+            <li className='form__dropdown-item--search-hint'>
               Type at least {minSearchLength} character
               {minSearchLength > 1 ? "s" : ""} to search
             </li>
           ) : filtered.length === 0 ? (
-            <li
-              className='form__dropdown-item'
-              style={{ padding: 8, color: "#888" }}>
-              No options
-            </li>
+            <li className='form__dropdown-item--empty'>No options</li>
           ) : (
             filtered.map((opt, i) => (
               <li
                 key={opt.value}
                 className='form__dropdown-item'
                 style={{
-                  padding: 8,
-                  cursor: "pointer",
                   background:
                     value === opt.value
                       ? "#f0f4ff"
@@ -411,13 +383,7 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
           )}
         </ul>
       )}
-      {errorMessage && (
-        <div
-          className='form__error'
-          style={{ color: "#d32f2f", fontSize: 13, marginTop: 4 }}>
-          {errorMessage}
-        </div>
-      )}
+      {errorMessage && <div className='form__error'>{errorMessage}</div>}
     </div>
   );
 };

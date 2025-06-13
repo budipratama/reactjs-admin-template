@@ -14,6 +14,7 @@ import {
 } from "../utils/validation";
 import CheckboxGroup from "../components/CheckboxGroup";
 import SearchableSelect from "../components/SearchableSelect";
+import Switch from "../components/Switch";
 
 const countryOptions: { label: string; value: string }[] = [
   { label: "Indonesia", value: "indonesia" },
@@ -57,6 +58,7 @@ const Form = (): JSX.Element => {
     address: false,
     postal_code: false,
   });
+  const [switchValue, setSwitchValue] = useState(false);
 
   // State untuk hasil API dan mapping
   const [countryApi, setCountryApi] = useState<any[]>([]);
@@ -96,7 +98,7 @@ const Form = (): JSX.Element => {
     setTouched({ username: true, password: true, confirm_password: true });
 
     // Validasi hobbies
-    console.log("Hobbies:", hobbies);
+    // console.log("Hobbies:", hobbies);
     if (hobbies.length === 0) {
       setHobbiesError("Pilih minimal satu hobi!");
       return;
@@ -151,7 +153,7 @@ const Form = (): JSX.Element => {
   useEffect(() => {
     console.timeEnd("Render Time");
   });
-  console.log("Form Rendered", formData);
+  // console.log("Form Rendered", formData);
   return (
     <div className='form'>
       {/* <h1 className='form__title'>Form Page</h1> */}
@@ -242,7 +244,8 @@ const Form = (): JSX.Element => {
           label='Country'
           value={formData.country}
           onChange={(val) => setFormData({ ...formData, country: val })}
-          // onChange={handleChange}
+          placeholder='Search country...'
+          required={true}
           searchMode='api'
           minSearchLength={2}
           rawOptions={countryApi}
@@ -253,6 +256,19 @@ const Form = (): JSX.Element => {
           })}
           onSearch={handleCountrySearch}
           errorMessage={errors.country}
+          onBlur={() => {
+            setTouched((prev) => ({ ...prev, country: true }));
+            setErrors((prev) => ({
+              ...prev,
+              country: validate.country(formData.country),
+            }));
+          }}
+        />
+        <Switch
+          checked={switchValue}
+          onChange={setSwitchValue}
+          labelOn='Yes'
+          labelOff='No'
         />
         <div className='form__group'>
           <label className='form__label' htmlFor='bio'>

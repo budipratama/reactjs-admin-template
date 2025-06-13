@@ -2,23 +2,7 @@
 
 ## 🚧 Features in Progress ⏳
 - Maintenance global notification & redirect system
-- Element form
-    - [⏳] Switch
-    - [❌] File upload
-    - [❌] Range/Slider
-    - [❌] Hint / Help text
-    - [✅] Select data via Api
-    - [✅] Select Filter
-    - [✅] Radio button
-    - [✅] Checkbox
-    - [✅] Number
-    - [✅] Textarea
-    - [✅] Email
-    - [✅] Input text
-    - [✅] Password
-    - [✅] Confirm Password
-    - [✅] Label
-    - [✅] Error message
+
 
 
 ## ✅ Features Completed
@@ -41,10 +25,28 @@
     - [✅] Number
     - [✅] Min Number
     - [✅] Max Number
+- Element form
+    - [✅] Switch
+    - [✅] Select data via Api
+    - [✅] Select Filter
+    - [✅] Radio button
+    - [✅] Checkbox
+    - [✅] Number
+    - [✅] Textarea
+    - [✅] Email
+    - [✅] Input text
+    - [✅] Password
+    - [✅] Confirm Password
+    - [✅] Label
+    - [✅] Error message
 ## 🆕 New Features (Planned/Requested)
 - Feature status tracking in markdown
 - More page routes (settings, users, reports)
 - Global notification system (beyond modal)
+- Element form
+    - [❌] File upload
+    - [❌] Range/Slider
+    - [❌] Hint / Help text
 
 ---
 
