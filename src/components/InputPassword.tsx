@@ -23,7 +23,7 @@ const InputPassword = ({
 }: InputPasswordProps): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
   return (
-    <div className={containerClassName}>
+    <div className={containerClassName + (errorMessage ? " has-error" : "")}>
       <label className='form__label' htmlFor={id}>
         {label}
         {required && <span className='form__required'> *</span>}

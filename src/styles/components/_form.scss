@@ -6,6 +6,12 @@
 
   // &__description {
   // }
+  &__group.has-error {
+    & input,
+    textarea {
+      border-color: red;
+    }
+  }
   &__group:not(:last-child) {
     margin-bottom: 1rem;
   }

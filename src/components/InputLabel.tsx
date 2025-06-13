@@ -18,7 +18,7 @@ const InputLabel = ({
   ...inputProps
 }: InputLabelProps): JSX.Element => {
   return (
-    <div className={containerClassName}>
+    <div className={containerClassName + (errorMessage ? " has-error" : "")}>
       <label className='form__label' htmlFor={name}>
         {label}
         {required && <span className='form__required'> *</span>}

@@ -13,8 +13,9 @@ type SearchableSelectProps = {
   rawOptions?: any[];
   optionMapper?: (item: any) => Option;
   onSearch?: (search: string) => void;
-  minSearchLength?: number; // baru
-  errorMessage?: string; // pesan errorMessage opsional
+  minSearchLength?: number;
+  errorMessage?: string;
+  onBlur?: () => void; // trigger blur ke parent
 };
 
 // Komponen filter input terpisah
@@ -90,6 +91,7 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   onSearch,
   minSearchLength = 0,
   errorMessage,
+  onBlur,
 }) => {
   // Validasi props sesuai searchMode
   let validationError: string | null = null;
@@ -253,38 +255,76 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   }, [open, isSearching]);
 
   return (
-    <div className='form__group' style={{ position: "relative" }}>
+    <div
+      className='form__group'
+      style={{ position: "relative" }}
+      tabIndex={-1}
+      onBlur={(e) => {
+        // Pastikan blur hanya saat benar-benar keluar dari komponen
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+          if (typeof onBlur === "function") onBlur();
+          setOpen(false);
+          setIsSearching(false);
+        }
+      }}>
       {label && <label className='form__label'>{label}</label>}
-      {/* Layout 1: Value terpilih atau placeholder, selalu tampil */}
-      <button
-        type='button'
-        className={`form__input form__input--selected${
-          !value ? " form__input--placeholder" : ""
-        }${errorMessage ? " form__input--error" : ""}`}
-        style={{
-          marginBottom: 8,
-          cursor: "pointer",
-          textAlign: "left",
-          color: !value ? "#888" : undefined,
-          borderColor: errorMessage ? "#f99" : undefined,
-        }}
-        tabIndex={0}
-        onClick={() => {
-          setIsSearching(true);
-          setOpen(true);
-          setSearch("");
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
+      <div style={{ position: "relative" }}>
+        <button
+          type='button'
+          className={`form__input form__input--selected${
+            !value ? " form__input--placeholder" : ""
+          }${errorMessage ? " form__input--error" : ""}`}
+          style={{
+            marginBottom: 8,
+            cursor: "pointer",
+            textAlign: "left",
+            color: !value ? "#888" : undefined,
+            borderColor: errorMessage ? "#f99" : undefined,
+            paddingRight: value ? 32 : undefined, // beri ruang untuk icon X
+          }}
+          tabIndex={0}
+          onClick={() => {
             setIsSearching(true);
             setOpen(true);
             setSearch("");
-          }
-        }}>
-        {value
-          ? selectedOption?.label || placeholder || "Pilih..."
-          : placeholder || "Pilih..."}
-      </button>
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setIsSearching(true);
+              setOpen(true);
+              setSearch("");
+            }
+          }}>
+          {value
+            ? selectedOption?.label || placeholder || "Pilih..."
+            : placeholder || "Pilih..."}
+        </button>
+        {/* Icon X untuk clear value */}
+        {value && (
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange("");
+              setSelectedOption(undefined);
+            }}
+            style={{
+              position: "absolute",
+              right: 12,
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              color: "#888",
+              fontSize: 18,
+              zIndex: 2,
+              userSelect: "none",
+            }}
+            title='Clear selection'
+            aria-label='Clear selection'
+            role='button'>
+            ×
+          </span>
+        )}
+      </div>
       {/* Layout 2 & 3: Filter input dan List pilihan, tampil bersama di dropdown */}
       {open && isSearching && (
         <ul
