@@ -10,7 +10,11 @@ type SearchableSelectProps = {
   label?: string;
   name?: string;
   searchMode?: "local" | "api";
-  apiSearchUrl?: string;
+  rawOptions?: any[];
+  optionMapper?: (item: any) => Option;
+  onSearch?: (search: string) => void;
+  minSearchLength?: number; // baru
+  errorMessage?: string; // pesan errorMessage opsional
 };
 
 // Komponen filter input terpisah
@@ -81,8 +85,66 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   label,
   name,
   searchMode = "local",
-  apiSearchUrl,
+  rawOptions,
+  optionMapper,
+  onSearch,
+  minSearchLength = 0,
+  errorMessage,
 }) => {
+  // Validasi props sesuai searchMode
+  let validationError: string | null = null;
+  if (searchMode === "api") {
+    if (!onSearch || !rawOptions || !optionMapper) {
+      validationError =
+        'SearchableSelect: For searchMode="api", you must provide the props onSearch, rawOptions, and optionMapper.';
+    }
+  }
+  if (searchMode !== "api" && (onSearch || rawOptions)) {
+    validationError =
+      'SearchableSelect: For searchMode other than "api", do not provide onSearch or rawOptions.';
+  }
+  if (validationError) {
+    // Show error in UI (English), no stack trace, just message and props
+    return (
+      <div
+        style={{
+          color: "red",
+          fontWeight: "bold",
+          whiteSpace: "pre-wrap",
+          background: "#fff0f0",
+          padding: 12,
+          border: "1px solid #f99",
+          borderRadius: 4,
+        }}>
+        <div>{validationError}</div>
+        <div style={{ fontSize: 12, marginTop: 8, color: "#a00" }}>
+          <b>Props passed:</b>
+          <br />
+          <code style={{ fontSize: 11, color: "#a00" }}>
+            {JSON.stringify(
+              {
+                value,
+                searchMode,
+                rawOptions:
+                  typeof rawOptions === "undefined" ? "undefined" : "provided",
+                optionMapper:
+                  typeof optionMapper === "function"
+                    ? "function"
+                    : String(optionMapper),
+                onSearch:
+                  typeof onSearch === "function"
+                    ? "function"
+                    : String(onSearch),
+              },
+              null,
+              2
+            )}
+          </code>
+        </div>
+      </div>
+    );
+  }
+
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState<number>(-1);
@@ -95,36 +157,41 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   const [dropdownAbove, setDropdownAbove] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Gunakan rawOptions + optionMapper jika ada, override apiOptions
+  useEffect(() => {
+    if (rawOptions && optionMapper) {
+      setApiOptions(rawOptions.map(optionMapper));
+    }
+  }, [rawOptions, optionMapper]);
+
   // Fetch API jika searchMode === 'api' dan search tidak kosong
   useEffect(() => {
-    if (searchMode === "api" && search.length > 1 && apiSearchUrl) {
-      setLoading(true);
-      fetch(`${apiSearchUrl}${encodeURIComponent(search)}`)
-        .then((res) => res.json())
-        .then((data) => {
-          // Untuk restcountries, ambil nama negara
-          if (Array.isArray(data)) {
-            setApiOptions(
-              data.map((item: any) => ({
-                label: item.name?.common || item.name || "",
-                value:
-                  item.cca2 ||
-                  item.cca3 ||
-                  item.name?.common ||
-                  item.name ||
-                  "",
-              }))
-            );
-          } else {
-            setApiOptions([]);
-          }
-        })
-        .catch(() => setApiOptions([]))
-        .finally(() => setLoading(false));
-    } else {
+    if (searchMode === "api" && !rawOptions && search.length > 1) {
+      // Tidak fetch apapun, biarkan parent yang handle
+    } else if (!rawOptions) {
       setApiOptions([]);
     }
-  }, [search, searchMode, apiSearchUrl]);
+  }, [search, searchMode, rawOptions, optionMapper]);
+
+  // Trigger onSearch setiap kali search berubah (khusus mode api)
+  useEffect(() => {
+    if (searchMode === "api" && onSearch) {
+      // Debounce onSearch agar tidak looping dan tidak terlalu sering request
+      console.log(
+        `Search changed, triggering onSearch: ${search.length} >= ${minSearchLength}`
+      );
+      if (search.length >= minSearchLength) {
+        const handler = setTimeout(() => {
+          onSearch(search);
+        }, 400); // 400ms debounce
+        return () => clearTimeout(handler);
+      } else {
+        // Jika search kurang dari minSearchLength, kosongkan hasil
+        onSearch("");
+      }
+    }
+    // eslint-disable-next-line
+  }, [search, searchMode, onSearch, minSearchLength]);
 
   const filtered =
     searchMode === "api"
@@ -193,12 +260,13 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
         type='button'
         className={`form__input form__input--selected${
           !value ? " form__input--placeholder" : ""
-        }`}
+        }${errorMessage ? " form__input--error" : ""}`}
         style={{
           marginBottom: 8,
           cursor: "pointer",
           textAlign: "left",
           color: !value ? "#888" : undefined,
+          borderColor: errorMessage ? "#f99" : undefined,
         }}
         tabIndex={0}
         onClick={() => {
@@ -260,40 +328,55 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
               }}
             />
           </li>
-          {filtered.length === 0 && (
+          {search.length < minSearchLength ? (
             <li
               className='form__dropdown-item'
               style={{ padding: 8, color: "#888" }}>
-              Tidak ada pilihan
+              Type at least {minSearchLength} character
+              {minSearchLength > 1 ? "s" : ""} to search
             </li>
-          )}
-          {filtered.map((opt, i) => (
+          ) : filtered.length === 0 ? (
             <li
-              key={opt.value}
               className='form__dropdown-item'
-              style={{
-                padding: 8,
-                cursor: "pointer",
-                background:
-                  value === opt.value
-                    ? "#f0f4ff"
-                    : highlighted === i
-                      ? "#e6eaff"
-                      : "#fff",
-              }}
-              onMouseDown={(e) => {
-                e.preventDefault();
-                onChange(opt.value);
-                setSelectedOption(opt); // Simpan label/value yang dipilih
-                setOpen(false);
-                setIsSearching(false);
-                setSearch("");
-              }}
-              onMouseEnter={() => setHighlighted(i)}>
-              {opt.label}
+              style={{ padding: 8, color: "#888" }}>
+              No options
             </li>
-          ))}
+          ) : (
+            filtered.map((opt, i) => (
+              <li
+                key={opt.value}
+                className='form__dropdown-item'
+                style={{
+                  padding: 8,
+                  cursor: "pointer",
+                  background:
+                    value === opt.value
+                      ? "#f0f4ff"
+                      : highlighted === i
+                        ? "#e6eaff"
+                        : "#fff",
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  onChange(opt.value);
+                  setSelectedOption(opt); // Simpan label/value yang dipilih
+                  setOpen(false);
+                  setIsSearching(false);
+                  setSearch("");
+                }}
+                onMouseEnter={() => setHighlighted(i)}>
+                {opt.label}
+              </li>
+            ))
+          )}
         </ul>
+      )}
+      {errorMessage && (
+        <div
+          className='form__error'
+          style={{ color: "#d32f2f", fontSize: 13, marginTop: 4 }}>
+          {errorMessage}
+        </div>
       )}
     </div>
   );

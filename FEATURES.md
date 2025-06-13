@@ -3,11 +3,11 @@
 ## 🚧 Features in Progress ⏳
 - Maintenance global notification & redirect system
 - Element form
+    - [⏳] Switch
     - [❌] File upload
     - [❌] Range/Slider
     - [❌] Hint / Help text
-    - [❌] Switch
-    - [⏳] Select data via Api
+    - [✅] Select data via Api
     - [✅] Select Filter
     - [✅] Radio button
     - [✅] Checkbox

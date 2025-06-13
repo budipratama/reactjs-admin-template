@@ -3,7 +3,7 @@ import Input from "./Input";
 interface InputLabelProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   containerClassName?: string;
-  hasError?: string;
+  errorMessage?: string;
 }
 
 const InputLabel = ({
@@ -14,7 +14,7 @@ const InputLabel = ({
   containerClassName = "form__group",
   value = "",
   required = false,
-  hasError = "",
+  errorMessage = "",
   ...inputProps
 }: InputLabelProps): JSX.Element => {
   return (
@@ -24,7 +24,7 @@ const InputLabel = ({
         {required && <span className='form__required'> *</span>}
       </label>
       <Input id={id} name={name} value={value} type={type} {...inputProps} />
-      {hasError && <div className='form__error'>{hasError}</div>}
+      {errorMessage && <div className='form__error'>{errorMessage}</div>}
     </div>
   );
 };

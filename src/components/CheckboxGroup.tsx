@@ -11,7 +11,7 @@ type CheckboxGroupProps = {
   values: string[];
   onChange: (values: string[]) => void;
   legend?: string;
-  hasError?: string;
+  errorMessage?: string;
   required?: boolean;
 };
 
@@ -22,7 +22,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
   required = false,
   onChange,
   legend,
-  hasError = "",
+  errorMessage = "",
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
@@ -67,7 +67,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
           </label>
         ))}
       </div>
-      {hasError && <div className='form__error'>{hasError}</div>}
+      {errorMessage && <div className='form__error'>{errorMessage}</div>}
     </fieldset>
   );
 };

@@ -1,5 +1,5 @@
 import InputPassword from "../components/InputPassword";
-import { JSX, useEffect, useState } from "react";
+import { JSX, useEffect, useState, useCallback } from "react";
 import InputLabel from "../components/InputLabel";
 import { checkPasswordStrength } from "../utils/password";
 import TextAreaLabel from "../components/TextAreaLabel";
@@ -37,8 +37,15 @@ const Form = (): JSX.Element => {
   const [hobbies, setHobbies] = useState<string[]>([]);
   const [hobbiesError, setHobbiesError] = useState("");
   const [formData, setFormData] = useState<{ [key: string]: string }>(fields);
-  const { username, password, confirm_password, postal_code, address, email } =
-    formData;
+  const {
+    username,
+    password,
+    confirm_password,
+    postal_code,
+    address,
+    email,
+    country,
+  } = formData;
   const [errors, setErrors] = useState<{ [key: string]: string }>(fields);
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({
     username: false,
@@ -51,6 +58,9 @@ const Form = (): JSX.Element => {
     postal_code: false,
   });
 
+  // State untuk hasil API dan mapping
+  const [countryApi, setCountryApi] = useState<any[]>([]);
+
   const validate: { [key: string]: (value: string) => string } = {
     username: (value: string) =>
       required("Username wajib diisi")(value) ||
@@ -58,6 +68,7 @@ const Form = (): JSX.Element => {
       (value.length < 4 ? "Minimal 4 karakter" : ""),
     password: (value) =>
       required("Password wajib diisi")(value) || checkPasswordStrength(value),
+    country: (value) => required("Country wajib diisi")(value),
     postal_code: (value) =>
       required("Postal Code wajib diisi")(value) ||
       minNumber(1, "Minimum number is 1")(value) ||
@@ -79,6 +90,7 @@ const Form = (): JSX.Element => {
       email: validate.email(email),
       address: validate.address(address),
       postal_code: validate.postal_code(postal_code),
+      country: validate.country(country),
     };
     setErrors(newErrors);
     setTouched({ username: true, password: true, confirm_password: true });
@@ -122,9 +134,24 @@ const Form = (): JSX.Element => {
       [name]: validate[name] ? validate[name](formData[name]) : "",
     });
   };
+
+  // Handler fetch API negara, memoized agar tidak trigger loop
+  const handleCountrySearch = useCallback(async (search: string) => {
+    const res = await fetch(
+      `https://restcountries.com/v3.1/name/${encodeURIComponent(search)}`
+    );
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      setCountryApi(data);
+    } else {
+      setCountryApi([]);
+    }
+  }, []);
+
   useEffect(() => {
     console.timeEnd("Render Time");
   });
+  console.log("Form Rendered", formData);
   return (
     <div className='form'>
       {/* <h1 className='form__title'>Form Page</h1> */}
@@ -137,18 +164,16 @@ const Form = (): JSX.Element => {
           value={username}
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={errors.username}
+          errorMessage={errors.username}
           required={true}
         />
-
         <InputPassword
           required={true}
           value={password}
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={errors.password}
+          errorMessage={errors.password}
         />
-
         <InputPassword
           label='Confirm Password'
           id='confirm_password'
@@ -157,7 +182,7 @@ const Form = (): JSX.Element => {
           value={confirm_password}
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={errors.confirm_password}
+          errorMessage={errors.confirm_password}
         />
         <InputLabel
           id='email'
@@ -167,10 +192,9 @@ const Form = (): JSX.Element => {
           type='email'
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={errors.email}
+          errorMessage={errors.email}
           required={true}
         />
-
         <InputLabel
           id='postal_code'
           name='postal_code'
@@ -179,10 +203,9 @@ const Form = (): JSX.Element => {
           type='number'
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={errors.postal_code}
+          errorMessage={errors.postal_code}
           required={true}
         />
-
         <TextAreaLabel
           id='address'
           name='address'
@@ -190,7 +213,7 @@ const Form = (): JSX.Element => {
           value={address}
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={errors.address}
+          errorMessage={errors.address}
           required={true}
         />
         <CheckboxGroup
@@ -200,12 +223,13 @@ const Form = (): JSX.Element => {
           values={hobbies}
           onChange={setHobbies}
           required={true}
-          hasError={hobbiesError}
+          errorMessage={hobbiesError}
         />
         {/* <SearchableSelect
           label='Country'
           name='country'
           value={formData.country}
+          minSearchLength={1}
           onChange={(val) => setFormData({ ...formData, country: val })}
           options={[
             { label: "Indonesia", value: "indonesia" },
@@ -218,8 +242,17 @@ const Form = (): JSX.Element => {
           label='Country'
           value={formData.country}
           onChange={(val) => setFormData({ ...formData, country: val })}
+          // onChange={handleChange}
           searchMode='api'
-          apiSearchUrl='https://restcountries.com/v3.1/name/'
+          minSearchLength={2}
+          rawOptions={countryApi}
+          optionMapper={(item) => ({
+            label: item.name?.common || item.name || "",
+            value:
+              item.cca2 || item.cca3 || item.name?.common || item.name || "",
+          })}
+          onSearch={handleCountrySearch}
+          errorMessage={errors.country}
         />
         <div className='form__group'>
           <label className='form__label' htmlFor='bio'>
@@ -227,7 +260,6 @@ const Form = (): JSX.Element => {
           </label>
           <textarea className='form__textarea' id='bio' name='bio'></textarea>
         </div>
-
         <div className='form__group form__group--center'>
           <button className='form__button form__button--primary' type='submit'>
             Submit

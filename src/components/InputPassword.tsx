@@ -5,7 +5,7 @@ interface InputPasswordProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   containerClassName?: string;
-  hasError?: string;
+  errorMessage?: string;
   passwordStrength?: string;
 }
 
@@ -18,7 +18,7 @@ const InputPassword = ({
   value = "",
   passwordStrength = "",
   onChange,
-  hasError = "",
+  errorMessage = "",
   ...inputProps
 }: InputPasswordProps): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
@@ -50,7 +50,7 @@ const InputPassword = ({
           )}
         </button>
       </div>
-      {hasError && <div className='form__error'>{hasError}</div>}
+      {errorMessage && <div className='form__error'>{errorMessage}</div>}
       {value && (
         <div
           className={

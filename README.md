@@ -461,389 +461,6 @@ src/
 
 ---
 
-### **Contoh Struktur untuk Next.js**
-```bash
-src/
-├── app/               # App Router (Next.js 13+)
-│   ├── (auth)/        # Route groups
-│   │   └── login/
-│   │       └── page.jsx
-│   └── layout.jsx
-│
-├── lib/               # Server-side utilities
-└── public/            # Static files
-```
-
----
-
-### **Tools untuk Auto-Struktur**
-1. **Plop.js**
-   Generate komponen/folder otomatis.
-2. **VS Code Snippets**
-   Buat template komponen cepat.
-
----
-
-### **Pilihan Lain**
-- **Group by File Type** (kurang direkomendasikan):
-  ```bash
-  src/
-  ├── components/
-  ├── hooks/
-  └── styles/
-  ```
-- **Domain-Driven Design** (untuk kompleks):
-  ```bash
-  src/
-  ├── user/
-  │   ├── components/
-  │   └── models/
-  └── product/
-      ├── components/
-      └── api/
-  ```
-
-Struktur di atas bisa disesuaikan dengan **ukuran tim** dan **kompleksitas proyek**. Untuk proyek kecil, gunakan struktur minimalis; untuk enterprise, pilih feature-based.
-
-
-Di React.js, terdapat beberapa pendekatan untuk menulis CSS yang bisa digunakan, masing-masing dengan kelebihan dan kekurangannya. Berikut penjelasan lengkapnya:
-
----
-
-### **1. Inline Styles**
-```jsx
-const divStyle = {
-  color: 'blue',
-  fontSize: '16px',
-  padding: '10px'
-};
-
-function Component() {
-  return <div style={divStyle}>Hello World</div>;
-}
-```
-✅ **Kelebihan**:
-- Scoped langsung ke komponen
-- Tidak perlu file CSS terpisah
-
-❌ **Kekurangan**:
-- Tidak mendukung pseudo-classes (`:hover`)
-- Tidak bisa media queries
-
----
-
-### **2. Regular CSS File**
-```css
-/* styles.css */
-.button {
-  background: #3498db;
-  color: white;
-}
-```
-```jsx
-import './styles.css';
-
-function Component() {
-  return <button className="button">Click</button>;
-}
-```
-✅ **Kelebihan**:
-- Familiar (cara tradisional)
-- Support penuh fitur CSS
-
-❌ **Kekurangan**:
-- Global scope (bisa terjadi conflict)
-- Butuh naming convention (BEM, dll)
-
----
-
-### **3. CSS Modules** *(Paling Direkomendasikan untuk CSS Vanilla)*
-```css
-/* Button.module.css */
-.error {
-  color: red;
-}
-```
-```jsx
-import styles from './Button.module.css';
-
-function Button() {
-  return <button className={styles.error}>Click</button>;
-}
-```
-✅ **Kelebihan**:
-- Scoped lokal otomatis (generate class unik)
-- Support semua fitur CSS
-
-❌ **Kekurangan**:
-- Sedikit syntax tambahan
-
----
-
-### **4. CSS-in-JS (Styled Components, Emotion)** *(Modern Approach)*
-```jsx
-import styled from 'styled-components';
-
-const StyledButton = styled.button`
-  background: ${props => props.primary ? 'blue' : 'gray'};
-  &:hover {
-    opacity: 0.9;
-  }
-`;
-
-function Component() {
-  return <StyledButton primary>Click</StyledButton>;
-}
-```
-✅ **Kelebihan**:
-- Scoped otomatis
-- Dinamis via props
-- Support SSR
-
-❌ **Kekurangan**:
-- Learning curve
-- Bundle size lebih besar
-
----
-
-### **5. Utility-First CSS (Tailwind CSS)** *(Popular for Rapid Dev)*
-```jsx
-function Component() {
-  return (
-    <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
-      Click
-    </button>
-  );
-}
-```
-✅ **Kelebihan**:
-- Development cepat
-- Tidak perlu switch antar file
-- Responsive design mudah
-
-❌ **Kekurangan**:
-- Class name bisa panjang
-- Butuh setup awal
-
----
-
-### **6. Sass/SCSS** *(CSS dengan Superpower)*
-```scss
-/* styles.scss */
-$primary: blue;
-
-.button {
-  background: $primary;
-  &:hover {
-    darken($primary, 10%);
-  }
-}
-```
-```jsx
-import './styles.scss';
-```
-✅ **Kelebihan**:
-- Variabel, nesting, mixins
-- Kompatibel dengan CSS Modules
-
-❌ **Kekurangan**:
-- Butuh preprocessor
-
----
-
-### **7. CSS Framework (Bootstrap, Material UI)**
-```jsx
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-function Component() {
-  return <button className="btn btn-primary">Click</button>;
-}
-```
-✅ **Kelebihan**:
-- Komponen siap pakai
-- Konsisten design
-
-❌ **Kekurangan**:
-- Kustomisasi terbatas
-- Bundle size besar
-
----
-
-### **Perbandingan Popular Libraries**
-| Library          | Bundle Size | Dinamis | Scoped | Learning Curve |
-|------------------|------------|---------|--------|----------------|
-| Styled Components | 12.7kB     | ✅      | ✅     | Medium         |
-| Emotion          | 7.9kB      | ✅      | ✅     | Medium         |
-| Tailwind CSS     | 3.5kB      | ✅      | ✅     | Low            |
-| Sass             | 1.5MB      | ❌      | ❌     | Low            |
-
----
-
-### **Rekomendasi Berdasarkan Use Case**
-1. **Proyek Kecil**: CSS Modules + Sass
-2. **Tim Besar**: Styled Components/Emotion
-3. **Rapid Prototyping**: Tailwind CSS
-4. **Design System**: CSS-in-JS + Utility Classes
-
-Pilihan tergantung pada **preferensi tim** dan **kebutuhan proyek**. Untuk mulai, CSS Modules adalah pilihan aman! 🎨
-
-
-Berikut struktur folder umum untuk **SCSS/SASS** dalam proyek React.js yang terorganisir dengan baik:
-
----
-
-### **Struktur Dasar (Atomic Design Inspired)**
-```bash
-src/
-├── styles/
-│   ├── base/          # Dasar styling
-│   │   ├── _reset.scss
-│   │   ├── _typography.scss
-│   │   └── _variables.scss
-│   │
-│   ├── components/    # Style komponen
-│   │   ├── _buttons.scss
-│   │   ├── _cards.scss
-│   │   └── _forms.scss
-│   │
-│   ├── layout/        # Struktur halaman
-│   │   ├── _header.scss
-│   │   ├── _footer.scss
-│   │   └── _grid.scss
-│   │
-│   ├── pages/         # Style spesifik halaman
-│   │   ├── _home.scss
-│   │   └── _dashboard.scss
-│   │
-│   ├── themes/        # Variasi tema (opsional)
-│   │   ├── _light.scss
-│   │   └── _dark.scss
-│   │
-│   ├── utils/         # Helper & mixins
-│   │   ├── _mixins.scss
-│   │   ├── _functions.scss
-│   │   └── _animations.scss
-│   │
-│   └── main.scss      # File utama (import semua partials)
-```
-
----
-
-### **Penjelasan Setiap Folder**
-1. **`base/`**
-   - File dasar seperti reset CSS, variabel, dan tipografi.
-   Contoh `_variables.scss`:
-   ```scss
-   $primary-color: #3498db;
-   $font-stack: 'Helvetica', sans-serif;
-   ```
-
-2. **`components/`**
-   - Style untuk komponen UI (button, card, modal).
-   Contoh `_buttons.scss`:
-   ```scss
-   .btn {
-     padding: 8px 16px;
-     background: $primary-color;
-     &:hover {
-       opacity: 0.9;
-     }
-   }
-   ```
-
-3. **`layout/`**
-   - Style untuk tata letak global (header, footer, grid system).
-
-4. **`pages/`**
-   - Style khusus halaman (misal: halaman `Home` punya style unik).
-
-5. **`themes/`** (Opsional)
-   - Variabel tema light/dark mode.
-   Contoh implementasi:
-   ```scss
-   [data-theme="dark"] {
-     background: #222;
-     color: #fff;
-   }
-   ```
-
-6. **`utils/`**
-   - Fungsi reusable seperti mixins dan animations.
-   Contoh `_mixins.scss`:
-   ```scss
-   @mixin flex-center {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-   }
-   ```
-
----
-
-### **File Utama (`main.scss`)**
-```scss
-// Import semua partials
-@import 'base/variables';
-@import 'base/reset';
-@import 'base/typography';
-
-@import 'utils/mixins';
-@import 'utils/animations';
-
-@import 'layout/header';
-@import 'layout/footer';
-
-@import 'components/buttons';
-@import 'components/cards';
-
-@import 'pages/home';
-@import 'pages/dashboard';
-```
-
----
-
-### **Struktur Alternatif (BEM Methodology)**
-```bash
-styles/
-├── blocks/       # Komponen utama (BEM Block)
-├── elements/     # Bagian kecil komponen (BEM Element)
-├── modifiers/    # Variasi style (BEM Modifier)
-└── utilities/    # Helper classes
-```
-
----
-
-### **Best Practices**
-1. **Naming Convention**
-   - Gunakan `_prefix.scss` untuk partial files.
-   - Contoh: `_buttons.scss` (akan di-compile ke `main.css`).
-
-2. **Import Order**
-   Urutan import harus logis:
-   ```
-   Variables → Mixins → Base → Components → Layout → Pages
-   ```
-
-3. **Modularisasi**
-   - Satu file SCSS per komponen.
-   - Contoh:
-     ```bash
-     components/
-     ├── Button/
-     │   ├── Button.jsx
-     │   └── Button.scss  # Style lokal komponen
-     ```
-
-4. **Global vs Local Scope**
-   - Gunakan `:global` untuk style yang perlu dipakai di banyak komponen:
-     ```scss
-     :global(.main-container) {
-       max-width: 1200px;
-     }
-     ```
-
----
-
 ### **Contoh Integrasi dengan React**
 ```jsx
 // Button.jsx
@@ -1187,3 +804,93 @@ Hasilnya akan menjadi CSS teroptimasi di folder `build/static/css`.
 | Styled Components | ✅ | ✅      | Besar      | Komponen dinamis  |
 
 Pilih sesuai kebutuhan proyek Anda! 🎨
+
+# SearchableSelect Component Usage
+
+A flexible, accessible, and robust React select component with support for both local and API-based search, custom validation, and modular UI.
+
+## Features
+- Local and API search modes
+- Debounced API search with customizable minimum search length
+- Custom mapping for API data (label/value)
+- Keyboard navigation and accessible dropdown
+- Error handling and prop validation with clear UI feedback
+- Modular, reusable, and easy to integrate
+
+## Props
+| Prop             | Type                                | Required | Default   | Description                                                                                 |
+|------------------|-------------------------------------|----------|-----------|---------------------------------------------------------------------------------------------|
+| `options`        | `{ label: string, value: string }[]` | No       | `[]`      | List of options for local search mode                                                       |
+| `value`          | `string`                            | Yes      |           | The selected value                                                                          |
+| `onChange`       | `(value: string) => void`            | Yes      |           | Callback when value changes                                                                 |
+| `placeholder`    | `string`                            | No       | `Select...`| Placeholder text                                                                            |
+| `label`          | `string`                            | No       |           | Label for the select field                                                                  |
+| `name`           | `string`                            | No       |           | Name attribute                                                                              |
+| `searchMode`     | `'local' | 'api'`                   | No       | `'local'` | Search mode: 'local' for static options, 'api' for remote search                            |
+| `rawOptions`     | `any[]`                             | Yes*     |           | Raw API data array (required for `searchMode='api'`)                                        |
+| `optionMapper`   | `(item: any) => {label, value}`      | Yes*     |           | Function to map raw API data to `{label, value}` (required for `searchMode='api'`)          |
+| `onSearch`       | `(search: string) => void`           | Yes*     |           | Callback to trigger API search (required for `searchMode='api'`)                            |
+| `minSearchLength`| `number`                            | No       | `2`       | Minimum characters before search/API is triggered and dropdown is shown                      |
+
+\* Required only if `searchMode='api'`.
+
+## Usage
+
+### Local Search Example
+```tsx
+<SearchableSelect
+  label="Country"
+  value={selectedCountry}
+  onChange={setSelectedCountry}
+  options={[
+    { label: "Indonesia", value: "indonesia" },
+    { label: "USA", value: "usa" },
+    { label: "Singapore", value: "singapore" },
+    { label: "Malaysia", value: "malaysia" },
+  ]}
+  searchMode="local"
+  minSearchLength={1} // optional
+/>
+```
+
+### API Search Example
+```tsx
+const [apiData, setApiData] = useState<any[]>([]);
+const handleSearch = async (search: string) => {
+  const res = await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(search)}`);
+  const data = await res.json();
+  setApiData(Array.isArray(data) ? data : []);
+};
+
+<SearchableSelect
+  label="Country"
+  value={selectedCountry}
+  onChange={setSelectedCountry}
+  searchMode="api"
+  minSearchLength={2} // optional
+  rawOptions={apiData}
+  optionMapper={item => ({
+    label: item.name?.common || item.name || "",
+    value: item.cca2 || item.cca3 || item.name?.common || item.name || "",
+  })}
+  onSearch={handleSearch}
+/>
+```
+
+## Error Handling
+- If required props are missing for the selected `searchMode`, a clear error message and the received props will be shown in the UI.
+- For `searchMode='api'`, you must provide `rawOptions`, `optionMapper`, and `onSearch`.
+- For `searchMode='local'`, do not provide `rawOptions` or `onSearch`.
+
+## Accessibility & UX
+- Keyboard navigation: Up/Down arrows, Enter to select, Escape to close.
+- Dropdown will not show options until `minSearchLength` is reached.
+- Customizable placeholder and label.
+
+## Notes
+- For API mode, all data fetching and mapping is handled in the parent. The component only displays mapped options.
+- You can style the component further using the provided class names.
+
+---
+
+For more advanced usage, see the code and comments in `src/components/SearchableSelect.tsx`.

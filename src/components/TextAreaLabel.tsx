@@ -3,7 +3,7 @@ interface TextAreaLabelProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
   containerClassName?: string;
-  hasError?: string;
+  errorMessage?: string;
 }
 
 const TextAreaLabel = ({
@@ -13,7 +13,7 @@ const TextAreaLabel = ({
   containerClassName = "form__group",
   value = "",
   required = false,
-  hasError = "",
+  errorMessage = "",
   ...inputProps
 }: TextAreaLabelProps): JSX.Element => {
   return (
@@ -28,7 +28,7 @@ const TextAreaLabel = ({
         name={name}
         value={value}
         {...inputProps}></textarea>
-      {hasError && <div className='form__error'>{hasError}</div>}
+      {errorMessage && <div className='form__error'>{errorMessage}</div>}
     </div>
   );
 };
