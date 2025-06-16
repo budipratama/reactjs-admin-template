@@ -60,7 +60,6 @@ const AutoComplete = (): JSX.Element => {
             { label: "Female", value: "female" },
             { label: "Other", value: "other" },
           ]}
-          disabled={true}
         />
 
         <BasicSelect
@@ -75,7 +74,6 @@ const AutoComplete = (): JSX.Element => {
             { label: "Swimming", value: "swimming" },
           ]}
           multiple={true}
-          disabled={true}
         />
       </div>
 
@@ -96,7 +94,6 @@ const AutoComplete = (): JSX.Element => {
             value:
               item.cca2 || item.cca3 || item.name?.common || item.name || "",
           })}
-          //   disabled={true}
         />
 
         <AdvancedSelect
@@ -115,7 +112,6 @@ const AutoComplete = (): JSX.Element => {
           })}
           multiple={true}
           placeholder='Search countries...'
-          //   disabled={true}
         />
       </div>
     </div>
