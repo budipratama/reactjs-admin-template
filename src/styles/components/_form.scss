@@ -233,9 +233,9 @@
   justify-content: center;
 }
 
-input {
-  display: none;
-}
+// input {
+//   display: none;
+// }
 
 label[for="btn"] {
   position: absolute;
@@ -449,5 +449,31 @@ label[for="btn"]:after {
   70% {
     opacity: 1;
     width: calc(100% - calc(calc(var(--sz) / 5) * 4));
+  }
+}
+
+.select {
+  &__input {
+    width: 100%;
+    padding: 0.5rem;
+    height: 3rem;
+    background-color: white;
+    border: 1px solid #ccc;
+  }
+  &__search {
+    width: 100%;
+    padding: 0.5rem;
+    height: 3rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    box-sizing: border-box;
+    display: block;
+    background-color: white;
+    &:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
   }
 }

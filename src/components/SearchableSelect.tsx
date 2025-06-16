@@ -47,6 +47,7 @@ function FilterInput({
           setHighlighted(0);
         }}
         onBlur={() => {
+          console.log("Filter input blurred");
           setIsSearching(false);
           setSearch("");
         }}

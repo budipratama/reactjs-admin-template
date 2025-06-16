@@ -227,9 +227,9 @@ const Form = (): JSX.Element => {
           required={true}
           errorMessage={hobbiesError}
         />
-        {/* <SearchableSelect
+        <SearchableSelect
           label='Country'
-          name='country'
+          // name='country'
           value={formData.country}
           minSearchLength={1}
           onChange={(val) => setFormData({ ...formData, country: val })}
@@ -239,7 +239,7 @@ const Form = (): JSX.Element => {
             { label: "Singapore", value: "singapore" },
             { label: "Malaysia", value: "malaysia" },
           ]}
-        /> */}
+        />
         <SearchableSelect
           label='Country'
           value={formData.country}

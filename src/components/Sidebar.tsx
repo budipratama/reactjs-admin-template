@@ -2,6 +2,7 @@ import { JSX, useState, memo } from "react";
 import "../styles/components/_sidebar.scss";
 import logoProfile from "../assets/images/user-1.jpg";
 import { useLocation, Link } from "react-router-dom";
+import path from "path";
 
 // Komponen MenuItem dengan memo
 const MenuItem = memo(function MenuItem({
@@ -69,66 +70,77 @@ const Sidebar = ({
       path: "/dashboard",
     },
     {
-      icon: "fa-solid fa-user",
-      title: "General",
+      icon: "fa-solid fa-grip",
+      title: "Form Elements",
       children: [
         {
-          icon: "fa-solid fa-user",
-          title: "Profile",
-          path: "/profile",
-        },
-        {
-          icon: "fa-solid fa-user",
-          title: "Settings",
-          children: [
-            {
-              icon: "fa-solid fa-user",
-              title: "Account",
-              path: "/settings/account",
-            },
-            {
-              icon: "fa-solid fa-user",
-              title: "Privacy",
-              children: [
-                {
-                  icon: "fa-solid fa-user",
-                  title: "Security",
-                },
-                {
-                  icon: "fa-solid fa-user",
-                  title: "Notification",
-                },
-                {
-                  icon: "fa-solid fa-user",
-                  title: "Language",
-                  path: "/language",
-                },
-              ],
-            },
-          ],
+          icon: "fa-solid fa-square",
+          title: "Auto complete",
+          path: "/form-elements/auto-complete",
         },
       ],
     },
-    {
-      icon: "fa-solid fa-user",
-      title: "Basic",
-      path: "/basic",
-    },
-    {
-      icon: "fa-solid fa-user",
-      title: "Analytic",
-      path: "/analytic",
-    },
-    {
-      icon: "fa-solid fa-user",
-      title: "Campaign",
-      path: "/campaign",
-    },
-    {
-      icon: "fa-solid fa-user",
-      title: "Modern",
-      path: "/modern",
-    },
+    // {
+    //   icon: "fa-solid fa-user",
+    //   title: "General",
+    //   children: [
+    //     {
+    //       icon: "fa-solid fa-user",
+    //       title: "Profile",
+    //       path: "/profile",
+    //     },
+    //     {
+    //       icon: "fa-solid fa-user",
+    //       title: "Settings",
+    //       children: [
+    //         {
+    //           icon: "fa-solid fa-user",
+    //           title: "Account",
+    //           path: "/settings/account",
+    //         },
+    //         {
+    //           icon: "fa-solid fa-user",
+    //           title: "Privacy",
+    //           children: [
+    //             {
+    //               icon: "fa-solid fa-user",
+    //               title: "Security",
+    //             },
+    //             {
+    //               icon: "fa-solid fa-user",
+    //               title: "Notification",
+    //             },
+    //             {
+    //               icon: "fa-solid fa-user",
+    //               title: "Language",
+    //               path: "/language",
+    //             },
+    //           ],
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
+    // {
+    //   icon: "fa-solid fa-user",
+    //   title: "Basic",
+    //   path: "/basic",
+    // },
+    // {
+    //   icon: "fa-solid fa-user",
+    //   title: "Analytic",
+    //   path: "/analytic",
+    // },
+    // {
+    //   icon: "fa-solid fa-user",
+    //   title: "Campaign",
+    //   path: "/campaign",
+    // },
+    // {
+    //   icon: "fa-solid fa-user",
+    //   title: "Modern",
+    //   path: "/modern",
+    // },
   ];
 
   const isMenuActive = (item: any, pathname: string): boolean => {
