@@ -105,7 +105,10 @@ const BasicSelect = ({
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       // Only close if click is outside this BasicSelect
-      if (!selectRef.current?.contains(target)) {
+      if (
+        !selectRef.current?.contains(target) &&
+        target !== selectRef.current?.nextElementSibling?.querySelector("input")
+      ) {
         setOpenFilter(false);
       }
     };

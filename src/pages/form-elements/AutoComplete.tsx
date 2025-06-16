@@ -1,8 +1,10 @@
 import BasicSelect from "../../components/BasicSelect";
 import AdvancedSelect from "../../components/AdvancedSelect";
-import { JSX, useState } from "react";
+import { JSX, useCallback, useState } from "react";
 
 const AutoComplete = (): JSX.Element => {
+  const [countryApi, setCountryApi] = useState<any[]>([]);
+
   const fields = {
     country: "",
     gender: "",
@@ -10,6 +12,17 @@ const AutoComplete = (): JSX.Element => {
   const [formData, setFormData] = useState<{ [key: string]: string }>(fields);
   const { gender, country } = formData;
   console.log("formData", formData);
+  const handleCountrySearch = useCallback(async (search: string) => {
+    const res = await fetch(
+      `https://restcountries.com/v3.1/name/${encodeURIComponent(search)}`
+    );
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      setCountryApi(data);
+    } else {
+      setCountryApi([]);
+    }
+  }, []);
   return (
     <div
       style={{
@@ -44,12 +57,14 @@ const AutoComplete = (): JSX.Element => {
           value={country}
           onChange={(val: string) => setFormData({ ...formData, country: val })}
           errorMessage=''
-          //   minSearchLength={1}
-          options={[
-            { label: "Indonesia", value: "indonesia" },
-            { label: "Singapore", value: "singapore" },
-            { label: "Malaysia", value: "malaysia" },
-          ]}
+          minSearchLength={1}
+          onSearch={handleCountrySearch}
+          rawOptions={countryApi}
+          optionMapper={(item: any) => ({
+            label: item.name?.common || item.name || "",
+            value:
+              item.cca2 || item.cca3 || item.name?.common || item.name || "",
+          })}
         />
       </div>
     </div>

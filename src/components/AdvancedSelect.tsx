@@ -8,38 +8,53 @@ interface AdvancedSelectProps {
   containerClassName?: string;
   label: string;
   errorMessage: string;
-  options: Option[];
   onChange: (value: string) => void;
   value?: string;
   placeholder?: string;
+  minSearchLength?: number;
+  optionMapper: (item: any) => Option;
+  rawOptions: any[];
+  onSearch: (search: string) => void;
 }
 const AdvancedSelect = ({
   name,
   label,
   onChange,
+  minSearchLength = 1,
   placeholder,
   required = false,
   value = "",
   containerClassName = "form__group",
   errorMessage = "",
-
-  options = [],
+  optionMapper,
+  onSearch,
+  rawOptions,
 }: AdvancedSelectProps): JSX.Element => {
   const defaultPlaceholder = `Choose ${name}`;
   const [search, setSearch] = useState<string>("");
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [highlighted, setHighlighted] = useState<number>(-1);
+  const [apiOptions, setApiOptions] = useState<Option[]>([]);
   const [dropdownFilterPosition, setDropdownFilterPosition] =
     useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<Option | undefined>(
     undefined
   );
   const selectRef = useRef<HTMLDivElement>(null);
-  const filteredOptions = options.filter((opt) =>
-    opt.label.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredOptions = apiOptions;
   const handleOpenFilter = () => setOpenFilter((prev) => !prev);
 
+  useEffect(() => {
+    if (!optionMapper && !rawOptions) {
+      console.error(
+        "[AdvancedSelect] optionMapper is required. Please provide a function to map options."
+      );
+      return;
+    }
+    // Map options using the provided optionMapper
+    const mappedOptions = rawOptions.map(optionMapper);
+    setApiOptions(mappedOptions);
+  }, [rawOptions, optionMapper]);
   useEffect(() => {
     const el = selectRef.current;
     if (!el) return;
@@ -63,11 +78,15 @@ const AdvancedSelect = ({
   }, []);
 
   useEffect(() => {
+    console.log(
+      `[AdvancedSelect] value changed: ${value}, selectedOption: `,
+      selectedOption
+    );
     if (!value) {
       setSelectedOption(undefined);
       return;
     }
-    const foundOption = options.find((opt) => opt.value === value);
+    const foundOption = apiOptions.find((opt) => opt.value === value);
     if (foundOption) {
       setSelectedOption(foundOption);
     } else {
@@ -75,6 +94,17 @@ const AdvancedSelect = ({
     }
   }, [value]);
 
+  useEffect(() => {
+    if (search.length >= minSearchLength) {
+      const handler = setTimeout(() => {
+        onSearch(search);
+      }, 400); // 400ms debounce
+      return () => clearTimeout(handler);
+    } else {
+      onSearch(""); // Clear search if below min length
+      setSearch(""); // Reset search input
+    }
+  }, [search, onSearch]);
   useEffect(() => {
     console.log(
       `[AdvancedSelect] openFilter: `,
@@ -104,9 +134,18 @@ const AdvancedSelect = ({
 
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      // Only close if click is outside this AdvancedSelect
-      if (!selectRef.current?.contains(target)) {
+      console.log(
+        `[AdvancedSelect] Click outside: `,
+        selectRef.current?.nextElementSibling?.querySelector("input"),
+        target.nextElementSibling,
+        !selectRef.current?.contains(target)
+      );
+      if (
+        !selectRef.current?.contains(target) &&
+        target !== selectRef.current?.nextElementSibling?.querySelector("input")
+      ) {
         setOpenFilter(false);
+        setSearch("");
       }
     };
 
@@ -115,6 +154,9 @@ const AdvancedSelect = ({
       document.removeEventListener("click", handleClickOutside);
     };
   }, [openFilter]);
+  console.log(
+    `[AdvancedSelect] Search: ${search.length} characters. Min length: ${minSearchLength}`
+  );
   return (
     <div className={containerClassName} style={{ position: "relative" }}>
       <label className='form__label'>
@@ -184,32 +226,39 @@ const AdvancedSelect = ({
             top: dropdownFilterPosition ? undefined : "100%",
             bottom: dropdownFilterPosition ? "100%" : undefined,
           }}>
-          {filteredOptions.map((opt, i) => {
-            let backgroundColor = "#fff";
-            if (value === opt.value) {
-              backgroundColor = "#f0f4ff";
-            } else if (highlighted === i) {
-              backgroundColor = "#e6eaff";
-            }
-            return (
-              <li
-                key={opt.value}
-                style={{
-                  backgroundColor,
-                }}>
-                <button
-                  onMouseDown={() => {
-                    onChange(opt.value);
-                    setSelectedOption(opt);
-                    setOpenFilter(false);
-                    setSearch("");
-                  }}
-                  onMouseEnter={() => setHighlighted(i)}>
-                  {opt.label}
-                </button>
-              </li>
-            );
-          })}
+          {search.length < minSearchLength ? (
+            <li className='form__dropdown-item--search-hint'>
+              Type at least {minSearchLength} character
+              {minSearchLength > 1 ? "s" : ""} to search
+            </li>
+          ) : (
+            filteredOptions.map((opt, i) => {
+              let backgroundColor = "#fff";
+              if (value === opt.value) {
+                backgroundColor = "#f0f4ff";
+              } else if (highlighted === i) {
+                backgroundColor = "#e6eaff";
+              }
+              return (
+                <li
+                  key={opt.value}
+                  style={{
+                    backgroundColor,
+                  }}>
+                  <button
+                    onMouseDown={() => {
+                      onChange(opt.value);
+                      setSelectedOption(opt);
+                      setOpenFilter(false);
+                      setSearch("");
+                    }}
+                    onMouseEnter={() => setHighlighted(i)}>
+                    {opt.label}
+                  </button>
+                </li>
+              );
+            })
+          )}
         </ul>
       </div>
     </div>

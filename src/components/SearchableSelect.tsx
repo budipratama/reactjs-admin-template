@@ -47,7 +47,6 @@ function FilterInput({
           setHighlighted(0);
         }}
         onBlur={() => {
-          console.log("Filter input blurred");
           setIsSearching(false);
           setSearch("");
         }}
@@ -258,7 +257,7 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
       role='button'
       className='form__group'
       style={{ position: "relative" }}
-      tabIndex={0}
+      tabIndex={3}
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget)) {
           if (typeof onBlur === "function") onBlur();
