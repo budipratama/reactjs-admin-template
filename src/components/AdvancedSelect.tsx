@@ -16,6 +16,7 @@ interface AdvancedSelectProps {
   rawOptions: any[];
   onSearch: (search: string) => void;
   multiple?: boolean;
+  disabled?: boolean;
 }
 const AdvancedSelect = ({
   name,
@@ -31,6 +32,7 @@ const AdvancedSelect = ({
   onSearch,
   rawOptions,
   multiple = false,
+  disabled = false,
 }: AdvancedSelectProps): JSX.Element => {
   console.log(`[AdvancedSelect] RawOptions`, rawOptions);
   const defaultPlaceholder = `Choose ${name}`;
@@ -219,6 +221,31 @@ const AdvancedSelect = ({
     }
     return placeholder ?? defaultPlaceholder;
   };
+
+  if (disabled) {
+    return (
+      <div
+        className={containerClassName}
+        style={{
+          position: "relative",
+          opacity: 0.6,
+        }}>
+        <label className='form__label'>
+          {label}
+          {required && <span className='form__required'> *</span>}
+        </label>
+        <div
+          className={
+            errorMessage
+              ? "select__error select__input select__disabled"
+              : " select__input select__disabled"
+          }>
+          <span>{renderSelectedLabels()}</span>
+        </div>
+        {errorMessage && <div className='form__error'>{errorMessage}</div>}
+      </div>
+    );
+  }
 
   return (
     <div className={containerClassName} style={{ position: "relative" }}>
