@@ -8,13 +8,14 @@ interface AdvancedSelectProps {
   containerClassName?: string;
   label: string;
   errorMessage: string;
-  onChange: (value: string) => void;
-  value?: string;
+  onChange: (value: Option | Option[] | "") => void;
+  value?: Option | Option[] | "";
   placeholder?: string;
   minSearchLength?: number;
   optionMapper: (item: any) => Option;
   rawOptions: any[];
   onSearch: (search: string) => void;
+  multiple?: boolean;
 }
 const AdvancedSelect = ({
   name,
@@ -29,7 +30,9 @@ const AdvancedSelect = ({
   optionMapper,
   onSearch,
   rawOptions,
+  multiple = false,
 }: AdvancedSelectProps): JSX.Element => {
+  console.log(`[AdvancedSelect] RawOptions`, rawOptions);
   const defaultPlaceholder = `Choose ${name}`;
   const [search, setSearch] = useState<string>("");
   const [openFilter, setOpenFilter] = useState<boolean>(false);
@@ -86,9 +89,18 @@ const AdvancedSelect = ({
       setSelectedOption(undefined);
       return;
     }
-    const foundOption = apiOptions.find((opt) => opt.value === value);
-    if (foundOption) {
-      setSelectedOption(foundOption);
+    if (
+      !multiple &&
+      value &&
+      typeof value === "object" &&
+      !Array.isArray(value)
+    ) {
+      const foundOption = apiOptions.find((opt) => opt.value === value.value);
+      if (foundOption) {
+        setSelectedOption(foundOption);
+      } else {
+        setSelectedOption(undefined);
+      }
     } else {
       setSelectedOption(undefined);
     }
@@ -134,12 +146,7 @@ const AdvancedSelect = ({
 
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      console.log(
-        `[AdvancedSelect] Click outside: `,
-        selectRef.current?.nextElementSibling?.querySelector("input"),
-        target.nextElementSibling,
-        !selectRef.current?.contains(target)
-      );
+
       if (
         !selectRef.current?.contains(target) &&
         target !== selectRef.current?.nextElementSibling?.querySelector("input")
@@ -157,6 +164,62 @@ const AdvancedSelect = ({
   console.log(
     `[AdvancedSelect] Search: ${search.length} characters. Min length: ${minSearchLength}`
   );
+
+  // Helper for selected values
+  const isSelected = (val: string) => {
+    if (multiple && Array.isArray(value))
+      return value.some((v: Option) => v.value === val);
+    if (
+      !multiple &&
+      value &&
+      typeof value === "object" &&
+      !Array.isArray(value)
+    )
+      return value.value === val;
+    return value === val;
+  };
+  // Render selected labels for multiple
+  const renderSelectedLabels = () => {
+    if (!multiple) {
+      if (value && typeof value === "object" && !Array.isArray(value)) {
+        return value.label;
+      }
+      return selectedOption?.label ?? placeholder ?? defaultPlaceholder;
+    }
+    if (Array.isArray(value) && value.length > 0) {
+      return (
+        <span style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+          {value.map((val: Option) => (
+            <span
+              key={val.value}
+              style={{
+                background: "#e6eaff",
+                borderRadius: 4,
+                padding: "0 6px",
+                marginRight: 2,
+              }}>
+              {val.label}
+              <span style={{ marginLeft: 4, cursor: "pointer" }}>
+                <button
+                  style={{ fontSize: "0.8rem" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newVals = value.filter(
+                      (v: Option) => v.value !== val.value
+                    );
+                    onChange(newVals);
+                  }}>
+                  x
+                </button>
+              </span>
+            </span>
+          ))}
+        </span>
+      );
+    }
+    return placeholder ?? defaultPlaceholder;
+  };
+
   return (
     <div className={containerClassName} style={{ position: "relative" }}>
       <label className='form__label'>
@@ -168,12 +231,18 @@ const AdvancedSelect = ({
           errorMessage ? "select__error select__input" : " select__input"
         }
         ref={selectRef}>
-        <span>
-          {value
-            ? (selectedOption?.label ?? placeholder ?? defaultPlaceholder)
-            : (placeholder ?? defaultPlaceholder)}
-        </span>
-        {value && <span className='select__clear'>X</span>}
+        <span>{renderSelectedLabels()}</span>
+        {(multiple ? Array.isArray(value) && value.length > 0 : value) && (
+          <button
+            className='select__clear'
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange(multiple ? [] : "");
+              setSelectedOption(undefined);
+            }}>
+            X
+          </button>
+        )}
       </div>
       {errorMessage && <div className='form__error'>{errorMessage}</div>}
 
@@ -210,10 +279,23 @@ const AdvancedSelect = ({
               highlighted >= 0 &&
               filteredOptions[highlighted]
             ) {
-              setOpenFilter(false);
-              setSelectedOption(filteredOptions[highlighted]);
-              onChange(filteredOptions[highlighted].value);
-              setSearch("");
+              if (multiple) {
+                let newVals = Array.isArray(value) ? [...value] : [];
+                const opt = filteredOptions[highlighted];
+                if (newVals.some((v: Option) => v.value === opt.value)) {
+                  newVals = newVals.filter(
+                    (v: Option) => v.value !== opt.value
+                  );
+                } else {
+                  newVals.push(opt);
+                }
+                onChange(newVals);
+              } else {
+                setOpenFilter(false);
+                setSelectedOption(filteredOptions[highlighted]);
+                onChange(filteredOptions[highlighted]);
+                setSearch("");
+              }
             } else if (e.key === "Escape") {
               setOpenFilter(false);
               setSearch("");
@@ -234,7 +316,7 @@ const AdvancedSelect = ({
           ) : (
             filteredOptions.map((opt, i) => {
               let backgroundColor = "#fff";
-              if (value === opt.value) {
+              if (isSelected(opt.value)) {
                 backgroundColor = "#f0f4ff";
               } else if (highlighted === i) {
                 backgroundColor = "#e6eaff";
@@ -247,13 +329,32 @@ const AdvancedSelect = ({
                   }}>
                   <button
                     onMouseDown={() => {
-                      onChange(opt.value);
-                      setSelectedOption(opt);
-                      setOpenFilter(false);
-                      setSearch("");
+                      if (multiple) {
+                        let newVals = Array.isArray(value) ? [...value] : [];
+                        if (
+                          newVals.some((v: Option) => v.value === opt.value)
+                        ) {
+                          newVals = newVals.filter(
+                            (v: Option) => v.value !== opt.value
+                          );
+                        } else {
+                          newVals.push(opt);
+                        }
+                        onChange(newVals);
+                      } else {
+                        onChange(opt);
+                        setSelectedOption(opt);
+                        setOpenFilter(false);
+                        setSearch("");
+                      }
                     }}
                     onMouseEnter={() => setHighlighted(i)}>
                     {opt.label}
+                    {multiple &&
+                      Array.isArray(value) &&
+                      value.some((v: Option) => v.value === opt.value) && (
+                        <span style={{ marginLeft: 6, color: "#888" }}>✔</span>
+                      )}
                   </button>
                 </li>
               );

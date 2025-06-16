@@ -4,14 +4,17 @@ import { JSX, useCallback, useState } from "react";
 
 const AutoComplete = (): JSX.Element => {
   const [countryApi, setCountryApi] = useState<any[]>([]);
+  const [countryApi2, setCountryApi2] = useState<any[]>([]);
 
   const fields = {
     country: "",
+    countries: [] as string[],
     gender: "",
+    hobbies: [] as string[],
   };
-  const [formData, setFormData] = useState<{ [key: string]: string }>(fields);
-  const { gender, country } = formData;
-  console.log("formData", formData);
+  const [formData, setFormData] = useState<{ [key: string]: any }>(fields);
+  const { gender, country, hobbies, countries } = formData;
+  console.log("[AutoComplete] formData", formData);
   const handleCountrySearch = useCallback(async (search: string) => {
     const res = await fetch(
       `https://restcountries.com/v3.1/name/${encodeURIComponent(search)}`
@@ -21,6 +24,18 @@ const AutoComplete = (): JSX.Element => {
       setCountryApi(data);
     } else {
       setCountryApi([]);
+    }
+  }, []);
+
+  const handleCountrySearch2 = useCallback(async (search: string) => {
+    const res = await fetch(
+      `https://restcountries.com/v3.1/name/${encodeURIComponent(search)}`
+    );
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      setCountryApi2(data);
+    } else {
+      setCountryApi2([]);
     }
   }, []);
   return (
@@ -38,13 +53,29 @@ const AutoComplete = (): JSX.Element => {
           name='gender'
           label='Gender'
           value={gender}
-          onChange={(val: string) => setFormData({ ...formData, gender: val })}
+          onChange={(val: any) => setFormData({ ...formData, gender: val })}
           errorMessage=''
           options={[
             { label: "Male", value: "male" },
             { label: "Female", value: "female" },
             { label: "Other", value: "other" },
           ]}
+          //   disabled={true}
+        />
+
+        <BasicSelect
+          name='hobbies'
+          label='Hobbies'
+          value={hobbies}
+          onChange={(val: any) => setFormData({ ...formData, hobbies: val })}
+          errorMessage=''
+          options={[
+            { label: "Biker", value: "bike" },
+            { label: "Reading", value: "reading" },
+            { label: "Swimming", value: "swimming" },
+          ]}
+          multiple={true}
+          //   disabled={true}
         />
       </div>
 
@@ -55,7 +86,7 @@ const AutoComplete = (): JSX.Element => {
           name='country'
           label='Country'
           value={country}
-          onChange={(val: string) => setFormData({ ...formData, country: val })}
+          onChange={(val: any) => setFormData({ ...formData, country: val })}
           errorMessage=''
           minSearchLength={1}
           onSearch={handleCountrySearch}
@@ -65,6 +96,24 @@ const AutoComplete = (): JSX.Element => {
             value:
               item.cca2 || item.cca3 || item.name?.common || item.name || "",
           })}
+        />
+
+        <AdvancedSelect
+          name='countries'
+          label='Countries'
+          value={countries}
+          onChange={(val: any) => setFormData({ ...formData, countries: val })}
+          errorMessage=''
+          minSearchLength={1}
+          onSearch={handleCountrySearch2}
+          rawOptions={countryApi2}
+          optionMapper={(item: any) => ({
+            label: item.name?.common || item.name || "",
+            value:
+              item.cca2 || item.cca3 || item.name?.common || item.name || "",
+          })}
+          multiple={true}
+          placeholder='Search countries...'
         />
       </div>
     </div>

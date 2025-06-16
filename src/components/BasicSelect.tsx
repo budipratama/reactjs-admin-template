@@ -1,4 +1,4 @@
-import { JSX, use, useEffect, useRef, useState } from "react";
+import { JSX, useEffect, useRef, useState } from "react";
 import "../styles/components/_select.scss";
 type Option = { label: string; value: string };
 
@@ -9,9 +9,11 @@ interface BasicSelectProps {
   label: string;
   errorMessage: string;
   options: Option[];
-  onChange: (value: string) => void;
-  value?: string;
+  onChange: (value: string | string[]) => void;
+  value?: string | string[];
   placeholder?: string;
+  multiple?: boolean;
+  disabled?: boolean;
 }
 const BasicSelect = ({
   name,
@@ -24,6 +26,8 @@ const BasicSelect = ({
   errorMessage = "",
 
   options = [],
+  multiple = false,
+  disabled = false,
 }: BasicSelectProps): JSX.Element => {
   const defaultPlaceholder = `Choose ${name}`;
   const [search, setSearch] = useState<string>("");
@@ -118,6 +122,107 @@ const BasicSelect = ({
       document.removeEventListener("click", handleClickOutside);
     };
   }, [openFilter]);
+
+  // Helper for selected values
+  const isSelected = (val: string) => {
+    if (multiple && Array.isArray(value)) return value.includes(val);
+    return value === val;
+  };
+
+  // Render selected labels for multiple
+  const renderSelectedLabels = () => {
+    if (!multiple)
+      return selectedOption?.label ?? placeholder ?? defaultPlaceholder;
+    if (Array.isArray(value) && value.length > 0) {
+      return (
+        <span style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+          {value.map((val) => {
+            const opt = options.find((o) => o.value === val);
+            return (
+              <span
+                key={val}
+                style={{
+                  background: "#e6eaff",
+                  borderRadius: 4,
+                  padding: "0 6px",
+                  marginRight: 2,
+                }}>
+                {opt?.label ?? val}
+                <span style={{ marginLeft: 4, cursor: "pointer" }}>
+                  <button
+                    style={{ fontSize: "0.8rem" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const newVals = value.filter((v: string) => v !== val);
+                      onChange(newVals);
+                    }}>
+                    x
+                  </button>
+                </span>
+              </span>
+            );
+          })}
+        </span>
+      );
+    }
+    return placeholder ?? defaultPlaceholder;
+  };
+
+  // Prevent interaction if disabled
+  if (disabled) {
+    console.log("[BasicSelect] Disabled, rendering static view", disabled);
+    return (
+      <div
+        className={containerClassName}
+        style={{
+          position: "relative",
+          opacity: 0.6,
+        }}>
+        <label className='form__label'>
+          {label}
+          {required && <span className='form__required'> *</span>}
+        </label>
+        <div
+          className={
+            errorMessage
+              ? "select__error select__input"
+              : "select__input select__disabled"
+          }>
+          <span>
+            {(() => {
+              if (multiple && Array.isArray(value)) {
+                if (value.length > 0) {
+                  return value.map((val) => {
+                    const opt = options.find((o) => o.value === val);
+                    return (
+                      <span
+                        key={val}
+                        style={{
+                          background: "#e6eaff",
+                          borderRadius: 4,
+                          padding: "0 6px",
+                          marginRight: 2,
+                        }}>
+                        {opt?.label ?? val}
+                      </span>
+                    );
+                  });
+                } else {
+                  return placeholder ?? `Choose ${name}`;
+                }
+              } else if (typeof value === "string" && value) {
+                return options.find((o) => o.value === value)?.label ?? value;
+              } else {
+                return placeholder ?? `Choose ${name}`;
+              }
+            })()}
+          </span>
+        </div>
+        {errorMessage && <div className='form__error'>{errorMessage}</div>}
+      </div>
+    );
+  }
+
   return (
     <div className={containerClassName} style={{ position: "relative" }}>
       <label className='form__label'>
@@ -129,12 +234,18 @@ const BasicSelect = ({
           errorMessage ? "select__error select__input" : " select__input"
         }
         ref={selectRef}>
-        <span>
-          {value
-            ? (selectedOption?.label ?? placeholder ?? defaultPlaceholder)
-            : (placeholder ?? defaultPlaceholder)}
-        </span>
-        {value && <span className='select__clear'>X</span>}
+        <span>{renderSelectedLabels()}</span>
+        {(multiple ? Array.isArray(value) && value.length > 0 : value) && (
+          <button
+            className='select__clear'
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange(multiple ? [] : "");
+              setSelectedOption(undefined);
+            }}>
+            X
+          </button>
+        )}
       </div>
       {errorMessage && <div className='form__error'>{errorMessage}</div>}
 
@@ -189,7 +300,7 @@ const BasicSelect = ({
           }}>
           {filteredOptions.map((opt, i) => {
             let backgroundColor = "#fff";
-            if (value === opt.value) {
+            if (isSelected(opt.value)) {
               backgroundColor = "#f0f4ff";
             } else if (highlighted === i) {
               backgroundColor = "#e6eaff";
@@ -198,17 +309,36 @@ const BasicSelect = ({
               <li
                 key={opt.value}
                 style={{
-                  backgroundColor,
+                  backgroundColor: backgroundColor,
                 }}>
                 <button
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                  }}
                   onMouseDown={() => {
-                    onChange(opt.value);
-                    setSelectedOption(opt);
-                    setOpenFilter(false);
-                    setSearch("");
+                    if (multiple) {
+                      let newVals = Array.isArray(value) ? [...value] : [];
+                      if (newVals.includes(opt.value)) {
+                        newVals = newVals.filter((v) => v !== opt.value);
+                      } else {
+                        newVals.push(opt.value);
+                      }
+                      onChange(newVals);
+                    } else {
+                      onChange(opt.value);
+                      setSelectedOption(opt);
+                      setOpenFilter(false);
+                      setSearch("");
+                    }
                   }}
                   onMouseEnter={() => setHighlighted(i)}>
                   {opt.label}
+                  {multiple &&
+                    Array.isArray(value) &&
+                    value.includes(opt.value) && (
+                      <span style={{ marginLeft: 6, color: "#888" }}>✔</span>
+                    )}
                 </button>
               </li>
             );
