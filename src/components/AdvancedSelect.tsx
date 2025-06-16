@@ -184,27 +184,32 @@ const AdvancedSelect = ({
             top: dropdownFilterPosition ? undefined : "100%",
             bottom: dropdownFilterPosition ? "100%" : undefined,
           }}>
-          {filteredOptions.map((opt, i) => (
-            <li
-              key={opt.value}
-              style={{
-                backgroundColor:
-                  value === opt.value
-                    ? "#f0f4ff"
-                    : highlighted === i
-                      ? "#e6eaff"
-                      : "#fff",
-              }}
-              onMouseDown={() => {
-                onChange(opt.value);
-                setSelectedOption(opt);
-                setOpenFilter(false);
-                setSearch("");
-              }}
-              onMouseEnter={() => setHighlighted(i)}>
-              {opt.label}
-            </li>
-          ))}
+          {filteredOptions.map((opt, i) => {
+            let backgroundColor = "#fff";
+            if (value === opt.value) {
+              backgroundColor = "#f0f4ff";
+            } else if (highlighted === i) {
+              backgroundColor = "#e6eaff";
+            }
+            return (
+              <li
+                key={opt.value}
+                style={{
+                  backgroundColor,
+                }}>
+                <button
+                  onMouseDown={() => {
+                    onChange(opt.value);
+                    setSelectedOption(opt);
+                    setOpenFilter(false);
+                    setSearch("");
+                  }}
+                  onMouseEnter={() => setHighlighted(i)}>
+                  {opt.label}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

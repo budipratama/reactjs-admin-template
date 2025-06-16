@@ -44,6 +44,7 @@ const AutoComplete = (): JSX.Element => {
           value={country}
           onChange={(val: string) => setFormData({ ...formData, country: val })}
           errorMessage=''
+          //   minSearchLength={1}
           options={[
             { label: "Indonesia", value: "indonesia" },
             { label: "Singapore", value: "singapore" },
