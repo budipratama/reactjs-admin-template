@@ -13,7 +13,6 @@ import {
   isSame,
 } from "../utils/validation";
 import CheckboxGroup from "../components/CheckboxGroup";
-import SearchableSelect from "../components/SearchableSelect";
 import Switch from "../components/Switch";
 
 const countryOptions: { label: string; value: string }[] = [
@@ -227,7 +226,7 @@ const Form = (): JSX.Element => {
           required={true}
           errorMessage={hobbiesError}
         />
-        <SearchableSelect
+        {/* <SearchableSelect
           label='Country'
           // name='country'
           value={formData.country}
@@ -263,7 +262,7 @@ const Form = (): JSX.Element => {
               country: validate.country(formData.country),
             }));
           }}
-        />
+        /> */}
         <Switch
           checked={switchValue}
           onChange={setSwitchValue}

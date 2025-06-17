@@ -1,6 +1,6 @@
 # AdvancedSelect Component Usage Guide
 
-`AdvancedSelect` is a powerful React dropdown/select component with API-driven options, local search, debounce, event delegation (clear), validation, accessibility, dynamic dropdown positioning, and support for both single and multiple selection. It is ideal for large or remote datasets.
+`AdvancedSelect` adalah komponen dropdown/select React yang powerful untuk data besar/remote (API), dengan fitur pencarian, debounce, event delegation (clear), validasi, aksesibilitas, posisi dropdown dinamis, serta mendukung single dan multiple selection.
 
 ## Import
 ```jsx
@@ -11,30 +11,29 @@ import AdvancedSelect from "./AdvancedSelect";
 | Prop                | Type                                      | Description                                                      |
 |---------------------|-------------------------------------------|------------------------------------------------------------------|
 | name                | string                                    | Field name (required)                                            |
-| label               | string                                    | Label to display                                                 |
-| options             | Option[]                                  | (Not used directly, see `rawOptions` and `optionMapper`)         |
-| value               | Option \| Option[] \| ""                   | Selected value(s) (object or array of object, default: "")       |
-| onChange            | (value: Option \| Option[] \| "") => void  | Callback when value changes                                      |
-| placeholder         | string                                    | Placeholder if no value selected                                 |
-| required            | boolean                                   | Show required mark (*)                                           |
-| errorMessage        | string                                    | Error/validation message                                         |
-| containerClassName  | string                                    | CSS class for container (default: 'form__group')                 |
-| multiple            | boolean                                   | Enable multiple selection (default: false)                       |
-| disabled            | boolean                                   | Disable the select (default: false)                              |
-| minSearchLength     | number                                    | Minimum characters to trigger search (default: 1)                |
-| rawOptions          | any[]                                     | Raw data array from API or source                                |
-| optionMapper        | (item: any) => Option                     | Function to map raw data to `{ label, value }`                   |
-| onSearch            | (search: string) => void                  | Callback for search input (for API search, debounced)            |
+| label               | string                                    | Label yang ditampilkan                                           |
+| value               | Option \| Option[] \| ""                   | Value terpilih (object/array, default: ""/[])                    |
+| onChange            | (value: Option \| Option[] \| "") => void  | Callback ketika value berubah                                    |
+| placeholder         | string                                    | Placeholder jika belum ada value                                 |
+| required            | boolean                                   | Tampilkan tanda wajib (*)                                        |
+| errorMessage        | string                                    | Pesan error/validasi                                             |
+| containerClassName  | string                                    | CSS class untuk container (default: 'form__group')               |
+| multiple            | boolean                                   | Aktifkan multiple selection (default: false)                     |
+| disabled            | boolean                                   | Nonaktifkan select (default: false)                              |
+| minSearchLength     | number                                    | Minimal karakter untuk trigger search (default: 1)               |
+| rawOptions          | any[]                                     | Data mentah dari API/source                                      |
+| optionMapper        | (item: any) => Option                     | Fungsi mapping data mentah ke `{ label, value }`                 |
+| onSearch            | (search: string) => void                  | Callback pencarian (API search, debounced)                       |
 
 ## Option Type
 ```ts
 type Option = { label: string; value: string };
 ```
 
-## Example Usage (Single Select, API Search)
+## Contoh Penggunaan (Single Select, API Search)
 ```jsx
 const [countryApi, setCountryApi] = useState<any[]>([]);
-const [selectedCountry, setSelectedCountry] = useState<Option | "">("");
+const [selectedCountry, setSelectedCountry] = useState(""); // atau Option | ""
 
 const handleCountrySearch = async (search) => {
   const res = await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(search)}`);
@@ -46,7 +45,7 @@ const handleCountrySearch = async (search) => {
   name="country"
   label="Country"
   value={selectedCountry}
-  onChange={setSelectedCountry}
+  onChange={val => setSelectedCountry(val)}
   errorMessage={errorCountry}
   minSearchLength={1}
   onSearch={handleCountrySearch}
@@ -59,16 +58,16 @@ const handleCountrySearch = async (search) => {
 />
 ```
 
-## Example Usage (Multiple Select, API Search)
+## Contoh Penggunaan (Multiple Select, API Search)
 ```jsx
 const [countryApi, setCountryApi] = useState<any[]>([]);
-const [selectedCountries, setSelectedCountries] = useState<Option[]>([]);
+const [selectedCountries, setSelectedCountries] = useState([]); // Option[]
 
 <AdvancedSelect
   name="countries"
   label="Countries"
   value={selectedCountries}
-  onChange={setSelectedCountries}
+  onChange={val => setSelectedCountries(val)}
   multiple={true}
   minSearchLength={1}
   onSearch={handleCountrySearch}
@@ -81,7 +80,19 @@ const [selectedCountries, setSelectedCountries] = useState<Option[]>([]);
 />
 ```
 
-## Example Usage (Disabled)
+## Tips Penting
+- Untuk multiple select, value harus selalu array Option (default: []).
+
+- Untuk single select, value bisa Option atau string kosong ("").
+
+- Gunakan updater function pada setState jika value tergantung state sebelumnya:
+  ```jsx
+  onChange={val => setFormData(prev => ({ ...prev, country: val }))}
+  ```
+
+- Hindari value null/undefined, gunakan "" atau [] sesuai mode.
+
+## Contoh Penggunaan (Disabled)
 ```jsx
 <AdvancedSelect
   name="countries"
@@ -90,29 +101,29 @@ const [selectedCountries, setSelectedCountries] = useState<Option[]>([]);
   onChange={setSelectedCountries}
   multiple={true}
   disabled={true}
-  // ...other props
+  // ...props lain
 />
 ```
 
-## Features
-- **API/Remote Search**: Use `onSearch` and `rawOptions` for async search.
-- **Debounce**: Search is debounced for performance.
-- **Clear**: Click the X button to clear the selection(s).
-- **Multiple**: Select more than one option with `multiple={true}`.
-- **Keyboard**: Navigate with arrow keys, Enter to select, Escape to close.
-- **Accessibility**: Proper label, focus, and keyboard navigation supported.
-- **Validation**: Show error message with `errorMessage` prop.
-- **Dropdown Positioning**: Dropdown will open above if not enough space below.
-- **Disabled**: Prevent all interaction and show dimmed style with `disabled={true}`.
+## Fitur
+- **API/Remote Search**: Gunakan `onSearch` dan `rawOptions` untuk pencarian async.
+- **Debounce**: Pencarian otomatis debounce.
+- **Clear**: Klik tombol X untuk menghapus pilihan.
+- **Multiple**: Pilih lebih dari satu opsi dengan `multiple={true}`.
+- **Keyboard**: Navigasi dengan panah, Enter untuk pilih, Escape untuk tutup.
+- **Aksesibilitas**: Label, fokus, dan navigasi keyboard didukung.
+- **Validasi**: Tampilkan pesan error dengan prop `errorMessage`.
+- **Dropdown Positioning**: Dropdown otomatis ke atas jika ruang bawah kurang.
+- **Disabled**: Semua interaksi dinonaktifkan dan tampilan redup dengan `disabled={true}`.
 
 ## Event Delegation (Clear)
-The clear (X) button uses event delegation for robust event handling even if the DOM changes.
+Tombol clear (X) menggunakan event delegation agar tetap robust meski DOM berubah.
 
 ## Styling
-Uses built-in SCSS (`_select.scss`). You can override with the `containerClassName` prop.
+Menggunakan SCSS bawaan (`_select.scss`). Bisa override dengan prop `containerClassName`.
 
-## Form Integration
-Works with form libraries (Formik, React Hook Form) by controlling `value` and `onChange` props. For multiple select, use an array of Option object for value.
+## Integrasi Form
+Bisa digunakan dengan form library (Formik, React Hook Form) dengan mengontrol prop `value` dan `onChange`. Untuk multiple select, gunakan array Option untuk value.
 
 ---
-For more advanced usage, see the example in `src/pages/Form.tsx` or your API integration code.
+Untuk contoh lanjutan, lihat di `src/pages/Form.tsx` atau kode integrasi API Anda.

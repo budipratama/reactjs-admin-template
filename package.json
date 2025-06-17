@@ -13,10 +13,13 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "highlight.js": "^11.11.1",
+    "raw-loader": "^4.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.5.3",
+    "rehype-highlight": "^7.0.2",
     "sass": "^1.87.0"
   },
   "devDependencies": {

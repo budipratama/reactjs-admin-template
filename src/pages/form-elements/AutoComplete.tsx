@@ -1,7 +1,6 @@
 import BasicSelect from "../../components/BasicSelect";
 import AdvancedSelect from "../../components/AdvancedSelect";
 import { JSX, useCallback, useState } from "react";
-
 const AutoComplete = (): JSX.Element => {
   const [countryApi, setCountryApi] = useState<any[]>([]);
   const [countryApi2, setCountryApi2] = useState<any[]>([]);
@@ -46,7 +45,6 @@ const AutoComplete = (): JSX.Element => {
         color: "black",
         padding: "20px",
       }}>
-      {/* {<ReactMarkDown>{readmeContent}</ReactMarkDown>} */}
       <div
         style={{
           borderBottom: "1px solid #ccc",
