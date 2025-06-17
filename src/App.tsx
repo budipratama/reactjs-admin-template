@@ -18,6 +18,7 @@ import LockScreen from "./pages/LockScreen";
 import AccountSettings from "./pages/AccountSettings";
 import Form from "./pages/Form";
 import AutoComplete from "./pages/form-elements/AutoComplete";
+import Button from "./pages/form-elements/Button";
 function getProtectedElement(
   isLockScreen: boolean,
   isLoggedIn: boolean,
@@ -48,15 +49,15 @@ const AppRoutes = (): JSX.Element => {
       />
       <Route
         path='/lock-screen'
-        element={
-          isLockScreen ? (
-            <LockScreen />
-          ) : isLoggedIn ? (
-            <Navigate to='/profile' />
-          ) : (
-            <Navigate to='/' />
-          )
-        }
+        element={(() => {
+          if (isLockScreen) {
+            return <LockScreen />;
+          }
+          if (isLoggedIn) {
+            return <Navigate to='/profile' />;
+          }
+          return <Navigate to='/' />;
+        })()}
       />
       <Route
         path='/profile'
@@ -85,6 +86,16 @@ const AppRoutes = (): JSX.Element => {
           isLoggedIn,
           <MainLayout>
             <AutoComplete />
+          </MainLayout>
+        )}
+      />
+      <Route
+        path='/form-elements/button'
+        element={getProtectedElement(
+          isLockScreen,
+          isLoggedIn,
+          <MainLayout>
+            <Button />
           </MainLayout>
         )}
       />

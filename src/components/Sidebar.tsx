@@ -78,6 +78,11 @@ const Sidebar = ({
           title: "Auto complete",
           path: "/form-elements/auto-complete",
         },
+        {
+          icon: "fa-solid fa-square",
+          title: "Button",
+          path: "/form-elements/button",
+        },
       ],
     },
     // {
