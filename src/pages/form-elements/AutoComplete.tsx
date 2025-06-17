@@ -45,7 +45,12 @@ const AutoComplete = (): JSX.Element => {
         color: "black",
         padding: "20px",
       }}>
-      <h2>Autocomplete</h2>
+      <div
+        style={{
+          borderBottom: "1px solid #ccc",
+        }}>
+        <h2>Autocomplete</h2>
+      </div>
       <div>
         <h3>Basic</h3>
         <hr />

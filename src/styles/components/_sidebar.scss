@@ -1,5 +1,5 @@
 @use "../abstract/variables";
-
+@use "../abstract/mixins" as mixins;
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -8,6 +8,10 @@
   font-weight: 400;
   box-shadow: rgba(0, 0, 0, 0.08) 1px 0px 20px;
   transition: all variables.$transition-time ease;
+  @include mixins.respond(tab-land) {
+    position: absolute;
+    left: -50%;
+  }
   &__toggle {
     cursor: pointer;
     margin-left: 8px;
@@ -20,6 +24,12 @@
   &.collapsed {
     transition: all variables.$transition-time ease;
     width: variables.$sidebar-width-small;
+    @include mixins.respond(tab-land) {
+      // position: absolute;
+      left: 0;
+      width: variables.$sidebar-width-normal;
+      height: calc(100vh - variables.$header-height);
+    }
     &:hover {
       width: variables.$sidebar-width-normal;
     }

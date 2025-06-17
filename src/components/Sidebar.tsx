@@ -52,11 +52,15 @@ const MenuItem = memo(function MenuItem({
 interface SidebarProps {
   isCollapsed?: boolean;
   onSidebarHover?: (hovered: boolean) => void;
+  isTablet: boolean;
+  isDesktop: boolean;
 }
 
 const Sidebar = ({
   isCollapsed,
   onSidebarHover,
+  isTablet,
+  isDesktop,
 }: SidebarProps): JSX.Element => {
   const SIDEBAR_ACTIVE = "sidebar__active";
   const SIDEBAR_HAS_CHILD = "sidebar__has--child";

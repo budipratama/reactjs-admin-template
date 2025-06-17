@@ -282,10 +282,22 @@ const BasicSelect = ({
               highlighted >= 0 &&
               filteredOptions[highlighted]
             ) {
-              setOpenFilter(false);
-              setSelectedOption(filteredOptions[highlighted]);
-              onChange(filteredOptions[highlighted].value);
-              setSearch("");
+              if (multiple) {
+                let newVals = Array.isArray(value) ? [...value] : [];
+                const val = filteredOptions[highlighted].value;
+                if (newVals.includes(val)) {
+                  newVals = newVals.filter((v) => v !== val);
+                } else {
+                  newVals.push(val);
+                }
+                onChange(newVals);
+                // Jangan tutup dropdown pada multiple
+              } else {
+                setOpenFilter(false);
+                setSelectedOption(filteredOptions[highlighted]);
+                onChange(filteredOptions[highlighted].value);
+                setSearch("");
+              }
             } else if (e.key === "Escape") {
               setOpenFilter(false);
               setSearch("");
