@@ -7,8 +7,8 @@ const AutoComplete = (): JSX.Element => {
   const [countryApi2, setCountryApi2] = useState<any[]>([]);
 
   const fields = {
-    country: "",
-    countries: [] as string[],
+    country: undefined,
+    countries: [],
     gender: "",
     hobbies: [] as string[],
   };
@@ -38,6 +38,7 @@ const AutoComplete = (): JSX.Element => {
       setCountryApi2([]);
     }
   }, []);
+  console.log("[AutoComplete] formData", formData);
   return (
     <div
       style={{
@@ -57,8 +58,14 @@ const AutoComplete = (): JSX.Element => {
         <BasicSelect
           name='gender'
           label='Gender'
-          value={gender}
-          onChange={(val: any) => setFormData({ ...formData, gender: val })}
+          value={typeof gender === "string" ? gender : ""}
+          onChange={(val: any) => {
+            console.log("event change gender", val);
+            setFormData((prev) => {
+              console.log("gender prev formData:", prev, val);
+              return { ...prev, gender: val };
+            });
+          }}
           errorMessage=''
           options={[
             { label: "Male", value: "male" },
@@ -70,8 +77,14 @@ const AutoComplete = (): JSX.Element => {
         <BasicSelect
           name='hobbies'
           label='Hobbies'
-          value={hobbies}
-          onChange={(val: any) => setFormData({ ...formData, hobbies: val })}
+          value={Array.isArray(hobbies) ? hobbies : []}
+          onChange={(val: any) => {
+            console.log("event change hobbies", val);
+            setFormData((prev) => {
+              console.log("hobbies prev formData:", prev, val);
+              return { ...prev, hobbies: val };
+            });
+          }}
           errorMessage=''
           options={[
             { label: "Biker", value: "bike" },
@@ -89,7 +102,9 @@ const AutoComplete = (): JSX.Element => {
           name='country'
           label='Country'
           value={country}
-          onChange={(val: any) => setFormData({ ...formData, country: val })}
+          onChange={(val: any) =>
+            setFormData((prev) => ({ ...prev, country: val }))
+          }
           errorMessage=''
           minSearchLength={1}
           onSearch={handleCountrySearch}
@@ -105,7 +120,9 @@ const AutoComplete = (): JSX.Element => {
           name='countries'
           label='Countries'
           value={countries}
-          onChange={(val: any) => setFormData({ ...formData, countries: val })}
+          onChange={(val: any) =>
+            setFormData((prev) => ({ ...prev, countries: val }))
+          }
           errorMessage=''
           minSearchLength={1}
           onSearch={handleCountrySearch2}

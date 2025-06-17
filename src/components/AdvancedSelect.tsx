@@ -34,7 +34,7 @@ const AdvancedSelect = ({
   multiple = false,
   disabled = false,
 }: AdvancedSelectProps): JSX.Element => {
-  console.log(`[AdvancedSelect] RawOptions`, rawOptions);
+  // console.log(`[AdvancedSelect] RawOptions`, rawOptions);
   const defaultPlaceholder = `Choose ${name}`;
   const [search, setSearch] = useState<string>("");
   const [openFilter, setOpenFilter] = useState<boolean>(false);
@@ -51,9 +51,9 @@ const AdvancedSelect = ({
 
   useEffect(() => {
     if (!optionMapper && !rawOptions) {
-      console.error(
-        "[AdvancedSelect] optionMapper is required. Please provide a function to map options."
-      );
+      // console.error(
+      //   "[AdvancedSelect] optionMapper is required. Please provide a function to map options."
+      // );
       return;
     }
     // Map options using the provided optionMapper
@@ -73,7 +73,7 @@ const AdvancedSelect = ({
       } else if (target.closest(".select__input")) {
         handleOpenFilter();
         setOpenFilter(true);
-        console.log("[AdvancedSelect] Open filter");
+        // console.log("[AdvancedSelect] Open filter");
       }
     };
     selectRef?.current?.addEventListener("click", handleClick);
@@ -83,10 +83,10 @@ const AdvancedSelect = ({
   }, []);
 
   useEffect(() => {
-    console.log(
-      `[AdvancedSelect] value changed: ${value}, selectedOption: `,
-      selectedOption
-    );
+    // console.log(
+    //   `[AdvancedSelect] value changed: ${value}, selectedOption: `,
+    //   selectedOption
+    // );
     if (!value) {
       setSelectedOption(undefined);
       return;
@@ -120,12 +120,12 @@ const AdvancedSelect = ({
     }
   }, [search, onSearch]);
   useEffect(() => {
-    console.log(
-      `[AdvancedSelect] openFilter: `,
-      selectRef,
-      "openFilter:",
-      openFilter
-    );
+    // console.log(
+    //   `[AdvancedSelect] openFilter: `,
+    //   selectRef,
+    //   "openFilter:",
+    //   openFilter
+    // );
 
     if (openFilter) {
       const rect = selectRef.current?.getBoundingClientRect();
@@ -139,10 +139,10 @@ const AdvancedSelect = ({
           setDropdownFilterPosition(false);
         }
       }
-      console.log(
-        `[AdvancedSelect] findInput : `,
-        selectRef.current?.nextElementSibling
-      );
+      // console.log(
+      //   `[AdvancedSelect] findInput : `,
+      //   selectRef.current?.nextElementSibling
+      // );
       selectRef.current?.nextElementSibling?.querySelector("input")?.focus();
     }
 
@@ -163,9 +163,9 @@ const AdvancedSelect = ({
       document.removeEventListener("click", handleClickOutside);
     };
   }, [openFilter]);
-  console.log(
-    `[AdvancedSelect] Search: ${search.length} characters. Min length: ${minSearchLength}`
-  );
+  // console.log(
+  //   `[AdvancedSelect] Search: ${search.length} characters. Min length: ${minSearchLength}`
+  // );
 
   // Helper for selected values
   const isSelected = (val: string) => {

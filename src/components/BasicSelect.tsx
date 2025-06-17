@@ -21,7 +21,7 @@ const BasicSelect = ({
   onChange,
   placeholder,
   required = false,
-  value = "",
+  value = [],
   containerClassName = "form__group",
   errorMessage = "",
 
@@ -29,6 +29,7 @@ const BasicSelect = ({
   multiple = false,
   disabled = false,
 }: BasicSelectProps): JSX.Element => {
+  const componentName = `BasicSelect[${name}]`;
   const defaultPlaceholder = `Choose ${name}`;
   const [search, setSearch] = useState<string>("");
   const [openFilter, setOpenFilter] = useState<boolean>(false);
@@ -51,8 +52,14 @@ const BasicSelect = ({
       const target = event.target as HTMLElement;
       // Only handle if the event is inside this BasicSelect
       if (!selectRef.current?.contains(target)) return;
+      console.log(
+        `[${componentName}] Clicked inside BasicSelect`,
+        target.classList,
+        target.classList.contains("select__clear")
+      );
       if (target.classList.contains("select__clear")) {
-        onChange("");
+        console.log(`[${componentName}] Clear button clicked, resetting value`);
+        onChange(multiple ? [] : "");
         setSelectedOption(undefined);
       } else if (target.closest(".select__input")) {
         handleOpenFilter();
@@ -67,17 +74,15 @@ const BasicSelect = ({
   }, []);
 
   useEffect(() => {
-    if (!value) {
+    if (!value || (Array.isArray(value) && value.length === 0)) {
       setSelectedOption(undefined);
       return;
     }
-    const foundOption = options.find((opt) => opt.value === value);
-    if (foundOption) {
+    if (!multiple && typeof value === "string") {
+      const foundOption = options.find((opt) => opt.value === value);
       setSelectedOption(foundOption);
-    } else {
-      setSelectedOption(undefined);
     }
-  }, [value]);
+  }, [value, options, multiple]);
 
   useEffect(() => {
     console.log(
@@ -238,11 +243,12 @@ const BasicSelect = ({
         {(multiple ? Array.isArray(value) && value.length > 0 : value) && (
           <button
             className='select__clear'
-            onClick={(e) => {
-              e.stopPropagation();
-              onChange(multiple ? [] : "");
-              setSelectedOption(undefined);
-            }}>
+            // onClick={(e) => {
+            //   e.stopPropagation();
+            //   onChange(multiple ? [] : "");
+            //   setSelectedOption(undefined);
+            // }}
+          >
             X
           </button>
         )}
