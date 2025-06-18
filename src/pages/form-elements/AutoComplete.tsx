@@ -1,5 +1,6 @@
 import BasicSelect from "../../components/BasicSelect";
 import AdvancedSelect from "../../components/AdvancedSelect";
+import "/src/styles/components/_grid.scss";
 import { JSX, useCallback, useState } from "react";
 const AutoComplete = (): JSX.Element => {
   const [countryApi, setCountryApi] = useState<any[]>([]);
@@ -44,6 +45,7 @@ const AutoComplete = (): JSX.Element => {
         backgroundColor: "white",
         color: "black",
         padding: "20px",
+        marginBottom: "2rem",
       }}>
       <div
         style={{
@@ -51,89 +53,123 @@ const AutoComplete = (): JSX.Element => {
         }}>
         <h2>Autocomplete</h2>
       </div>
-      <div>
-        <h3>Basic</h3>
-        <hr />
-        <BasicSelect
-          name='gender'
-          label='Gender'
-          value={typeof gender === "string" ? gender : ""}
-          onChange={(val: any) => {
-            console.log("event change gender", val);
-            setFormData((prev) => {
-              console.log("gender prev formData:", prev, val);
-              return { ...prev, gender: val };
-            });
-          }}
-          errorMessage=''
-          options={[
-            { label: "Male", value: "male" },
-            { label: "Female", value: "female" },
-            { label: "Other", value: "other" },
-          ]}
-        />
+      <div className='grid' style={{ padding: "15px" }}>
+        <div className='grid__item grid__item--col-6'>
+          <div>
+            <div
+              style={{
+                border: "1px solid rgb(235, 241, 246)",
+                borderRadius: "20px",
+                padding: "20px",
+              }}>
+              <h3
+                style={{
+                  borderBottom: "1px solid rgb(204, 204, 204)",
+                }}>
+                Basic
+              </h3>
+              <BasicSelect
+                name='gender'
+                label='Gender'
+                value={typeof gender === "string" ? gender : ""}
+                onChange={(val: any) => {
+                  console.log("event change gender", val);
+                  setFormData((prev) => {
+                    console.log("gender prev formData:", prev, val);
+                    return { ...prev, gender: val };
+                  });
+                }}
+                errorMessage=''
+                options={[
+                  { label: "Male", value: "male" },
+                  { label: "Female", value: "female" },
+                  { label: "Other", value: "other" },
+                ]}
+              />
 
-        <BasicSelect
-          name='hobbies'
-          label='Hobbies'
-          value={Array.isArray(hobbies) ? hobbies : []}
-          onChange={(val: any) => {
-            console.log("event change hobbies", val);
-            setFormData((prev) => {
-              console.log("hobbies prev formData:", prev, val);
-              return { ...prev, hobbies: val };
-            });
-          }}
-          errorMessage=''
-          options={[
-            { label: "Biker", value: "bike" },
-            { label: "Reading", value: "reading" },
-            { label: "Swimming", value: "swimming" },
-          ]}
-          multiple={true}
-        />
-      </div>
+              <BasicSelect
+                name='hobbies'
+                label='Hobbies'
+                value={Array.isArray(hobbies) ? hobbies : []}
+                onChange={(val: any) => {
+                  console.log("event change hobbies", val);
+                  setFormData((prev) => {
+                    console.log("hobbies prev formData:", prev, val);
+                    return { ...prev, hobbies: val };
+                  });
+                }}
+                errorMessage=''
+                options={[
+                  { label: "Biker", value: "bike" },
+                  { label: "Reading", value: "reading" },
+                  { label: "Swimming", value: "swimming" },
+                ]}
+                multiple={true}
+              />
+            </div>
+          </div>
+        </div>
+        <div className='grid__item grid__item--col-6'>
+          {" "}
+          <div
+            style={{
+              border: "1px solid rgb(235, 241, 246)",
+              borderRadius: "20px",
+              padding: "20px",
+            }}>
+            <h3
+              style={{
+                borderBottom: "1px solid rgb(204, 204, 204)",
+              }}>
+              Advanced
+            </h3>
+            <AdvancedSelect
+              name='country'
+              label='Country'
+              value={country}
+              onChange={(val: any) =>
+                setFormData((prev) => ({ ...prev, country: val }))
+              }
+              errorMessage=''
+              minSearchLength={1}
+              onSearch={handleCountrySearch}
+              rawOptions={countryApi}
+              optionMapper={(item: any) => ({
+                label: item.name?.common || item.name || "",
+                value:
+                  item.cca2 ||
+                  item.cca3 ||
+                  item.name?.common ||
+                  item.name ||
+                  "",
+              })}
+            />
 
-      <div>
-        <h3>Advanced</h3>
-        <hr />
-        <AdvancedSelect
-          name='country'
-          label='Country'
-          value={country}
-          onChange={(val: any) =>
-            setFormData((prev) => ({ ...prev, country: val }))
-          }
-          errorMessage=''
-          minSearchLength={1}
-          onSearch={handleCountrySearch}
-          rawOptions={countryApi}
-          optionMapper={(item: any) => ({
-            label: item.name?.common || item.name || "",
-            value:
-              item.cca2 || item.cca3 || item.name?.common || item.name || "",
-          })}
-        />
-
-        <AdvancedSelect
-          name='countries'
-          label='Countries'
-          value={countries}
-          onChange={(val: any) =>
-            setFormData((prev) => ({ ...prev, countries: val }))
-          }
-          errorMessage=''
-          minSearchLength={1}
-          onSearch={handleCountrySearch2}
-          rawOptions={countryApi2}
-          optionMapper={(item: any) => ({
-            label: item.name?.common || item.name || "",
-            value:
-              item.cca2 || item.cca3 || item.name?.common || item.name || "",
-          })}
-          multiple={true}
-          placeholder='Search countries...'
-        />
+            <AdvancedSelect
+              name='countries'
+              label='Countries'
+              value={countries}
+              onChange={(val: any) =>
+                setFormData((prev) => ({ ...prev, countries: val }))
+              }
+              errorMessage=''
+              minSearchLength={1}
+              onSearch={handleCountrySearch2}
+              rawOptions={countryApi2}
+              optionMapper={(item: any) => ({
+                label: item.name?.common || item.name || "",
+                value:
+                  item.cca2 ||
+                  item.cca3 ||
+                  item.name?.common ||
+                  item.name ||
+                  "",
+              })}
+              multiple={true}
+              placeholder='Search countries...'
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
