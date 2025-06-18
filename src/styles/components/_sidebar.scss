@@ -8,9 +8,12 @@
   font-weight: 400;
   box-shadow: rgba(0, 0, 0, 0.08) 1px 0px 20px;
   transition: all variables.$transition-time ease;
+  background-color: variables.$color-sidebar;
+  z-index: 9;
   @include mixins.respond(tab-land) {
     position: absolute;
-    left: -50%;
+    width: variables.$sidebar-width-normal;
+    height: calc(100vh - variables.$header-height);
   }
   &__toggle {
     cursor: pointer;
@@ -25,15 +28,15 @@
     transition: all variables.$transition-time ease;
     width: variables.$sidebar-width-small;
     @include mixins.respond(tab-land) {
-      // position: absolute;
-      left: 0;
-      width: variables.$sidebar-width-normal;
+      width: 0;
       height: calc(100vh - variables.$header-height);
     }
-    &:hover {
-      width: variables.$sidebar-width-normal;
+    @include mixins.respond(big-desktop) {
+      &:hover {
+        width: variables.$sidebar-width-normal;
+      }
     }
-    & a {
+    & a > span {
       display: none;
     }
     & .sidebar__has--child span {

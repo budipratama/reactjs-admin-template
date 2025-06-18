@@ -1,8 +1,7 @@
-import { JSX, useState, memo } from "react";
+import { JSX, useState, memo, useEffect } from "react";
 import "../styles/components/_sidebar.scss";
 import logoProfile from "../assets/images/user-1.jpg";
 import { useLocation, Link } from "react-router-dom";
-import path from "path";
 
 // Komponen MenuItem dengan memo
 const MenuItem = memo(function MenuItem({
@@ -17,6 +16,8 @@ const MenuItem = memo(function MenuItem({
   SIDEBAR_HAS_CHILD,
   isMenuActive,
   renderMenu,
+  setSidebarCollapsed,
+  isTablet,
 }: any) {
   const active = isMenuActive(item, location.pathname);
   let className = "";
@@ -29,14 +30,23 @@ const MenuItem = memo(function MenuItem({
   }
   const key = getMenuKey([...parentIndexes, index]);
   const isOpen = openMenus.includes(key);
+  console.log(
+    `[MenuItem] key: ${key}, isOpen: ${isOpen},  title: ${item.title} path: ${item.path}`
+  );
   return (
     <li key={index} className={className}>
-      <i className={item.icon}></i>
-      {item.path ? (
-        <Link to={item.path}>{item.title}</Link>
-      ) : (
+      <Link
+        to={item.path ?? "#"}
+        onClick={() => {
+          console.log(`[MenuItem] clicked: ${item.title}, path: ${item.path}`);
+          if (isTablet && typeof setSidebarCollapsed === "function") {
+            setSidebarCollapsed(true); // collapse sidebar jika tablet
+          }
+        }}>
+        <i className={item.icon}></i>
         <span>{item.title}</span>
-      )}
+      </Link>
+
       {item.children ? (
         <button className='sidebar__toggle' onClick={() => handleToggle(key)}>
           <i className={`fa-solid fa-angle-${isOpen ? "down" : "left"}`}></i>
@@ -52,15 +62,17 @@ const MenuItem = memo(function MenuItem({
 interface SidebarProps {
   isCollapsed?: boolean;
   onSidebarHover?: (hovered: boolean) => void;
+  onToggleSidebar?: () => void;
+  setSidebarCollapsed?: (collapsed: boolean) => void;
   isTablet: boolean;
-  isDesktop: boolean;
 }
 
 const Sidebar = ({
   isCollapsed,
   onSidebarHover,
+  onToggleSidebar,
+  setSidebarCollapsed,
   isTablet,
-  isDesktop,
 }: SidebarProps): JSX.Element => {
   const SIDEBAR_ACTIVE = "sidebar__active";
   const SIDEBAR_HAS_CHILD = "sidebar__has--child";
@@ -89,67 +101,6 @@ const Sidebar = ({
         },
       ],
     },
-    // {
-    //   icon: "fa-solid fa-user",
-    //   title: "General",
-    //   children: [
-    //     {
-    //       icon: "fa-solid fa-user",
-    //       title: "Profile",
-    //       path: "/profile",
-    //     },
-    //     {
-    //       icon: "fa-solid fa-user",
-    //       title: "Settings",
-    //       children: [
-    //         {
-    //           icon: "fa-solid fa-user",
-    //           title: "Account",
-    //           path: "/settings/account",
-    //         },
-    //         {
-    //           icon: "fa-solid fa-user",
-    //           title: "Privacy",
-    //           children: [
-    //             {
-    //               icon: "fa-solid fa-user",
-    //               title: "Security",
-    //             },
-    //             {
-    //               icon: "fa-solid fa-user",
-    //               title: "Notification",
-    //             },
-    //             {
-    //               icon: "fa-solid fa-user",
-    //               title: "Language",
-    //               path: "/language",
-    //             },
-    //           ],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
-    // {
-    //   icon: "fa-solid fa-user",
-    //   title: "Basic",
-    //   path: "/basic",
-    // },
-    // {
-    //   icon: "fa-solid fa-user",
-    //   title: "Analytic",
-    //   path: "/analytic",
-    // },
-    // {
-    //   icon: "fa-solid fa-user",
-    //   title: "Campaign",
-    //   path: "/campaign",
-    // },
-    // {
-    //   icon: "fa-solid fa-user",
-    //   title: "Modern",
-    //   path: "/modern",
-    // },
   ];
 
   const isMenuActive = (item: any, pathname: string): boolean => {
@@ -178,7 +129,7 @@ const Sidebar = ({
   const renderMenu = (
     items: any[],
     parentIndexes: number[] = [],
-    isRoot = false
+    setSidebarCollapsed?: (collapsed: boolean) => void
   ) => {
     const result = (
       <ul>
@@ -195,7 +146,11 @@ const Sidebar = ({
             SIDEBAR_ACTIVE={SIDEBAR_ACTIVE}
             SIDEBAR_HAS_CHILD={SIDEBAR_HAS_CHILD}
             isMenuActive={isMenuActive}
-            renderMenu={renderMenu}
+            renderMenu={(children: any[], parentIdx: number[]) =>
+              renderMenu(children, parentIdx, setSidebarCollapsed)
+            }
+            setSidebarCollapsed={setSidebarCollapsed}
+            isTablet={isTablet}
           />
         ))}
       </ul>
@@ -204,15 +159,28 @@ const Sidebar = ({
     return result;
   };
 
+  console.log("Sidebar isCollapsed:", isCollapsed);
+
   const handleMouseEnter = () => {
-    setHovered(true);
-    onSidebarHover && onSidebarHover(true);
+    if (!isTablet) {
+      setHovered(true);
+      onSidebarHover && onSidebarHover(true);
+    }
   };
   const handleMouseLeave = () => {
-    setHovered(false);
-    onSidebarHover && onSidebarHover(false);
+    if (!isTablet) {
+      setHovered(false);
+      onSidebarHover && onSidebarHover(false);
+    }
   };
-
+  console.log(`[Sidebar] onToogleSidebar: ${onToggleSidebar}`);
+  useEffect(() => {
+    if (isTablet) {
+      if (setSidebarCollapsed) setSidebarCollapsed(true); // collapse otomatis saat tablet
+    } else {
+      if (setSidebarCollapsed) setSidebarCollapsed(false); // optional: buka otomatis saat desktop
+    }
+  }, [isTablet]);
   return (
     <aside
       className={`sidebar${isCollapsed && !hovered ? " collapsed" : ""}`}
@@ -226,7 +194,7 @@ const Sidebar = ({
         </div>
         <div className='sidebar__user--name'>Budi Pratama</div>
       </div>
-      {renderMenu(menu, [], true)}
+      {renderMenu(menu, [], setSidebarCollapsed)}
     </aside>
   );
 };

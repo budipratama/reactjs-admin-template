@@ -152,10 +152,10 @@ const Header = ({
       }
     );
   };
-
+  console.log(`isDesktop: ${isDesktop}, isTablet: ${isTablet}`);
   return (
     <header
-      className={`header${sidebarCollapsed && !sidebarHovered ? " collapsed" : ""}`}>
+      className={`header${sidebarCollapsed && !sidebarHovered && isDesktop ? " collapsed" : ""}`}>
       {isDesktop ? (
         <div
           className={`header__logo ${sidebarCollapsed && !sidebarHovered ? "collapsed" : ""}`}>

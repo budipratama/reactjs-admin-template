@@ -15,10 +15,6 @@ const MainLayout = ({ children, showBreadcrumb = true }: MainLayoutProps) => {
   const handleToggleSidebar = () => setSidebarCollapsed((prev) => !prev);
   useEffect(() => {
     const handleResize = () => {
-      // Lakukan sesuatu, misal:
-      console.log("Window resized:", window.innerWidth, window.innerHeight);
-      // Atau update state, dsb.
-      // logo nya pindah di ukuran 1200
       setWindowWidth(window.innerWidth);
     };
 
@@ -29,6 +25,7 @@ const MainLayout = ({ children, showBreadcrumb = true }: MainLayoutProps) => {
 
   const isTablet = windowWidth < 1200;
   const isDesktop = windowWidth > 1200;
+  console.log("MainLayout isTablet:", isTablet);
   return (
     <>
       <Header
@@ -41,8 +38,9 @@ const MainLayout = ({ children, showBreadcrumb = true }: MainLayoutProps) => {
       <main>
         <Sidebar
           isTablet={isTablet}
-          isDesktop={isDesktop}
           isCollapsed={sidebarCollapsed}
+          onToggleSidebar={handleToggleSidebar}
+          setSidebarCollapsed={setSidebarCollapsed}
           onSidebarHover={setSidebarHovered}
         />
         <div className='contain'>
