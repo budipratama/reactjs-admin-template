@@ -1,0 +1,23 @@
+.components {
+  &__container {
+    background-color: white;
+    color: black;
+    padding: 20px;
+    margin-bottom: 2rem;
+  }
+  &__header {
+    margin-bottom: 20px;
+  }
+  &__content {
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid rgb(235, 241, 246);
+    & > button:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+}
+
+.border__bottom {
+  border-bottom: 1px solid #ccc;
+}

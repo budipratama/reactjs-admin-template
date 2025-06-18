@@ -54,6 +54,8 @@ test("sidebarCollapsed and sidebarHovered class applied", () => {
   const { container } = renderHeader({
     sidebarCollapsed: true,
     sidebarHovered: false,
+    isDesktop: true,
+    isTablet: false,
   });
   expect(container.querySelector(".header.collapsed")).toBeInTheDocument();
 });

@@ -48,7 +48,10 @@ main {
   max-height: 100%;
   height: calc(100% - variables.$header-height);
 }
-
+button {
+  background: none;
+  border: none;
+}
 .contain {
   display: flex;
   flex-direction: column;

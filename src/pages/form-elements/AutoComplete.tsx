@@ -1,6 +1,8 @@
 import BasicSelect from "../../components/BasicSelect";
 import AdvancedSelect from "../../components/AdvancedSelect";
 import "/src/styles/components/_grid.scss";
+import "../../styles/pages/_components.scss";
+
 import { JSX, useCallback, useState } from "react";
 const AutoComplete = (): JSX.Element => {
   const [countryApi, setCountryApi] = useState<any[]>([]);
@@ -40,89 +42,57 @@ const AutoComplete = (): JSX.Element => {
   }, []);
   console.log("[AutoComplete] formData", formData);
   return (
-    <div
-      style={{
-        backgroundColor: "white",
-        color: "black",
-        padding: "20px",
-        marginBottom: "2rem",
-      }}>
-      <div
-        style={{
-          borderBottom: "1px solid #ccc",
-        }}>
+    <div className='components__container'>
+      <div className='border__bottom'>
         <h2>Autocomplete</h2>
       </div>
       <div className='grid' style={{ padding: "15px" }}>
         <div className='grid__item grid__item--col-6'>
-          <div>
-            <div
-              style={{
-                border: "1px solid rgb(235, 241, 246)",
-                borderRadius: "20px",
-                padding: "20px",
-              }}>
-              <h3
-                style={{
-                  borderBottom: "1px solid rgb(204, 204, 204)",
-                }}>
-                Basic
-              </h3>
-              <BasicSelect
-                name='gender'
-                label='Gender'
-                value={typeof gender === "string" ? gender : ""}
-                onChange={(val: any) => {
-                  console.log("event change gender", val);
-                  setFormData((prev) => {
-                    console.log("gender prev formData:", prev, val);
-                    return { ...prev, gender: val };
-                  });
-                }}
-                errorMessage=''
-                options={[
-                  { label: "Male", value: "male" },
-                  { label: "Female", value: "female" },
-                  { label: "Other", value: "other" },
-                ]}
-              />
+          <div className='components__content'>
+            <h3 className='border__bottom components__header'>Basic</h3>
+            <BasicSelect
+              name='gender'
+              label='Gender'
+              value={typeof gender === "string" ? gender : ""}
+              onChange={(val: any) => {
+                console.log("event change gender", val);
+                setFormData((prev) => {
+                  console.log("gender prev formData:", prev, val);
+                  return { ...prev, gender: val };
+                });
+              }}
+              errorMessage=''
+              options={[
+                { label: "Male", value: "male" },
+                { label: "Female", value: "female" },
+                { label: "Other", value: "other" },
+              ]}
+            />
 
-              <BasicSelect
-                name='hobbies'
-                label='Hobbies'
-                value={Array.isArray(hobbies) ? hobbies : []}
-                onChange={(val: any) => {
-                  console.log("event change hobbies", val);
-                  setFormData((prev) => {
-                    console.log("hobbies prev formData:", prev, val);
-                    return { ...prev, hobbies: val };
-                  });
-                }}
-                errorMessage=''
-                options={[
-                  { label: "Biker", value: "bike" },
-                  { label: "Reading", value: "reading" },
-                  { label: "Swimming", value: "swimming" },
-                ]}
-                multiple={true}
-              />
-            </div>
+            <BasicSelect
+              name='hobbies'
+              label='Hobbies'
+              value={Array.isArray(hobbies) ? hobbies : []}
+              onChange={(val: any) => {
+                console.log("event change hobbies", val);
+                setFormData((prev) => {
+                  console.log("hobbies prev formData:", prev, val);
+                  return { ...prev, hobbies: val };
+                });
+              }}
+              errorMessage=''
+              options={[
+                { label: "Biker", value: "bike" },
+                { label: "Reading", value: "reading" },
+                { label: "Swimming", value: "swimming" },
+              ]}
+              multiple={true}
+            />
           </div>
         </div>
         <div className='grid__item grid__item--col-6'>
-          {" "}
-          <div
-            style={{
-              border: "1px solid rgb(235, 241, 246)",
-              borderRadius: "20px",
-              padding: "20px",
-            }}>
-            <h3
-              style={{
-                borderBottom: "1px solid rgb(204, 204, 204)",
-              }}>
-              Advanced
-            </h3>
+          <div className='components__content'>
+            <h3 className='border__bottom components__header'>Advanced</h3>
             <AdvancedSelect
               name='country'
               label='Country'
