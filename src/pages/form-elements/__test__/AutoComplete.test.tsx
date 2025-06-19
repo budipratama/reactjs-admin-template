@@ -8,7 +8,7 @@ beforeEach(() => {
       { name: { common: "Indonesia" }, cca2: "ID" },
       { name: { common: "Japan" }, cca2: "JP" },
     ]),
-  }) as any;
+  }) as any; //kmsdfds
 });
 afterEach(() => {
   jest.clearAllMocks();
