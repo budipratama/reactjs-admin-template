@@ -85,13 +85,6 @@ const BasicSelect = ({
   }, [value, options, multiple]);
 
   useEffect(() => {
-    console.log(
-      `[BasicSelect] openFilter: `,
-      selectRef,
-      "openFilter:",
-      openFilter
-    );
-
     if (openFilter) {
       const rect = selectRef.current?.getBoundingClientRect();
       const dropdownHeight = 180; // sama dengan maxHeight dropdown

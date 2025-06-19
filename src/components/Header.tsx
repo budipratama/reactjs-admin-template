@@ -152,7 +152,6 @@ const Header = ({
       }
     );
   };
-  console.log(`isDesktop: ${isDesktop}, isTablet: ${isTablet}`);
   return (
     <header
       className={`header${sidebarCollapsed && !sidebarHovered && isDesktop ? " collapsed" : ""}`}>

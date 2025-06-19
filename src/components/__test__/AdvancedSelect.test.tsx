@@ -1,94 +1,114 @@
 import { render, fireEvent, screen } from "@testing-library/react";
-import BasicSelect from "../BasicSelect";
+import AdvancedSelect from "../AdvancedSelect";
 
-describe("BasicSelect", () => {
-  const options = [
+describe("AdvancedSelect", () => {
+  const rawOptions = [
     { label: "Option 1", value: "1" },
     { label: "Option 2", value: "2" },
     { label: "Option 3", value: "3" },
   ];
+  const optionMapper = (item: any) => ({
+    label: item.label,
+    value: item.value,
+  });
+  const onSearch = jest.fn();
 
   it("renders label and options", () => {
     render(
-      <BasicSelect
+      <AdvancedSelect
+        name='test'
         label='Test Label'
         errorMessage=''
-        options={options}
-        name='test'
         onChange={() => {}}
+        rawOptions={rawOptions}
+        optionMapper={optionMapper}
+        onSearch={onSearch}
       />
     );
     expect(screen.getByText("Test Label")).toBeInTheDocument();
+    // Option 1 is rendered as selected by default (span)
     expect(screen.getByText(/choose test/i)).toBeInTheDocument();
   });
 
-  it("opens filter and filters options", () => {
+  it("opens filter and filters options on search", () => {
     render(
-      <BasicSelect
+      <AdvancedSelect
+        name='test'
         label='Test Label'
         errorMessage=''
-        options={options}
-        name='test'
         onChange={() => {}}
+        rawOptions={rawOptions}
+        optionMapper={optionMapper}
+        onSearch={onSearch}
       />
     );
+    // Open filter
     const selectArea = screen.getByText(/choose test/i).closest("div");
     if (selectArea) fireEvent.click(selectArea);
     const input = screen.getByPlaceholderText(/cari/i);
     expect(input).toBeInTheDocument();
     fireEvent.change(input, { target: { value: "2" } });
-    expect(screen.getByText("Option 2")).toBeInTheDocument();
-    expect(screen.queryByText("Option 1")).not.toBeVisible();
+    expect(onSearch).toHaveBeenCalledWith("2");
   });
 
   it("calls onChange when option is clicked (single)", () => {
     const handleChange = jest.fn();
     render(
-      <BasicSelect
+      <AdvancedSelect
+        name='test'
         label='Test Label'
         errorMessage=''
-        options={options}
-        name='test'
         onChange={handleChange}
+        rawOptions={rawOptions}
+        optionMapper={optionMapper}
+        onSearch={onSearch}
       />
     );
+    // Open filter
     const selectArea = screen.getByText(/choose test/i).closest("div");
     if (selectArea) fireEvent.click(selectArea);
     const input = screen.getByPlaceholderText(/cari/i);
     fireEvent.keyDown(input, { key: "ArrowDown" });
     fireEvent.keyDown(input, { key: "Enter" });
-    expect(handleChange).toHaveBeenCalledWith("1");
+    expect(handleChange).toHaveBeenCalled();
   });
 
   it("calls onChange with array when option is clicked (multiple)", () => {
     const handleChange = jest.fn();
     render(
-      <BasicSelect
+      <AdvancedSelect
+        name='test'
         label='Test Label'
         errorMessage=''
-        options={options}
-        name='test'
         onChange={handleChange}
+        rawOptions={rawOptions}
+        optionMapper={optionMapper}
+        onSearch={onSearch}
         multiple
         value={[]}
       />
     );
+    // Open filter
     const selectArea = screen.getByText(/choose test/i).closest("div");
     if (selectArea) fireEvent.click(selectArea);
     const input = screen.getByPlaceholderText(/cari/i);
     fireEvent.keyDown(input, { key: "ArrowDown" });
     fireEvent.keyDown(input, { key: "Enter" });
-    expect(handleChange).toHaveBeenCalledWith(["1"]);
+    expect(handleChange).toHaveBeenCalledWith([
+      { label: "Option 1", value: "1" },
+    ]);
   });
 
   it("shows error message if errorMessage is provided", () => {
     render(
-      <BasicSelect
+      <AdvancedSelect
+        name='test'
         label='Test Label'
         errorMessage='Error!'
-        options={options}
-        name='test'
         onChange={() => {}}
+        rawOptions={rawOptions}
+        optionMapper={optionMapper}
+        onSearch={onSearch}
       />
     );
     expect(screen.getByText("Error!")).toBeInTheDocument();
@@ -96,31 +116,35 @@ describe("BasicSelect", () => {
 
   it("renders disabled state", () => {
     render(
-      <BasicSelect
+      <AdvancedSelect
+        name='test'
         label='Test Label'
         errorMessage=''
-        options={options}
-        name='test'
         onChange={() => {}}
+        rawOptions={rawOptions}
+        optionMapper={optionMapper}
+        onSearch={onSearch}
         disabled
       />
     );
     expect(screen.getByText(/choose test/i)).toBeInTheDocument();
-    expect(screen.getByText(/choose test/i).closest("div")).toHaveStyle({
-      opacity: 0.6,
-    });
+    expect(screen.getByText(/choose test/i).closest("div")).toHaveClass(
+      "select__disabled"
+    );
   });
 
   it("clears selection when clear button is clicked (single)", () => {
     const handleChange = jest.fn();
     render(
-      <BasicSelect
+      <AdvancedSelect
+        name='test'
         label='Test Label'
         errorMessage=''
-        options={options}
-        name='test'
         onChange={handleChange}
-        value='1'
+        rawOptions={rawOptions}
+        optionMapper={optionMapper}
+        onSearch={onSearch}
+        value={{ label: "Option 1", value: "1" }}
       />
     );
     const clearBtn = screen.getByText("X");
@@ -131,14 +155,19 @@ describe("BasicSelect", () => {
   it("clears selection when clear button is clicked (multiple)", () => {
     const handleChange = jest.fn();
     render(
-      <BasicSelect
+      <AdvancedSelect
+        name='test'
         label='Test Label'
         errorMessage=''
-        options={options}
-        name='test'
         onChange={handleChange}
+        rawOptions={rawOptions}
+        optionMapper={optionMapper}
+        onSearch={onSearch}
         multiple
-        value={["1", "2"]}
+        value={[
+          { label: "Option 1", value: "1" },
+          { label: "Option 2", value: "2" },
+        ]}
       />
     );
     const clearBtn = screen.getByText("X");
@@ -149,52 +178,46 @@ describe("BasicSelect", () => {
   it("removes a single selected value in multiple mode", () => {
     const handleChange = jest.fn();
     render(
-      <BasicSelect
+      <AdvancedSelect
+        name='test'
         label='Test Label'
         errorMessage=''
-        options={options}
-        name='test'
         onChange={handleChange}
+        rawOptions={rawOptions}
+        optionMapper={optionMapper}
+        onSearch={onSearch}
         multiple
-        value={["1", "2"]}
+        value={[
+          { label: "Option 1", value: "1" },
+          { label: "Option 2", value: "2" },
+        ]}
       />
     );
     // Find the remove button for Option 1
     const removeBtns = screen.getAllByText("x");
     fireEvent.click(removeBtns[0]);
-    expect(handleChange).toHaveBeenCalledWith(["2"]);
+    expect(handleChange).toHaveBeenCalledWith([
+      { label: "Option 2", value: "2" },
+    ]);
   });
 
-  it("shows placeholder if value is empty", () => {
+  it("shows search hint if search is too short", () => {
     render(
-      <BasicSelect
+      <AdvancedSelect
+        name='test'
         label='Test Label'
         errorMessage=''
-        options={options}
-        name='test'
         onChange={() => {}}
-        value=''
-      />
-    );
-    expect(screen.getByText(/choose test/i)).toBeInTheDocument();
-  });
-
-  it("handles keyboard navigation and closes on Escape", () => {
-    render(
-      <BasicSelect
-        label='Test Label'
-        errorMessage=''
-        options={options}
-        name='test'
-        onChange={() => {}}
+        rawOptions={rawOptions}
+        optionMapper={optionMapper}
+        onSearch={onSearch}
+        minSearchLength={3}
       />
     );
     const selectArea = screen.getByText(/choose test/i).closest("div");
     if (selectArea) fireEvent.click(selectArea);
     const input = screen.getByPlaceholderText(/cari/i);
-    fireEvent.keyDown(input, { key: "ArrowDown" });
-    fireEvent.keyDown(input, { key: "ArrowUp" });
-    fireEvent.keyDown(input, { key: "Escape" });
-    expect(input).not.toBeVisible();
+    fireEvent.change(input, { target: { value: "a" } });
+    expect(screen.getByText(/type at least 3 character/i)).toBeInTheDocument();
   });
 });

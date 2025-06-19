@@ -25,7 +25,6 @@ const MainLayout = ({ children, showBreadcrumb = true }: MainLayoutProps) => {
 
   const isTablet = windowWidth < 1200;
   const isDesktop = windowWidth > 1200;
-  console.log("MainLayout isTablet:", isTablet);
   return (
     <>
       <Header

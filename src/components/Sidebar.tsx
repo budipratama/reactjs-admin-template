@@ -30,15 +30,11 @@ const MenuItem = memo(function MenuItem({
   }
   const key = getMenuKey([...parentIndexes, index]);
   const isOpen = openMenus.includes(key);
-  console.log(
-    `[MenuItem] key: ${key}, isOpen: ${isOpen},  title: ${item.title} path: ${item.path}`
-  );
   return (
     <li key={index} className={className}>
       <Link
         to={item.path ?? "#"}
         onClick={() => {
-          console.log(`[MenuItem] clicked: ${item.title}, path: ${item.path}`);
           if (isTablet && typeof setSidebarCollapsed === "function") {
             setSidebarCollapsed(true); // collapse sidebar jika tablet
           }
@@ -159,8 +155,6 @@ const Sidebar = ({
     return result;
   };
 
-  console.log("Sidebar isCollapsed:", isCollapsed);
-
   const handleMouseEnter = () => {
     if (!isTablet) {
       setHovered(true);
@@ -173,7 +167,6 @@ const Sidebar = ({
       onSidebarHover && onSidebarHover(false);
     }
   };
-  console.log(`[Sidebar] onToogleSidebar: ${onToggleSidebar}`);
   useEffect(() => {
     if (isTablet) {
       if (setSidebarCollapsed) setSidebarCollapsed(true); // collapse otomatis saat tablet
